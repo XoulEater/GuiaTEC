@@ -1,0 +1,84 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Input from "@/components/Input.tsx";
+---
+
+<Layout title="Bienvenido !" subtitle="Ingrese sus datos">
+    <div class="w-5/6 lgn:w-3/4 mt-5">
+        <form action="/login" method="post" class="flex flex-col gap-8">
+            <Input
+                title="Correo"
+                formType="email"
+                placeHolderLG="Ingrese su correo"
+                placeHolderSM="Correo"
+                client:only
+            />
+            <Input
+                title="Contraseña"
+                formType="password"
+                placeHolderLG="Ingrese su contraseña"
+                placeHolderSM="Contraseña"
+                client:only
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-lock absolute left-2"
+                    width="44"
+                    height="44"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="#2c3e50"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path
+                        d="M5 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-6z"
+                    ></path>
+                    <path d="M11 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+                    <path d="M8 11v-4a4 4 0 1 1 8 0v4"></path>
+                </svg>
+            </Input>
+
+            <div class="flex justify-between w-full">
+                <div>
+                    <input type="checkbox" name="remember" />
+                    <label for="remember" class="text-lg text-zinc-700"
+                        >Recuérdame</label
+                    >
+                </div>
+                <a href="/forgot-password" class="text-lg text-zinc-500"
+                    >Olvidó su contraseña?</a
+                >
+            </div>
+            <button
+                type="submit"
+                class="bg-primary-dark text-white text-xl py-2 rounded-lg flex items-center justify-center w-full hover:bg-primary-light transition duration-300 ease-in-out group"
+                >Ingresar
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="icon icon-tabler icon-tabler-arrow-narrow-right"
+                    width="44"
+                    height="44"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="#fff"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M5 12l14 0"></path>
+                    <path d="M15 16l4 -4"></path>
+                    <path d="M15 8l4 4"></path>
+                </svg>
+            </button>
+        </form>
+    </div>
+    <h2 class="text-lg text-zinc-500 mt-6">
+        No tienes cuenta? <a href="/register" class="text-primary-light"
+            >Regístrate</a
+        >
+    </h2>
+</Layout>
