@@ -5,26 +5,27 @@ import SubmitButton from "@/components/SubmitButton.astro";
 ---
 
 <Layout
-    title="Olvidó su contraseña"
-    subtitle="Vamos a reiniciar su contraseña "
+    title="Verificación"
+    subtitle="Ingrese el código que recibió en su correo"
 >
     <div class="w-5/6 lgn:w-5/6 mt-7 flex flex-col gap-5">
         <form
-            action="/validate-email"
+            action="/new-password"
             method="post"
+            autocomplete="off"
             class="flex flex-col gap-5"
         >
             <Input
-                title="Correo"
-                formType="email"
-                placeHolderLG="Ingrese su correo"
-                placeHolderSM="Correo"
-                logo="/email.svg"
+                title="Código de verificación"
+                formType="text"
+                placeHolderLG="Ingrese el código  de verificación"
+                placeHolderSM="Código de verificación"
+                logo="/code.svg"
                 client:only
             />
             <a href="/" class="text-zinc-500">Volver al login</a>
 
-            <SubmitButton text="Enviar" />
+            <SubmitButton text="Validar" />
         </form>
     </div>
     <h2 class="mt-6">

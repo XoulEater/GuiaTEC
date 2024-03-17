@@ -23,7 +23,7 @@ const MyComponent: React.FC<Props> = ({ title, formType, placeHolderLG, placeHol
         };
     }, []);
 
-    const placeholder = windowWidth >= 1150 ? placeHolderLG : placeHolderSM;
+    const placeholder = windowWidth >= 1050 ? placeHolderLG : placeHolderSM;
 
     return (
         <div className="flex flex-col">
