@@ -4,11 +4,11 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				'primary-dark': '#243c5a',
+				'primary-dark': '#1E293B',
 				'primary-light': '#3064D4',
 			},
 			screens: {
-				'lgn': '1150px',
+				'lgn': '1050px',
 			}
 		},
 	},
