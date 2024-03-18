@@ -9,6 +9,5 @@ export default defineConfig({
   integrations: [tailwind(), react()],
   output: 'static',
   site: "https://xouleater.github.io",
-  base: '/GuiaTEC',
   adapter: netlify()
 });
