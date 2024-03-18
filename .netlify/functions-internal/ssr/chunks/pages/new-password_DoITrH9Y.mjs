@@ -1,6 +1,6 @@
 /* empty css                                    */
-import { c as createAstro, d as createComponent, r as renderTemplate, h as renderComponent, m as maybeRenderHead } from '../astro_Cr4KhBQ3.mjs';
-import { $ as $$SubmitButton, a as $$LoginLayout } from './forgot-password_DvbaPeBB.mjs';
+import { c as createAstro, d as createComponent, r as renderTemplate, h as renderComponent, m as maybeRenderHead } from '../astro_BwF39fxP.mjs';
+import { $ as $$SubmitButton, a as $$LoginLayout } from './forgot-password_D-9Zp270.mjs';
 
 const $$Astro = createAstro("https://xouleater.github.io");
 const $$NewPassword = createComponent(async ($$result, $$props, $$slots) => {

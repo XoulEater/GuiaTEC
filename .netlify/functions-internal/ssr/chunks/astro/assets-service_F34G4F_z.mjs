@@ -1,14 +1,5 @@
-import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, M as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, a as UnsupportedImageConversion, b as MissingSharp } from '../astro_Cr4KhBQ3.mjs';
+import { A as AstroError, E as ExpectedImage, L as LocalImageUsedWrongly, M as MissingImageDimension, U as UnsupportedImageFormat, I as IncompatibleDescriptorOptions, a as UnsupportedImageConversion, b as MissingSharp } from '../astro_BwF39fxP.mjs';
 
-function appendForwardSlash(path) {
-  return path.endsWith("/") ? path : path + "/";
-}
-function prependForwardSlash(path) {
-  return path[0] === "/" ? path : "/" + path;
-}
-function collapseDuplicateSlashes(path) {
-  return path.replace(/(?<!:)\/{2,}/g, "/");
-}
 function removeTrailingForwardSlash(path) {
   return path.endsWith("/") ? path.slice(0, path.length - 1) : path;
 }
@@ -34,13 +25,6 @@ function joinPaths(...paths) {
 }
 function isRemotePath(src) {
   return /^(?:http|ftp|https|ws):?\/\//.test(src) || src.startsWith("data:");
-}
-function slash(path) {
-  return path.replace(/\\/g, "/");
-}
-function fileExtension(path) {
-  const ext = path.split(".").pop();
-  return ext !== path ? `.${ext}` : "";
 }
 
 const VALID_SUPPORTED_FORMATS = [
@@ -381,4 +365,4 @@ const sharp$1 = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   default: sharp_default
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { DEFAULT_HASH_PROPS as D, isESMImportedImage as a, isLocalService as b, isRemotePath as c, isRemoteAllowed as d, appendForwardSlash as e, fileExtension as f, collapseDuplicateSlashes as g, sharp$1 as h, isRemoteImage as i, joinPaths as j, prependForwardSlash as p, removeTrailingForwardSlash as r, slash as s, trimSlashes as t };
+export { DEFAULT_HASH_PROPS as D, isESMImportedImage as a, isLocalService as b, isRemotePath as c, isRemoteAllowed as d, isRemoteImage as i, sharp$1 as s };

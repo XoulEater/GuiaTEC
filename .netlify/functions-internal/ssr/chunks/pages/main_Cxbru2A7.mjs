@@ -1,5 +1,5 @@
 /* empty css                                    */
-import { c as createAstro, d as createComponent, r as renderTemplate, e as addAttribute, f as renderHead, h as renderComponent, g as renderSlot, m as maybeRenderHead } from '../astro_Cr4KhBQ3.mjs';
+import { c as createAstro, d as createComponent, r as renderTemplate, e as addAttribute, f as renderHead, h as renderComponent, g as renderSlot, m as maybeRenderHead } from '../astro_BwF39fxP.mjs';
 /* empty css                         */
 
 const $$Astro$1 = createAstro("https://xouleater.github.io");

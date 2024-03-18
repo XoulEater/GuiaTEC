@@ -1,8 +1,5 @@
-import { isAbsolute } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { i as isRemoteImage, a as isESMImportedImage, b as isLocalService, D as DEFAULT_HASH_PROPS, c as isRemotePath, d as isRemoteAllowed } from '../astro/assets-service_D93_nZBq.mjs';
-import { readFile } from 'fs/promises';
-import { i as getDefaultExportFromCjs, A as AstroError, j as InvalidImageService, k as ExpectedImageOptions, E as ExpectedImage, F as FailedToFetchRemoteImageDimensions, c as createAstro, d as createComponent, l as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, e as addAttribute, s as spreadAttributes } from '../astro_Cr4KhBQ3.mjs';
+import { i as isRemoteImage, a as isESMImportedImage, b as isLocalService, D as DEFAULT_HASH_PROPS, c as isRemotePath, d as isRemoteAllowed } from '../astro/assets-service_F34G4F_z.mjs';
+import { i as getDefaultExportFromCjs, A as AstroError, j as InvalidImageService, k as ExpectedImageOptions, E as ExpectedImage, F as FailedToFetchRemoteImageDimensions, c as createAstro, d as createComponent, l as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, e as addAttribute, s as spreadAttributes } from '../astro_BwF39fxP.mjs';
 
 /**
  * @param typeMap [Object] Map of MIME type -> Array[extensions]
@@ -923,8 +920,8 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      '../astro/assets-service_D93_nZBq.mjs'
-    ).then(n => n.h).catch((e) => {
+      '../astro/assets-service_F34G4F_z.mjs'
+    ).then(n => n.s).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
       throw error;
@@ -1097,46 +1094,18 @@ const $$Picture = createComponent(async ($$result, $$props, $$slots) => {
   })} <img${addAttribute(fallbackImage.src, "src")}${spreadAttributes(imgAdditionalAttributes)}${spreadAttributes(fallbackImage.attributes)}> </picture>`;
 }, "C:/Documentos/proyects/GuiaTEC/node_modules/.pnpm/astro@4.5.5_typescript@5.4.2/node_modules/astro/components/Picture.astro", void 0);
 
-const imageConfig = {"service":{"entrypoint":"astro/assets/services/sharp","config":{}},"domains":[],"remotePatterns":[],"endpoint":"astro/assets/endpoint/node"};
-					const outDir = new URL("file:///C:/Documentos/proyects/GuiaTEC/dist/client/");
-					const assetsDir = new URL("_astro", outDir);
+const imageConfig = {"service":{"entrypoint":"astro/assets/services/sharp","config":{}},"domains":[],"remotePatterns":[]};
+					const outDir = new URL("file:///C:/Documentos/proyects/GuiaTEC/dist/");
+					new URL("_astro", outDir);
 					const getImage = async (options) => await getImage$1(options, imageConfig);
 
-async function loadLocalImage(src, url) {
-  const assetsDirPath = fileURLToPath(assetsDir);
-  let fileUrl;
-  {
-    try {
-      fileUrl = new URL("." + src, outDir);
-      const filePath = fileURLToPath(fileUrl);
-      if (!isAbsolute(filePath) || !filePath.startsWith(assetsDirPath)) {
-        return void 0;
-      }
-    } catch (err) {
-      return void 0;
-    }
-  }
-  let buffer = void 0;
-  try {
-    buffer = await readFile(fileUrl);
-  } catch (e) {
-    try {
-      const sourceUrl = new URL(src, url.origin);
-      buffer = await loadRemoteImage(sourceUrl);
-    } catch (err) {
-      console.error("Could not process image request:", err);
-      return void 0;
-    }
-  }
-  return buffer;
-}
 async function loadRemoteImage(src) {
   try {
     const res = await fetch(src);
     if (!res.ok) {
       return void 0;
     }
-    return Buffer.from(await res.arrayBuffer());
+    return await res.arrayBuffer();
   } catch (err) {
     return void 0;
   }
@@ -1150,25 +1119,22 @@ const GET = async ({ request }) => {
     const url = new URL(request.url);
     const transform = await imageService.parseURL(url, imageConfig);
     if (!transform?.src) {
-      const err = new Error(
-        "Incorrect transform returned by `parseURL`. Expected a transform with a `src` property."
-      );
-      console.error("Could not parse image transform from URL:", err);
-      return new Response("Internal Server Error", { status: 500 });
+      throw new Error("Incorrect transform returned by `parseURL`");
     }
     let inputBuffer = void 0;
-    if (isRemotePath(transform.src)) {
-      if (isRemoteAllowed(transform.src, imageConfig) === false) {
-        return new Response("Forbidden", { status: 403 });
-      }
-      inputBuffer = await loadRemoteImage(new URL(transform.src));
-    } else {
-      inputBuffer = await loadLocalImage(transform.src, url);
+    const sourceUrl = isRemotePath(transform.src) ? new URL(transform.src) : new URL(transform.src, url.origin);
+    if (isRemotePath(transform.src) && isRemoteAllowed(transform.src, imageConfig) === false) {
+      return new Response("Forbidden", { status: 403 });
     }
+    inputBuffer = await loadRemoteImage(sourceUrl);
     if (!inputBuffer) {
-      return new Response("Internal Server Error", { status: 500 });
+      return new Response("Not Found", { status: 404 });
     }
-    const { data, format } = await imageService.transform(inputBuffer, transform, imageConfig);
+    const { data, format } = await imageService.transform(
+      new Uint8Array(inputBuffer),
+      transform,
+      imageConfig
+    );
     return new Response(data, {
       status: 200,
       headers: {
@@ -1180,12 +1146,7 @@ const GET = async ({ request }) => {
     });
   } catch (err) {
     console.error("Could not process image request:", err);
-    return new Response(
-      `Internal Server Error`,
-      {
-        status: 500
-      }
-    );
+    return new Response(`Server Error: ${err}`, { status: 500 });
   }
 };
 

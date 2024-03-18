@@ -1,126 +1,9 @@
-import { Z as bold, _ as red, $ as yellow, a0 as dim, a1 as blue } from './chunks/astro_Cr4KhBQ3.mjs';
+import './chunks/astro_BwF39fxP.mjs';
 
-const dateTimeFormat = new Intl.DateTimeFormat([], {
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  hour12: false
-});
-const levels = {
-  debug: 20,
-  info: 30,
-  warn: 40,
-  error: 50,
-  silent: 90
-};
-function log(opts, level, label, message, newLine = true) {
-  const logLevel = opts.level;
-  const dest = opts.dest;
-  const event = {
-    label,
-    level,
-    message,
-    newLine
-  };
-  if (!isLogLevelEnabled(logLevel, level)) {
-    return;
-  }
-  dest.write(event);
-}
-function isLogLevelEnabled(configuredLogLevel, level) {
-  return levels[configuredLogLevel] <= levels[level];
-}
-function info(opts, label, message, newLine = true) {
-  return log(opts, "info", label, message, newLine);
-}
-function warn(opts, label, message, newLine = true) {
-  return log(opts, "warn", label, message, newLine);
-}
-function error(opts, label, message, newLine = true) {
-  return log(opts, "error", label, message, newLine);
-}
-function debug(...args) {
-  if ("_astroGlobalDebug" in globalThis) {
-    globalThis._astroGlobalDebug(...args);
-  }
-}
-function getEventPrefix({ level, label }) {
-  const timestamp = `${dateTimeFormat.format(/* @__PURE__ */ new Date())}`;
-  const prefix = [];
-  if (level === "error" || level === "warn") {
-    prefix.push(bold(timestamp));
-    prefix.push(`[${level.toUpperCase()}]`);
-  } else {
-    prefix.push(timestamp);
-  }
-  if (label) {
-    prefix.push(`[${label}]`);
-  }
-  if (level === "error") {
-    return red(prefix.join(" "));
-  }
-  if (level === "warn") {
-    return yellow(prefix.join(" "));
-  }
-  if (prefix.length === 1) {
-    return dim(prefix[0]);
-  }
-  return dim(prefix[0]) + " " + blue(prefix.splice(1).join(" "));
-}
 if (typeof process !== "undefined") {
   let proc = process;
   if ("argv" in proc && Array.isArray(proc.argv)) {
     if (proc.argv.includes("--verbose")) ; else if (proc.argv.includes("--silent")) ; else ;
-  }
-}
-class Logger {
-  options;
-  constructor(options) {
-    this.options = options;
-  }
-  info(label, message, newLine = true) {
-    info(this.options, label, message, newLine);
-  }
-  warn(label, message, newLine = true) {
-    warn(this.options, label, message, newLine);
-  }
-  error(label, message, newLine = true) {
-    error(this.options, label, message, newLine);
-  }
-  debug(label, ...messages) {
-    debug(label, ...messages);
-  }
-  level() {
-    return this.options.level;
-  }
-  forkIntegrationLogger(label) {
-    return new AstroIntegrationLogger(this.options, label);
-  }
-}
-class AstroIntegrationLogger {
-  options;
-  label;
-  constructor(logging, label) {
-    this.options = logging;
-    this.label = label;
-  }
-  /**
-   * Creates a new logger instance with a new label, but the same log options.
-   */
-  fork(label) {
-    return new AstroIntegrationLogger(this.options, label);
-  }
-  info(message) {
-    info(this.options, this.label, message);
-  }
-  warn(message) {
-    warn(this.options, this.label, message);
-  }
-  error(message) {
-    error(this.options, this.label, message);
-  }
-  debug(message) {
-    debug(this.label, message);
   }
 }
 
@@ -444,6 +327,6 @@ function deserializeManifest(serializedManifest) {
   };
 }
 
-const manifest = deserializeManifest({"adapterName":"@astrojs/node","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"endpoint","isIndex":false,"route":"/_image","pattern":"^\\/_image$","segments":[[{"content":"_image","dynamic":false,"spread":false}]],"params":[],"component":"node_modules/.pnpm/astro@4.5.5_typescript@5.4.2/node_modules/astro/dist/assets/endpoint/node.js","pathname":"/_image","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/forgot-password","isIndex":false,"type":"page","pattern":"^\\/forgot-password\\/?$","segments":[[{"content":"forgot-password","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/forgot-password.astro","pathname":"/forgot-password","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/main","isIndex":false,"type":"page","pattern":"^\\/main\\/?$","segments":[[{"content":"main","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/main.astro","pathname":"/main","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/new-password","isIndex":false,"type":"page","pattern":"^\\/new-password\\/?$","segments":[[{"content":"new-password","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/new-password.astro","pathname":"/new-password","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/validate-email","isIndex":false,"type":"page","pattern":"^\\/validate-email\\/?$","segments":[[{"content":"validate-email","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/validate-email.astro","pathname":"/validate-email","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}}],"site":"https://xouleater.github.io","base":"/GuiaTEC","trailingSlash":"ignore","compressHTML":true,"componentMetadata":[["C:/Documentos/proyects/GuiaTEC/src/pages/forgot-password.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/index.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/new-password.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/validate-email.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/main.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var i=t=>{let e=async()=>{await(await t())()};\"requestIdleCallback\"in window?window.requestIdleCallback(e):setTimeout(e,200)};(self.Astro||(self.Astro={})).idle=i;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var s=(i,t)=>{let a=async()=>{await(await i())()};if(t.value){let e=matchMedia(t.value);e.matches?a():e.addEventListener(\"change\",a,{once:!0})}};(self.Astro||(self.Astro={})).media=s;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var l=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let a of e)if(a.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=l;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000@astrojs-ssr-virtual-entry":"entry.mjs","\u0000@astro-renderers":"renderers.mjs","\u0000noop-middleware":"_noop-middleware.mjs","/src/pages/index.astro":"chunks/pages/index_CC9H88IX.mjs","/src/pages/main.astro":"chunks/pages/main_DTYPwqjW.mjs","/src/pages/new-password.astro":"chunks/pages/new-password_CCRpDTQ7.mjs","/node_modules/.pnpm/astro@4.5.5_typescript@5.4.2/node_modules/astro/dist/assets/endpoint/node.js":"chunks/pages/node_BYnIPStY.mjs","/src/pages/validate-email.astro":"chunks/pages/validate-email_BWwDU6eF.mjs","\u0000@astrojs-manifest":"manifest_CkmaX3Li.mjs","C:/Documentos/proyects/GuiaTEC/node_modules/.pnpm/@astrojs+react@3.1.0_@types+react-dom@18.2.22_@types+react@18.2.66_react-dom@18.2.0_react@18.2.0_vite@5.1.6/node_modules/@astrojs/react/vnode-children.js":"chunks/vnode-children_C1YIWAGb.mjs","\u0000@astro-page:node_modules/.pnpm/astro@4.5.5_typescript@5.4.2/node_modules/astro/dist/assets/endpoint/node@_@js":"chunks/node_CZ4Vsqte.mjs","\u0000@astro-page:src/pages/forgot-password@_@astro":"chunks/forgot-password_BfBQXUDQ.mjs","\u0000@astro-page:src/pages/main@_@astro":"chunks/main_BZbMHW2M.mjs","\u0000@astro-page:src/pages/new-password@_@astro":"chunks/new-password_DXqDqjEE.mjs","\u0000@astro-page:src/pages/validate-email@_@astro":"chunks/validate-email_CXLfRSby.mjs","\u0000@astro-page:src/pages/index@_@astro":"chunks/index_-gMOXppx.mjs","C:/Documentos/proyects/GuiaTEC/src/components/Input.tsx":"_astro/Input.gWfe5j1Z.js","@astrojs/react/client.js":"_astro/client.3UcARPQE.js","C:/Documentos/proyects/GuiaTEC/src/components/Header.tsx":"_astro/Header.Cb-M2BR-.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/GuiaTEC/_astro/forgot-password.CdYGkgZf.css","/GuiaTEC/arrow-right.svg","/GuiaTEC/code.svg","/GuiaTEC/email.svg","/GuiaTEC/favicon copy.svg","/GuiaTEC/favicon.svg","/GuiaTEC/password.svg","/GuiaTEC/userDefault.png","/GuiaTEC/_astro/client.3UcARPQE.js","/GuiaTEC/_astro/Header.Cb-M2BR-.js","/GuiaTEC/_astro/index.9S5AIfQV.js","/GuiaTEC/_astro/index.DdRMN4IK.js","/GuiaTEC/_astro/Input.gWfe5j1Z.js","/GuiaTEC/_astro/jsx-runtime.DSYUAlOe.js"],"buildFormat":"directory"});
+const manifest = deserializeManifest({"adapterName":"@astrojs/netlify","routes":[{"file":"","links":[],"scripts":[],"styles":[],"routeData":{"type":"endpoint","isIndex":false,"route":"/_image","pattern":"^\\/_image$","segments":[[{"content":"_image","dynamic":false,"spread":false}]],"params":[],"component":"node_modules/.pnpm/astro@4.5.5_typescript@5.4.2/node_modules/astro/dist/assets/endpoint/generic.js","pathname":"/_image","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/forgot-password","isIndex":false,"type":"page","pattern":"^\\/forgot-password\\/?$","segments":[[{"content":"forgot-password","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/forgot-password.astro","pathname":"/forgot-password","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/main","isIndex":false,"type":"page","pattern":"^\\/main\\/?$","segments":[[{"content":"main","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/main.astro","pathname":"/main","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/new-password","isIndex":false,"type":"page","pattern":"^\\/new-password\\/?$","segments":[[{"content":"new-password","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/new-password.astro","pathname":"/new-password","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/validate-email","isIndex":false,"type":"page","pattern":"^\\/validate-email\\/?$","segments":[[{"content":"validate-email","dynamic":false,"spread":false}]],"params":[],"component":"src/pages/validate-email.astro","pathname":"/validate-email","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}},{"file":"","links":[],"scripts":[],"styles":[{"type":"external","src":"/GuiaTEC/_astro/forgot-password.CdYGkgZf.css"},{"type":"inline","content":"html{font-family:Inter,sans-serif;background-size:224px}code{font-family:Inter,sans-serif}\n"}],"routeData":{"route":"/","isIndex":true,"type":"page","pattern":"^\\/$","segments":[],"params":[],"component":"src/pages/index.astro","pathname":"/","prerender":false,"fallbackRoutes":[],"_meta":{"trailingSlash":"ignore"}}}],"site":"https://xouleater.github.io","base":"/GuiaTEC","trailingSlash":"ignore","compressHTML":true,"componentMetadata":[["C:/Documentos/proyects/GuiaTEC/src/pages/forgot-password.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/index.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/new-password.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/validate-email.astro",{"propagation":"none","containsHead":true}],["C:/Documentos/proyects/GuiaTEC/src/pages/main.astro",{"propagation":"none","containsHead":true}]],"renderers":[],"clientDirectives":[["idle","(()=>{var i=t=>{let e=async()=>{await(await t())()};\"requestIdleCallback\"in window?window.requestIdleCallback(e):setTimeout(e,200)};(self.Astro||(self.Astro={})).idle=i;window.dispatchEvent(new Event(\"astro:idle\"));})();"],["load","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event(\"astro:load\"));})();"],["media","(()=>{var s=(i,t)=>{let a=async()=>{await(await i())()};if(t.value){let e=matchMedia(t.value);e.matches?a():e.addEventListener(\"change\",a,{once:!0})}};(self.Astro||(self.Astro={})).media=s;window.dispatchEvent(new Event(\"astro:media\"));})();"],["only","(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event(\"astro:only\"));})();"],["visible","(()=>{var l=(s,i,o)=>{let r=async()=>{await(await s())()},t=typeof i.value==\"object\"?i.value:void 0,c={rootMargin:t==null?void 0:t.rootMargin},n=new IntersectionObserver(e=>{for(let a of e)if(a.isIntersecting){n.disconnect(),r();break}},c);for(let e of o.children)n.observe(e)};(self.Astro||(self.Astro={})).visible=l;window.dispatchEvent(new Event(\"astro:visible\"));})();"]],"entryModules":{"\u0000@astrojs-ssr-virtual-entry":"entry.mjs","\u0000@astro-renderers":"renderers.mjs","\u0000noop-middleware":"_noop-middleware.mjs","/node_modules/.pnpm/astro@4.5.5_typescript@5.4.2/node_modules/astro/dist/assets/endpoint/generic.js":"chunks/pages/generic_xqw9slly.mjs","/src/pages/index.astro":"chunks/pages/index_8waLtuJM.mjs","/src/pages/main.astro":"chunks/pages/main_Cxbru2A7.mjs","/src/pages/new-password.astro":"chunks/pages/new-password_DoITrH9Y.mjs","/src/pages/validate-email.astro":"chunks/pages/validate-email_DI5i2Lux.mjs","\u0000@astrojs-manifest":"manifest_cYnTHMZs.mjs","C:/Documentos/proyects/GuiaTEC/node_modules/.pnpm/@astrojs+react@3.1.0_@types+react-dom@18.2.22_@types+react@18.2.66_react-dom@18.2.0_react@18.2.0_vite@5.1.6/node_modules/@astrojs/react/vnode-children.js":"chunks/vnode-children_C1YIWAGb.mjs","\u0000@astro-page:node_modules/.pnpm/astro@4.5.5_typescript@5.4.2/node_modules/astro/dist/assets/endpoint/generic@_@js":"chunks/generic_Bfxnbh85.mjs","\u0000@astro-page:src/pages/forgot-password@_@astro":"chunks/forgot-password_CIlX4vhp.mjs","\u0000@astro-page:src/pages/main@_@astro":"chunks/main_BU25E66-.mjs","\u0000@astro-page:src/pages/new-password@_@astro":"chunks/new-password_1WKM3QDm.mjs","\u0000@astro-page:src/pages/validate-email@_@astro":"chunks/validate-email_VRWwv7oh.mjs","\u0000@astro-page:src/pages/index@_@astro":"chunks/index_BN9yKOqv.mjs","C:/Documentos/proyects/GuiaTEC/src/components/Input.tsx":"_astro/Input.gWfe5j1Z.js","@astrojs/react/client.js":"_astro/client.3UcARPQE.js","C:/Documentos/proyects/GuiaTEC/src/components/Header.tsx":"_astro/Header.Cb-M2BR-.js","astro:scripts/before-hydration.js":""},"inlinedScripts":[],"assets":["/GuiaTEC/_astro/forgot-password.CdYGkgZf.css","/GuiaTEC/arrow-right.svg","/GuiaTEC/code.svg","/GuiaTEC/email.svg","/GuiaTEC/favicon copy.svg","/GuiaTEC/favicon.svg","/GuiaTEC/password.svg","/GuiaTEC/userDefault.png","/GuiaTEC/_astro/client.3UcARPQE.js","/GuiaTEC/_astro/Header.Cb-M2BR-.js","/GuiaTEC/_astro/index.9S5AIfQV.js","/GuiaTEC/_astro/index.DdRMN4IK.js","/GuiaTEC/_astro/Input.gWfe5j1Z.js","/GuiaTEC/_astro/jsx-runtime.DSYUAlOe.js"],"buildFormat":"directory"});
 
-export { AstroIntegrationLogger as A, Logger as L, getEventPrefix as g, levels as l, manifest };
+export { manifest };
