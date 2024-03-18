@@ -6,7 +6,7 @@ import SubmitButton from "../components/SubmitButton.astro";
 
 <Layout title="Bienvenido !" subtitle="Ingrese sus datos">
     <div class="w-5/6 lgn:w-5/6 mt-7 flex flex-col gap-5">
-        <form action="/main" class="flex flex-col gap-5">
+        <form class="flex flex-col gap-5">
             <Input
                 title="Correo"
                 formType="email"
@@ -36,7 +36,7 @@ import SubmitButton from "../components/SubmitButton.astro";
                 >
             </div>
 
-            <SubmitButton text="Ingresar" />
+            <SubmitButton text="Ingresar" ref="/main" />
         </form>
     </div>
     <h2 class="mt-6">

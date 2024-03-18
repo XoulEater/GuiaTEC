@@ -1,13 +1,14 @@
 ---
 interface Props {
     text: string;
+    ref: string;
 }
 
-const { text } = Astro.props;
+const { text, ref } = Astro.props;
 ---
 
-<button
-    type="submit"
+<a
+    href={ref}
     class="bg-primary-dark text-white text-lg py-1 rounded-lg flex items-center justify-center w-full hover:bg-primary-light transition duration-300 ease-in-out group"
 >
     <label
@@ -19,4 +20,4 @@ const { text } = Astro.props;
         alt="arrow-right"
         class="ml-2 group-hover:transform group-hover:translate-x-1 group-hover:scale-110 transition duration-300 ease-in-out"
     />
-</button>
+</a>
