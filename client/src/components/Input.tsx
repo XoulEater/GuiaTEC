@@ -32,7 +32,7 @@ const MyComponent: React.FC<Props> = ({ title, formType, placeHolderLG, placeHol
             </label>
 
             <div className="flex relative items-center flex-row">
-                <img src={logo} alt={formType} className="absolute left-2 w-7" />
+                <img src={logo} alt={formType} className="absolute left-2 w-7 " />
                 <input
                     className="w-full text-zinc-500 py-3 pl-11 border border-zinc-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-light focus:border-zinc-500 transition-all duration-300 ease-in-out"
                     id={formType}
