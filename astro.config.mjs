@@ -7,7 +7,7 @@ import netlify from "@astrojs/netlify";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), react()],
-  output: 'server',
+  output: 'static',
   site: "https://xouleater.github.io",
   base: '/GuiaTEC',
   adapter: netlify()
