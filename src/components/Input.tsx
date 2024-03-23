@@ -9,6 +9,7 @@ interface Props {
 }
 
 const MyComponent: React.FC<Props> = ({ title, formType, placeHolderLG, placeHolderSM, logo }) => {
+
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
     useEffect(() => {
