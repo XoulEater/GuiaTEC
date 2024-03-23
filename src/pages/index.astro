@@ -5,43 +5,41 @@ import SubmitButton from "../components/SubmitButton.astro";
 ---
 
 <Layout title="Bienvenido !" subtitle="Ingrese sus datos">
-    <div class="w-5/6 lgn:w-5/6 mt-7 flex flex-col gap-5">
-        <form class="flex flex-col gap-5">
-            <Input
-                title="Correo"
-                formType="email"
-                placeHolderLG="Ingrese su correo"
-                placeHolderSM="Correo"
-                logo="/email.svg"
-                client:only
-            />
-            <Input
-                title="Contraseña"
-                formType="password"
-                placeHolderLG="Ingrese su contraseña"
-                placeHolderSM="Contraseña"
-                logo="/password.svg"
-                client:only
-            />
+  <div class="w-5/6 lgn:w-5/6 mt-7 flex flex-col gap-5">
+    <form class="flex flex-col gap-5">
+      <Input
+        title="Correo"
+        formType="email"
+        placeHolderLG="Ingrese su correo"
+        placeHolderSM="Correo"
+        logo="/email.svg"
+        client:only
+      />
+      <Input
+        title="Contraseña"
+        formType="password"
+        placeHolderLG="Ingrese su contraseña"
+        placeHolderSM="Contraseña"
+        logo="/password.svg"
+        client:only
+      />
 
-            <div class="flex justify-between w-full">
-                <div>
-                    <input type="checkbox" name="remember" />
-                    <label for="remember" class="text-zinc-700 text-sm"
-                        >Recuérdame</label
-                    >
-                </div>
-                <a href="/forgot-password" class="text-zinc-500 text-sm"
-                    >Olvidó su contraseña?</a
-                >
-            </div>
-
-            <SubmitButton text="Ingresar" ref="/main" />
-        </form>
-    </div>
-    <h2 class="mt-6">
-        No tienes cuenta? <a href="/register" class="text-primary-light"
-            >Regístrate</a
+      <div class="flex justify-between w-full">
+        <div>
+          <input type="checkbox" name="remember" />
+          <label for="remember" class="text-zinc-700 text-sm">Recuérdame</label>
+        </div>
+        <a href="/forgot-password" class="text-zinc-500 text-sm"
+          >Olvidó su contraseña?</a
         >
-    </h2>
+      </div>
+
+      <SubmitButton text="Ingresar" ref="/team" />
+    </form>
+  </div>
+  <h2 class="mt-6">
+    No tienes cuenta? <a href="/register" class="text-primary-light"
+      >Regístrate</a
+    >
+  </h2>
 </Layout>
