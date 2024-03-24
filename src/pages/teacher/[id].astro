@@ -1,14 +1,9 @@
 ---
 import Layout from "../../layouts/MainLayout.astro";
+import type { Teacher } from "../../lib/data.ts";
+import { teachers } from "../../lib/data.ts";
 
 const { id } = Astro.params;
 ---
 
-<Layout title="GuíaTEC" userType="asistente" currentRoute="profesores">
-  <div class="container">
-    <h1>Profesor</h1>
-    <p>Profesor con id: {id}</p>
-    <button class="">Editar</button>
-    <button class="">Eliminar</button>
-  </div>
-</Layout>
+<Layout title="GuíaTEC" userType="asistente" currentRoute="profesores" />

@@ -1,0 +1,56 @@
+---
+import type { Teacher } from "../lib/data.ts";
+import { teachers } from "../lib/data.ts";
+import Info from "../../public/info.astro";
+import Leave from "../../public/leave.astro";
+import Crown from "../../public/crown.astro";
+---
+
+<div
+  class="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10"
+>
+  <div class="grid grid-cols-6 h-[70px] w-full items-center bg-zinc-200 px-2">
+    <span class="font-semibold text-lg">Codigo</span>
+    <span class="font-semibold text-lg">Imagen</span>
+    <span class="font-semibold text-lg col-span-2">Nombre</span>
+    <span class="font-semibold text-lg col-span-2">Acciones</span>
+  </div>
+  {
+    teachers.map((teacher: Teacher, index) => {
+      {
+        const rowColorClass = index % 2 === 0 ? "bg-white" : "bg-zinc-200";
+
+        return (
+          <div
+            class={`grid grid-cols-6 h-16 w-full items-center ${rowColorClass} px-2`}
+          >
+            <span>{teacher.code}</span>
+            <img
+              class="rounded-full h-12 aspect-square object-cover object-center"
+              src={teacher.photo}
+              alt={teacher.name}
+            />
+            <span class=" col-span-2">{teacher.name}</span>
+            <div class="flex col-span-2 gap-4  items-center">
+              <a  href=`teacher/${teacher.code}`>
+                <Info class=" text-primary-light hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out" />
+              </a>
+              <a >
+                <Leave class=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out" />
+              </a>
+              {teacher.isLeader ? (
+                <a >
+                  <Crown class="  text-amber-500 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out" />
+                </a>
+              ) : (
+                <a >
+                  <Crown class=" text-zinc-400 hover:brightness-90 hover:scale-110 transition-all  duration-300 ease-out" />
+                </a>
+              )}
+            </div>
+          </div>
+        );
+      }
+    })
+  }
+</div>
