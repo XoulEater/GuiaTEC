@@ -25,6 +25,11 @@ const { title, userType, currentRoute } = Astro.props;
     <slot />
   </body>
 </html>
+<script>
+  if (!localStorage.getItem("user")) {
+    window.location.href = "/";
+  }
+</script>
 <style is:global>
   html {
     font-family: Inter, sans-serif;

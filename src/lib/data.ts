@@ -1,6 +1,7 @@
 export interface Teacher {
      code:string;
      name:string;
+     email: string,
      officePNumber:string;
      personalPNumber:string ;
      photo: string;
@@ -22,6 +23,7 @@ export const teachers: Teacher[] = [
     {
         code: "CA-01",
         name: "Teacher 10",
+        email: "email1",
         officePNumber: "123456",
         personalPNumber: "123456",
         photo: "https://images.pexels.com/photos/801863/pexels-photo-801863.jpeg?cs=srgb&dl=pexels-maur%C3%ADcio-mascaro-801863.jpg&fm=jpg",
@@ -31,6 +33,7 @@ export const teachers: Teacher[] = [
     {
         code: "AL-02",
         name: "Teacher 2",
+        email: "email2",
         officePNumber: "123456",
         personalPNumber: "123456",
         photo: "https://images.inc.com/uploaded_files/image/1920x1080/getty_499517325_111832.jpg",
@@ -40,6 +43,7 @@ export const teachers: Teacher[] = [
     {
         code: "SJ-03",
         name: "Teacher 3",
+        email: "email3",
         officePNumber: "123456",
         personalPNumber: "123456",
         photo: "https://images.pexels.com/photos/1181357/pexels-photo-1181357.jpeg?cs=srgb&dl=pexels-ron-lach-1181357.jpg&fm=jpg",
@@ -49,6 +53,7 @@ export const teachers: Teacher[] = [
     {
         code: "SC-04",
         name: "Teacher 4",
+        email: "email4",
         officePNumber: "123456",
         personalPNumber: "123456",
         photo: "https://images.pexels.com/photos/1181357/pexels-photo-1181357.jpeg?cs=srgb&dl=pexels-ron-lach-1181357.jpg&fm=jpg",

@@ -5,7 +5,9 @@ interface Props {
   currentRoute: "equipo" | "estudiantes" | "profesores";
 }
 
-const Header: React.FC<Props> = ({ userType, currentRoute }) => {
+const Header: React.FC<Props> = ({ currentRoute }) => {
+  const userType = localStorage.getItem("userType");
+
   return (
     <Navbar fluid rounded className="bg-slate-50">
       <Navbar.Brand>

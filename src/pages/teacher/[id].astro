@@ -1,9 +1,14 @@
 ---
 import Layout from "../../layouts/MainLayout.astro";
-import type { Teacher } from "../../lib/data.ts";
-import { teachers } from "../../lib/data.ts";
+import TeacherCard from "../../components/TeacherCard.tsx";
 
 const { id } = Astro.params;
 ---
 
-<Layout title="GuíaTEC" userType="asistente" currentRoute="profesores" />
+<Layout title="GuíaTEC" userType="asistente" currentRoute="profesores">
+  <div
+    class="absolute inset-0 pt-24 lgn:pt-12 h-screen grid place-items-center"
+  >
+    <TeacherCard teacherID={id ?? ""} client:only />
+  </div>
+</Layout>

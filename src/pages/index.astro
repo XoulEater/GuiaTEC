@@ -43,3 +43,11 @@ import SubmitButton from "../components/SubmitButton.astro";
     >
   </h2>
 </Layout>
+<script>
+  const button = document.getElementById("submit-button");
+  if (button) {
+    button.addEventListener("click", () => {
+      localStorage.setItem("user", "profesor");
+    });
+  }
+</script>
