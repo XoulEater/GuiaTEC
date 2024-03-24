@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/LoginLayout.astro";
+import Input from "../components/Input.tsx";
+import SubmitButton from "../components/SubmitButton.astro";
+---
+
+<Layout title="Nuevo Profesor" subtitle="Ingrese sus datos">
+  <div class="w-5/6 lgn:w-5/6 mt-7 flex flex-col gap-5">
+    <form class="flex flex-col gap-2">
+      <Input
+        title=""
+        formType="text"
+        placeHolderLG="Ingrese su nombre"
+        placeHolderSM="Nombre"
+        logo="/user.svg"
+        client:only
+      />
+
+      <Input
+        title=""
+        formType="tel"
+        placeHolderLG="Ingrese su teléfono celular"
+        placeHolderSM="Teléfono celular"
+        logo="/cellphone.svg"
+        client:only
+      />
+
+      <Input
+        title=""
+        formType="tel"
+        placeHolderLG="Ingrese su teléfono de oficina"
+        placeHolderSM="Teléfono de oficina"
+        logo="/phone.svg"
+        client:only
+      />
+      <Input
+        title=""
+        formType="email"
+        placeHolderLG="Ingrese su correo"
+        placeHolderSM="Correo"
+        logo="/email.svg"
+        client:only
+      />
+      <div class="flex justify-between">
+        <Input
+          title=""
+          formType="password"
+          placeHolderLG="Ingrese su contraseña"
+          placeHolderSM="Contraseña"
+          logo="/password.svg"
+          client:only
+        />
+        <Input
+          title=""
+          formType="select"
+          placeHolderLG="Seleccione su sede"
+          placeHolderSM="Sede"
+          logo="/location.svg"
+          client:only
+        />
+      </div>
+      <a href="/" class="text-zinc-500">Volver al login</a>
+
+      <SubmitButton text="Enviar" ref="/validate-email" />
+    </form>
+  </div>
+</Layout>

@@ -4,9 +4,16 @@ import Layout from "../layouts/MainLayout.astro";
 
 <Layout title="GuíaTEC" userType="asistente" currentRoute="equipo">
   <h1 class="">Equipo</h1>
-  <h2>informacion del equipo</h2>
-  <button>Añadir</button>
-  <button>Configurar</button>
+  <h2>- Informacion del equipo</h2>
+  <button class="underline decoration-primary-light">Añadir</button>
+  <button class="underline decoration-primary-light">Configurar</button>
   <br />
   <!-- Componentes para ver planes y miembros -->
+  <span> - Profesor</span>
+  <a class="underline decoration-primary-light" href="/teacher/AL-01"
+    >Ver miembro</a
+  >
+  <br />
+  <span> - Plan de trabajo</span>
+  <a class="underline decoration-primary-light" href="/workplan/01">Ver plan</a>
 </Layout>

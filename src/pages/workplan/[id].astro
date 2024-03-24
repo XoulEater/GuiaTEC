@@ -1,0 +1,28 @@
+---
+import Layout from "../../layouts/MainLayout.astro";
+
+const { id } = Astro.params;
+---
+
+<Layout title="GuíaTEC" userType="asistente" currentRoute="equipo">
+  <div class="container">
+    <h1>Plan de Trabajo</h1>
+    <p>Plan de Trabajo con id: {id}</p>
+    <button class="">Nueva</button>
+    <button class="">Configurar</button>
+  </div>
+  <div>
+    <aside>
+      <h2>Actividades</h2>
+      <ul>
+        <li>Actividad 1</li>
+        <li>Actividad 2</li>
+        <li>Actividad 3</li>
+      </ul>
+    </aside>
+    <main>
+      <h2>Detalles</h2>
+      <p>Detalles del plan la actividad</p>
+    </main>
+  </div>
+</Layout>
