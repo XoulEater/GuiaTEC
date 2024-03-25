@@ -1,7 +1,12 @@
 ---
 import Layout from "../../layouts/MainLayout.astro";
+import type { WorkPlan } from "../../lib/data";
+import type { Activity } from "../../lib/data";
+import { workPlans } from "../../lib/data";
 
 const { id } = Astro.params;
+
+const workPlan = workPlans.find((workPlan: WorkPlan) => workPlan.id === id);
 ---
 
 <Layout title="GuíaTEC" userType="asistente" currentRoute="equipo">
@@ -15,14 +20,14 @@ const { id } = Astro.params;
     <aside>
       <h2>Actividades</h2>
       <ul>
-        <li>Actividad 1</li>
-        <li>Actividad 2</li>
-        <li>Actividad 3</li>
+        {
+          workPlan?.activities.map((activity: Activity) => (
+            <li>
+              <a href={`/actividades/${activity?.week}`}>{activity.name}</a>
+            </li>
+          ))
+        }
       </ul>
     </aside>
-    <main>
-      <h2>Detalles</h2>
-      <p>Detalles del plan la actividad</p>
-    </main>
   </div>
 </Layout>

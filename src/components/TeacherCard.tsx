@@ -71,7 +71,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
             </button>
           </div>
         </header>
-        <footer className="lgn:w-[80%] grid grid-cols-1 lgn:grid-cols-2 gap-x-3 gap-y-2 place-items-center lgn:place-items-start">
+        <footer className="lgn:w-[80%] grid grid-cols-1 lgn:grid-cols-2 gap-x-3  gap-y-1 lgn:gap-y-2 place-items-center lgn:place-items-start">
           <h3 className="text-zinc-400">Correo</h3>
           {editing ? (
             <input

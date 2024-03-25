@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/MainLayout.astro";
-import MembersTable from "../components/MembersTable.astro";
+import TeamTabs from "../components/TeamTabs.tsx";
 ---
 
 <Layout title="GuíaTEC" userType="asistente" currentRoute="equipo">
@@ -10,12 +10,7 @@ import MembersTable from "../components/MembersTable.astro";
   <button class="underline decoration-primary-light">Configurar</button>
   <br />
   <!-- Componentes para ver planes y miembros -->
-  <span> - Profesor</span>
   <div class="grid place-items-center">
-    <MembersTable />
+    <TeamTabs client:only />
   </div>
-
-  <br />
-  <span> - Plan de trabajo</span>
-  <a class="underline decoration-primary-light" href="/workplan/01">Ver plan</a>
 </Layout>
