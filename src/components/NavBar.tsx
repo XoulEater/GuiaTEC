@@ -1,4 +1,6 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { NavBarTheme } from "../lib/themes";
+
 
 interface Props {
   userType: "asistente" | "profesor";
@@ -8,15 +10,17 @@ interface Props {
 const Header: React.FC<Props> = ({ currentRoute }) => {
   const userType = localStorage.getItem("userType");
 
+
+
   return (
-    <Navbar fluid rounded className="bg-slate-50">
+    <Navbar fluid rounded className="bg-slate-50" theme={NavBarTheme}>
       <Navbar.Brand>
         <img
           src="/favicon copy.svg"
-          className="mr-2 h-14 "
+          className="mr-2 h-20"
           alt="Flowbite React Logo"
         />
-        <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white ">
+        <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white ">
           GuíaTEC
         </span>
       </Navbar.Brand>
@@ -26,7 +30,6 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
           inline
           label={
             <Avatar
-              className="h-16"
               alt="User settings"
               img="/userDefault.png"
               rounded
@@ -52,29 +55,19 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
       <Navbar.Collapse>
         <Navbar.Link
           href="/team"
-          className={
-            currentRoute == "equipo" ? "text-lg text-primary-light" : "text-lg"
-          }
+          active={currentRoute === "equipo"}
         >
           Equipo
         </Navbar.Link>
         <Navbar.Link
           href="/students"
-          className={
-            currentRoute == "estudiantes"
-              ? "text-lg text-primary-light"
-              : "text-lg"
-          }
+          active={currentRoute === "estudiantes"}
         >
           Estudiantes
         </Navbar.Link>
         <Navbar.Link
           href="/teachers"
-          className={
-            currentRoute == "profesores"
-              ? "text-lg text-primary-light"
-              : "text-lg"
-          }
+          active={currentRoute === "profesores"}
         >
           Profesores
         </Navbar.Link>
