@@ -1,11 +1,13 @@
-import type { TeacherDTO } from "../lib/data.ts";
-import { teachers } from "../lib/data.ts";
-import React, { useState } from "react";
+import type { TeacherDTO, TeamDTO } from "../lib/data.ts";
+import { teachers, teams } from "../lib/data.ts";
+import { useState } from "react";
 
 const MembersTable = () => {
-
+  const [teachers, setTeachers] = useState(teams.members);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(
+    null
+  );
 
   // handle delete
   function handleDelete(teacher: TeacherDTO) {
@@ -21,7 +23,13 @@ const MembersTable = () => {
   }
 
   function handleLeaderChange(teacher: TeacherDTO) {
-    // TODO: Implement leader change
+    // FIXME: Implement leader change
+    // set leader to false for all teachers
+    teachers.forEach((t) => (t.isLeader = false));
+    // set leader to true for selected teacher
+    teacher.isLeader = true;
+    // update state
+    setTeachers([...teachers]);
   }
 
   return (
@@ -37,7 +45,7 @@ const MembersTable = () => {
 
         return (
           <div
-          key={index}
+            key={index}
             className={`grid grid-cols-6 h-16 w-full items-center ${rowColorClass} px-2`}
           >
             <span>{teacher.code}</span>
@@ -67,9 +75,7 @@ const MembersTable = () => {
                   <path d="M11 12h1v4h1"></path>
                 </svg>
               </a>
-              <button
-                onClick={() => handleDelete(teacher)}
-              >
+              <button onClick={() => handleDelete(teacher)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
@@ -90,9 +96,7 @@ const MembersTable = () => {
                 </svg>
               </button>
               {teacher.isLeader ? (
-                <button
-                  onClick={() => handleLeaderChange(teacher)}
-                >
+                <button onClick={() => handleLeaderChange(teacher)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="text-amber-500 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out"
@@ -133,20 +137,26 @@ const MembersTable = () => {
         );
       })}
       {confirmDelete && (
-        <div className={"absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"}>
+        <div
+          className={
+            "absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"
+          }
+        >
           <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
             <h2 className="text-xl font-medium ">{`Está seguro de eliminar a ${selectedTeacher?.name}?`}</h2>
             <div className="flex gap-5">
-              <button 
-              onClick={handleConfirmDelete}
-              className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
+              <button
+                onClick={handleConfirmDelete}
+                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+              >
                 <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
                   Si
                 </span>
               </button>
-              <button 
-              onClick={() => setConfirmDelete(false)}
-              className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+              >
                 <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
                   No
                 </span>

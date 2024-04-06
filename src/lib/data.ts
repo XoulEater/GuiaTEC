@@ -150,11 +150,11 @@ export const workPlans: WorkPlanDTO[] = [
   },
 ];
 
-export const teams: TeamDTO[] = [
+export const teams: TeamDTO = 
   {
     name: "TeamDTO 1",
     description: "Description 1",
-    members: teachers,
+    members: teachers.slice(0, 2),
     workPlans: workPlans,
   }
-]
+
