@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { Teacher } from "../lib/data";
+import type { TeacherDTO } from "../lib/data";
 import { teachers } from "../lib/data";
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   const teacher = teachers.find(
-    (teacher: Teacher) => teacher.code === teacherID
+    (teacher: TeacherDTO) => teacher.code === teacherID
   );
 
   const [editing, setEditing] = useState(false);

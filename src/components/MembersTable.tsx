@@ -1,14 +1,14 @@
-import type { Teacher } from "../lib/data.ts";
+import type { TeacherDTO } from "../lib/data.ts";
 import { teachers } from "../lib/data.ts";
 import React, { useState } from "react";
 
 const MembersTable = () => {
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
+  const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(null);
 
   // handle delete
-  function handleDelete(teacher: Teacher) {
+  function handleDelete(teacher: TeacherDTO) {
     setSelectedTeacher(teacher);
     setConfirmDelete(true);
   }
@@ -20,6 +20,10 @@ const MembersTable = () => {
     setConfirmDelete(false);
   }
 
+  function handleLeaderChange(teacher: TeacherDTO) {
+    // TODO: Implement leader change
+  }
+
   return (
     <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">
       <header className="grid grid-cols-6 h-16 w-full items-center bg-zinc-200 px-2">
@@ -28,7 +32,7 @@ const MembersTable = () => {
         <span className="font-semibold text-lg col-span-2">Nombre</span>
         <span className="font-semibold text-lg col-span-2">Acciones</span>
       </header>
-      {teachers.map((teacher: Teacher, index) => {
+      {teachers.map((teacher: TeacherDTO, index) => {
         const rowColorClass = index % 2 === 0 ? "bg-white" : "bg-zinc-200";
 
         return (
@@ -86,7 +90,9 @@ const MembersTable = () => {
                 </svg>
               </button>
               {teacher.isLeader ? (
-                <a>
+                <button
+                  onClick={() => handleLeaderChange(teacher)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="text-amber-500 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out"
@@ -102,7 +108,7 @@ const MembersTable = () => {
                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                     <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
                   </svg>
-                </a>
+                </button>
               ) : (
                 <a>
                   <svg
