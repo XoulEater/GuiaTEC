@@ -8,6 +8,7 @@ const WorkplansTable = () => {
         const rowColorClass = index % 2 != 0 ? "bg-white" : "bg-zinc-200";
         return (
           <div
+            key={index}
             className={`grid grid-cols-2 h-16 w-full items-center ${rowColorClass} px-2`}
           >
             <a className="flex flex-col" href={`/workplan/${workPlan.id}`}>

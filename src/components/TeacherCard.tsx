@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { Teacher } from "../lib/data";
 import { teachers } from "../lib/data";
 
@@ -48,7 +48,10 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   function handleConfirmDelete() {
     // delete teacher
     setConfirmDelete(false);
-    // TODO: redirect to teachers page
+    if (typeof window !== 'undefined') {
+      window.history.back();
+    }
+
   }
 
   return (
@@ -134,7 +137,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
       {confirmDelete && (
         <div className={"absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"}>
           <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
-            <h2 className="text-xl font-medium">¿Estás seguro?</h2>
+            <h2 className="text-xl font-medium">¿Está seguro?</h2>
             <div className="flex gap-5">
               <button 
               onClick={handleConfirmDelete}

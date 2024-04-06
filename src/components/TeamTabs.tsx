@@ -1,11 +1,16 @@
 import { Tabs } from "flowbite-react";
 
+
 import MembersTable from "./MembersTable";
 import { TabTheme } from "../lib/themes";
 import WorkplansTable from "./WorkplansTable";
 
 const TeamTabs = () => {
+  
+
   return (
+    
+
     <Tabs
       theme={TabTheme}
       aria-label="Tabs with underline"
@@ -22,7 +27,10 @@ const TeamTabs = () => {
           <WorkplansTable />
         </div>
       </Tabs.Item>
+
     </Tabs>
+
+
   );
 };
 
