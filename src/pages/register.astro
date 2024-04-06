@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/LoginLayout.astro";
+import Layout from "../layouts/RegisterLayout.astro";
 import Input from "../components/Input.tsx";
 import SubmitButton from "../components/SubmitButton.astro";
 ---
@@ -61,7 +61,8 @@ import SubmitButton from "../components/SubmitButton.astro";
       </div>
       <a href="/" class="text-zinc-500">Volver al login</a>
 
-      <SubmitButton text="Enviar" ref="/validate-email" />
+      <SubmitButton text="Enviar" ref="/" />
+      {/* TODO: Pantalla de registro exitoso */}
     </form>
   </div>
 </Layout>

@@ -1,16 +1,19 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { NavBarTheme } from "../lib/themes";
 
-
 interface Props {
   userType: "asistente" | "profesor";
   currentRoute: "equipo" | "estudiantes" | "profesores";
 }
 
 const Header: React.FC<Props> = ({ currentRoute }) => {
-  const userType = localStorage.getItem("userType");
+  const userType = localStorage.getItem("user");
 
-
+  function handleLogout() {
+    console.log("Logging out...");
+    localStorage.removeItem("user");
+    window.location.href = "/";
+  }
 
   return (
     <Navbar fluid rounded className="bg-slate-50" theme={NavBarTheme}>
@@ -28,13 +31,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
         <Dropdown
           arrowIcon={false}
           inline
-          label={
-            <Avatar
-              alt="User settings"
-              img="/userDefault.png"
-              rounded
-            />
-          }
+          label={<Avatar alt="User settings" img="/userDefault.png" rounded />}
         >
           <Dropdown.Header>
             <span className="block text-sm">Bonnie Green</span>
@@ -44,31 +41,24 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
           </Dropdown.Header>
           <Dropdown.Item
             className={userType == "asistente" ? "grid" : "hidden"}
+            href="/register"
+            target="_blank"
           >
             Registrar profesor
           </Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item href="/">Salir</Dropdown.Item>
+          <Dropdown.Item onClick={handleLogout}>Salir</Dropdown.Item>
         </Dropdown>
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse>
-        <Navbar.Link
-          href="/team"
-          active={currentRoute === "equipo"}
-        >
+        <Navbar.Link href="/team" active={currentRoute === "equipo"}>
           Equipo
         </Navbar.Link>
-        <Navbar.Link
-          href="/students"
-          active={currentRoute === "estudiantes"}
-        >
+        <Navbar.Link href="/students" active={currentRoute === "estudiantes"}>
           Estudiantes
         </Navbar.Link>
-        <Navbar.Link
-          href="/teachers"
-          active={currentRoute === "profesores"}
-        >
+        <Navbar.Link href="/teachers" active={currentRoute === "profesores"}>
           Profesores
         </Navbar.Link>
       </Navbar.Collapse>
