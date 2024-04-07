@@ -33,7 +33,6 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
         teacher.name = name;
         teacher.officePNumber = officePNumber;
         teacher.personalPNumber = personalPNumber;
-          
       }
     }
   }
@@ -48,10 +47,9 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   function handleConfirmDelete() {
     // delete teacher
     setConfirmDelete(false);
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.history.back();
     }
-
   }
 
   return (
@@ -67,7 +65,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
             {editing ? (
               <input
                 type="text"
-                className="border-none text-xl"
+                className="border-none pl-0 mr-1 py-2 text-xl"
                 id="name"
                 defaultValue={teacher?.name}
               />
@@ -86,9 +84,10 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
                 {editing ? "Guardar" : "Editar"}
               </span>
             </button>
-            <button 
-            onClick={handleDelete}
-            className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group">
+            <button
+              onClick={handleDelete}
+              className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+            >
               <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
                 Eliminar
               </span>
@@ -100,55 +99,61 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
           {editing ? (
             <input
               type="text"
-              className=" border-none"
+              className=" border-none pl-0 mr-1 py-2"
               id="email"
               defaultValue={teacher?.email}
             />
           ) : (
-            <p className=" p-2 ml-1">{teacher?.email}</p>
+            <p className="py-2">{teacher?.email}</p>
           )}
 
           <h3 className="text-zinc-400">Telefono Oficina</h3>
           {editing ? (
             <input
               type="tel"
-              className=" border-none"
+              className=" border-none pl-0 mr-1 py-2"
               id="officePNumber"
               defaultValue={teacher?.officePNumber}
             />
           ) : (
-            <p className=" p-2 ml-1">{teacher?.officePNumber}</p>
+            <p className="py-2">{teacher?.officePNumber}</p>
           )}
 
           <h3 className="text-zinc-400">Telefono Celular</h3>
           {editing ? (
             <input
               type="tel"
-              className="border-none"
+              className="border-none pl-0 mr-1 py-2"
               id="personalPNumber"
               defaultValue={teacher?.personalPNumber}
             />
           ) : (
-            <p className=" p-2 ml-1">{teacher?.personalPNumber}</p>
+            <p className="py-2">{teacher?.personalPNumber}</p>
           )}
         </footer>
       </aside>
       {/* confirm pop up */}
       {confirmDelete && (
-        <div className={"absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"}>
+        <div
+          className={
+            "absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"
+          }
+        >
           <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
             <h2 className="text-xl font-medium">¿Está seguro?</h2>
             <div className="flex gap-5">
-              <button 
-              onClick={handleConfirmDelete}
-              className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
+              <button
+                onClick={handleConfirmDelete}
+                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+              >
                 <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
                   Si
                 </span>
               </button>
-              <button 
-              onClick={() => setConfirmDelete(false)}
-              className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+              >
                 <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
                   No
                 </span>

@@ -166,33 +166,15 @@ export const teams: TeamDTO =
   }
 
 export const students: StudentDTO[] = [
-  {
-    carnet: "20180001",
-    name: "Student 1",
-    email: "email1",
-    personalPNumber: "123456",
-    campus: Campus.CA
-  },
-  {
-    carnet: "20180002",
-    name: "Student 2",
-    email: "email2",
-    personalPNumber: "123456",
-    campus: Campus.AL
-  },
-  {
-    carnet: "20180003",
-    name: "Student 3",
-    email: "email3",
-    personalPNumber: "123456",
-    campus: Campus.SJ
-  },
-  {
-    carnet: "20180004",
-    name: "Student 4",
-    email: "email4",
-    personalPNumber: "123456",
-    campus: Campus.SC
-  },
-];
 
+];
+for (let i = 1; i <= 24; i++) {
+  const student: StudentDTO = {
+    carnet: `201800${i}`,
+    name: `Student ${i}`,
+    email: `email${i}`,
+    personalPNumber: Math.floor(Math.random() * 1000000000).toString(),
+    campus: Object.values(Campus)[Math.floor(Math.random() * Object.keys(Campus).length / 2)],
+  };
+  students.push(student);
+}
