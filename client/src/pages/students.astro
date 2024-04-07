@@ -1,0 +1,67 @@
+---
+import Layout from "../layouts/MainLayout.astro";
+import StudentTable from "../components/StudentTable.tsx";
+---
+
+<Layout title="GuíaTEC" userType="asistente" currentRoute="estudiantes">
+  <header class="flex justify-between mx-20 my-6">
+    <h1 class="text-3xl font-bold">Estudiantes</h1>
+    <aside class="flex gap-3">
+      <button
+        id="upload-excel"
+        class="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-file-upload"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="#ffffff"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+          <path
+            d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
+          ></path>
+          <path d="M12 11v6"></path>
+          <path d="M9.5 13.5l2.5 -2.5l2.5 2.5"></path>
+        </svg>
+        Subir
+      </button>
+      <button
+        id="download-excel"
+        class="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-file-download"
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="#ffffff"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+          <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+          <path
+            d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"
+          ></path>
+          <path d="M12 17v-6"></path>
+          <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+        </svg>
+        Descargar
+      </button>
+    </aside>
+  </header>
+  <div>
+    <StudentTable client:only />
+  </div>
+</Layout>

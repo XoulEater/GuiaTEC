@@ -1,7 +1,7 @@
 export interface UserDTO {
-  userType: 'teacher' | 'assistant';
+  userType?: 'teacher' | 'assistant';
   email: string;
-  password: string;
+  password?: string;
   campus: Campus;
 }
 
@@ -37,6 +37,13 @@ export interface TeamDTO {
   description: string; // description of the team
   members: TeacherDTO[]; // list of teachers in the team
   workPlans: WorkPlanDTO[]; // list of work plans in the team
+}
+
+export interface StudentDTO extends UserDTO{
+  carnet: string; // unique identifier of the student 
+  name: string; // full name of the student
+  email: string; // email of the student
+  personalPNumber: string; // personal phone number of the student
 }
 
 // Enum for the campus where the teacher is located
@@ -157,4 +164,35 @@ export const teams: TeamDTO =
     members: teachers.slice(0, 2),
     workPlans: workPlans,
   }
+
+export const students: StudentDTO[] = [
+  {
+    carnet: "20180001",
+    name: "Student 1",
+    email: "email1",
+    personalPNumber: "123456",
+    campus: Campus.CA
+  },
+  {
+    carnet: "20180002",
+    name: "Student 2",
+    email: "email2",
+    personalPNumber: "123456",
+    campus: Campus.AL
+  },
+  {
+    carnet: "20180003",
+    name: "Student 3",
+    email: "email3",
+    personalPNumber: "123456",
+    campus: Campus.SJ
+  },
+  {
+    carnet: "20180004",
+    name: "Student 4",
+    email: "email4",
+    personalPNumber: "123456",
+    campus: Campus.SC
+  },
+];
 
