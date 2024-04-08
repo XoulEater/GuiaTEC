@@ -19,8 +19,7 @@ import SubmitButton from "../components/SubmitButton.astro";
         client:only
       />
       <a href="/" class="text-zinc-500">Volver al login</a>
-      {/* FIXME: ref change */}
-      <SubmitButton text="Validar" ref="/new-password" />
+      <SubmitButton text="Validar" />
     </form>
   </div>
   <h2 class="mt-6">
@@ -29,3 +28,14 @@ import SubmitButton from "../components/SubmitButton.astro";
     >
   </h2>
 </Layout>
+<script>
+  // FIXME: This is a temporary solution to avoid using a backend
+
+  // redirect function
+  const button = document.getElementById("submit-button");
+  if (button) {
+    button.addEventListener("click", () => {
+      window.location.href = "/new-password";
+    });
+  }
+</script>

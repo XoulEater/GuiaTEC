@@ -44,7 +44,7 @@ import SubmitButton from "../components/SubmitButton.astro";
   </h2>
 </Layout>
 <script>
-  import type { UserDTO } from "../lib/data.ts";
+  // FIXME: This is a temporary solution to avoid using a backend
   import { assistants, teachers } from "../lib/data.ts";
 
   const users = [...assistants, ...teachers];
