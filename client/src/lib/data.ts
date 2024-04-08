@@ -20,9 +20,39 @@ export interface AssistantDTO extends UserDTO {
   userType: 'assistant';
 }
 
+enum ActivityType {
+  ORIENTADORA = "Orientadora",
+  MOTIVACIONAL = "Motivacional",
+  APOYO = "Apoyo",
+  TECNICA = "Técnica",
+  RECREATIVA = "Recreativa",
+}
+
+enum ActivityStatus {
+  PLANEADA = "Planeada",
+  NOTIFICADA = "Notificada",
+  REALIZADA = "Realizada",
+  CANCELADA = "Cancelada",
+}
+
+enum Modalities {
+  PRESENCIAL = "Presencial",
+  VIRTUAL = "Virtual",
+}
+
 export interface ActivityDTO {
   name: string; // name of the activity
   week: number; // week of the activity in the work plan
+  date: Date; // date of the activity
+  time: string; // time of the activity
+  publicationDate: Date; // date of publication of the activity
+  reminderInterval: number; // interval of the reminder of the activity
+  responsibles: TeacherDTO[]; // list of teachers responsible for the activity
+  type: ActivityType; // type of the activity
+  modality: Modalities; // modality of the activity
+  status: ActivityStatus; // status of the activity
+  link?: string; // link of the activity if it is virtual
+  attachmentsFiles?: string[]; // list of attachments of the activity
 }
 
 export interface WorkPlanDTO {
@@ -112,23 +142,26 @@ export const teachers: TeacherDTO[] = [
 ];
 
 export const activities: ActivityDTO[] = [
-  {
-    name: "Activity 1",
-    week: 1,
-  },
-  {
-    name: "Activity 2",
-    week: 2,
-  },
-  {
-    name: "Activity 3",
-    week: 3,
-  },
-  {
-    name: "Activity 4",
-    week: 4,
-  },
 ];
+for (let i = 1; i <= 30; i++) {
+  const activity1: ActivityDTO = {
+    name: `Activity ${i}`,
+    week: Math.floor(Math.random() * 16) + 1,
+    date: new Date(),
+    time: "10:00",
+    publicationDate: new Date(),
+    reminderInterval: 15,
+    responsibles: teachers.slice(0, 2),
+    type: Object.values(ActivityType)[Math.floor(Math.random() * Object.keys(ActivityType).length / 2)],
+    modality: Object.values(Modalities)[Math.floor(Math.random() * Object.keys(Modalities).length / 2)],
+    status: Object.values(ActivityStatus)[Math.floor(Math.random() * Object.keys(ActivityStatus).length / 1)],
+    link: "https://www.google.com",
+    attachmentsFiles: ["https://www.google.com"],
+
+  };
+  activities.push(activity1);
+}
+activities.sort((a, b) => a.week - b.week);
 
 export const workPlans: WorkPlanDTO[] = [
   {
@@ -156,6 +189,8 @@ export const workPlans: WorkPlanDTO[] = [
     activities: activities,
   },
 ];
+
+
 
 export const teams: TeamDTO = 
   {
