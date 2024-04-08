@@ -1,8 +1,12 @@
-import type { TeacherDTO, TeamDTO } from "../lib/data.ts";
+import type { TeacherDTO, TeamDTO, UserDTO } from "../lib/data.ts";
 import { teams, teachers } from "../lib/data.ts";
 import { useState } from "react";
 
 const MembersTable = () => {
+  const user = localStorage.getItem("user");
+  const userDTO = JSON.parse(user as string) as UserDTO;
+  const isAssistant = userDTO.userType === "assistant";
+
   const [teamTeachers, setTeamTeachers] = useState(teams.members);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(
@@ -72,34 +76,11 @@ const MembersTable = () => {
                   <path d="M11 12h1v4h1"></path>
                 </svg>
               </a>
-              <button onClick={() => handleDelete(teacher)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 24 24"
-                  strokeWidth="2"
-                  stroke="currentColor"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M13 12v.01"></path>
-                  <path d="M3 21h18"></path>
-                  <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
-                  <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
-                </svg>
-              </button>
-              {teacher !==
-                teamTeachers.find(
-                  (teamTeacher) => teamTeacher.code === teacher.code
-                ) && (
-                <button onClick={() => handleIncludeTeacher(teacher)}>
+              {isAssistant && (
+                <button onClick={() => handleDelete(teacher)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className=" text-lime-600 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out"
+                    className=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
                     width="32"
                     height="32"
                     viewBox="0 0 24 24"
@@ -109,14 +90,41 @@ const MembersTable = () => {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                    <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-                    <path d="M19 22v-6" />
-                    <path d="M22 19l-3 -3l-3 3" />
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M13 12v.01"></path>
+                    <path d="M3 21h18"></path>
+                    <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
+                    <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
                   </svg>
                 </button>
               )}
+
+              {teacher !==
+                teamTeachers.find(
+                  (teamTeacher) => teamTeacher.code === teacher.code
+                ) &&
+                isAssistant && (
+                  <button onClick={() => handleIncludeTeacher(teacher)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className=" text-lime-600 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                      <path d="M19 22v-6" />
+                      <path d="M22 19l-3 -3l-3 3" />
+                    </svg>
+                  </button>
+                )}
             </div>
           </div>
         );

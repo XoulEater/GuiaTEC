@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { TeacherDTO } from "../lib/data";
+import type { TeacherDTO, UserDTO } from "../lib/data";
 import { teachers } from "../lib/data";
 
 interface Props {
@@ -7,13 +7,16 @@ interface Props {
 }
 
 const TeacherCard: React.FC<Props> = ({ teacherID }) => {
+  const user = localStorage.getItem("user");
+  const userDTO = JSON.parse(user as string) as UserDTO;
   const teacher = teachers.find(
     (teacher: TeacherDTO) => teacher.code === teacherID
   );
 
-  const [editing, setEditing] = useState(false);
+  const canEdit =
+    userDTO.userType === "assistant" || teacher?.code === userDTO.code;
 
-  const user = localStorage.getItem("user");
+  const [editing, setEditing] = useState(false);
 
   // handle editing
   function handleSave() {
@@ -77,24 +80,26 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
 
             <h2 className="text-zinc-400 text-sm">{teacher?.code}</h2>
           </div>
-          <div className="flex gap-3 order-1">
-            <button
-              onClick={handleSave}
-              className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
-            >
-              <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
-                {editing ? "Guardar" : "Editar"}
-              </span>
-            </button>
-            <button
-              onClick={handleDelete}
-              className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
-            >
-              <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
-                Eliminar
-              </span>
-            </button>
-          </div>
+          {canEdit && (
+            <div className="flex gap-3 order-1">
+              <button
+                onClick={handleSave}
+                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+              >
+                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                  {editing ? "Guardar" : "Editar"}
+                </span>
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+              >
+                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                  Eliminar
+                </span>
+              </button>
+            </div>
+          )}
         </header>
         <footer className="lgn:w-[80%] grid grid-cols-1 lgn:grid-cols-2 gap-x-3  gap-y-1 lgn:gap-y-2 place-items-center lgn:place-items-start">
           <h3 className="text-zinc-400">Correo</h3>

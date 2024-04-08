@@ -3,6 +3,7 @@ export interface UserDTO {
   name: string; // full name of the user
   email: string; // email of the user
   password: string; // password of the user
+  code?: string; // unique identifier of the user
   campus: Campus; // campus where the user is located
 }
 

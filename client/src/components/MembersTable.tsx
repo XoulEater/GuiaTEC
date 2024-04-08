@@ -7,6 +7,7 @@ const MembersTable = () => {
   const userDTO = JSON.parse(user as string) as UserDTO;
   const isMainAssistant =
     userDTO.userType === "assistant" && userDTO.campus === "CA";
+  const isAssistant = userDTO.userType === "assistant";
 
   const [teachers, setTeachers] = useState(teams.members);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -80,12 +81,34 @@ const MembersTable = () => {
                   <path d="M11 12h1v4h1"></path>
                 </svg>
               </a>
-              {userDTO.userType === "assistant" && (
-                <>
-                  <button onClick={() => handleDelete(teacher)}>
+              {isAssistant && (
+                <button onClick={() => handleDelete(teacher)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M13 12v.01"></path>
+                    <path d="M3 21h18"></path>
+                    <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
+                    <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
+                  </svg>
+                </button>
+              )}
+              {isMainAssistant &&
+                (teacher.isLeader ? (
+                  <button onClick={() => handleLeaderChange(teacher)}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
+                      className="text-amber-500 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out"
                       width="32"
                       height="32"
                       viewBox="0 0 24 24"
@@ -96,60 +119,28 @@ const MembersTable = () => {
                       strokeLinejoin="round"
                     >
                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M13 12v.01"></path>
-                      <path d="M3 21h18"></path>
-                      <path d="M5 21v-16a2 2 0 0 1 2 -2h7.5m2.5 10.5v7.5"></path>
-                      <path d="M14 7h7m-3 -3l3 3l-3 3"></path>
+                      <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
                     </svg>
                   </button>
-                  {isMainAssistant &&
-                    (teacher.isLeader ? (
-                      <button onClick={() => handleLeaderChange(teacher)}>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="text-amber-500 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path
-                            stroke="none"
-                            d="M0 0h24v24H0z"
-                            fill="none"
-                          ></path>
-                          <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
-                        </svg>
-                      </button>
-                    ) : (
-                      <a>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="text-zinc-400 hover:brightness-90 hover:scale-110 transition-all  duration-300 ease-out"
-                          width="32"
-                          height="32"
-                          viewBox="0 0 24 24"
-                          strokeWidth="2"
-                          stroke="currentColor"
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        >
-                          <path
-                            stroke="none"
-                            d="M0 0h24v24H0z"
-                            fill="none"
-                          ></path>
-                          <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
-                        </svg>
-                      </a>
-                    ))}
-                </>
-              )}
+                ) : (
+                  <a>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="text-zinc-400 hover:brightness-90 hover:scale-110 transition-all  duration-300 ease-out"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="currentColor"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                      <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
+                    </svg>
+                  </a>
+                ))}
             </div>
           </div>
         );

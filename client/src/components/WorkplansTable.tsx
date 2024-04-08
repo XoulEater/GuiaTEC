@@ -1,10 +1,10 @@
-import type { WorkPlan } from "../lib/data.ts";
+import type { WorkPlanDTO } from "../lib/data.ts";
 import { workPlans } from "../lib/data.ts";
 
 const WorkplansTable = () => {
   return (
     <div className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">
-      {workPlans.map((workPlan: WorkPlan, index) => {
+      {workPlans.map((workPlan: WorkPlanDTO, index) => {
         const rowColorClass = index % 2 != 0 ? "bg-white" : "bg-zinc-200";
         return (
           <div
