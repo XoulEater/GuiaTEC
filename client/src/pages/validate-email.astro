@@ -5,27 +5,27 @@ import SubmitButton from "../components/SubmitButton.astro";
 ---
 
 <Layout
-    title="Verificación"
-    subtitle="Ingrese el código que recibió en su correo"
+  title="Verificación"
+  subtitle="Ingrese el código que recibió en su correo"
 >
-    <div class="w-5/6 lgn:w-5/6 mt-7 flex flex-col gap-5">
-        <form autocomplete="off" class="flex flex-col gap-5">
-            <Input
-                title="Código de verificación"
-                formType="text"
-                placeHolderLG="Ingrese el código de verificación"
-                placeHolderSM="Código de verificación"
-                logo="/code.svg"
-                client:only
-            />
-            <a href="/" class="text-zinc-500">Volver al login</a>
-
-            <SubmitButton text="Validar" ref="/new-password" />
-        </form>
-    </div>
-    <h2 class="mt-6">
-        No tienes cuenta? <a href="/register" class="text-primary-light"
-            >Regístrate</a
-        >
-    </h2>
+  <div class="w-5/6 lgn:w-5/6 mt-7 flex flex-col gap-5">
+    <form autocomplete="off" class="flex flex-col gap-5">
+      <Input
+        title="Código de verificación"
+        formType="text"
+        placeHolderLG="Ingrese el código de verificación"
+        placeHolderSM="Código de verificación"
+        logo="/code.svg"
+        client:only
+      />
+      <a href="/" class="text-zinc-500">Volver al login</a>
+      {/* FIXME: ref change */}
+      <SubmitButton text="Validar" ref="/new-password" />
+    </form>
+  </div>
+  <h2 class="mt-6">
+    No tienes cuenta? <a href="/register" class="text-primary-light"
+      >Regístrate</a
+    >
+  </h2>
 </Layout>

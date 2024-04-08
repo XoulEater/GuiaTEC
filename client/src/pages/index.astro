@@ -34,7 +34,7 @@ import SubmitButton from "../components/SubmitButton.astro";
         >
       </div>
 
-      <SubmitButton text="Ingresar" ref="/team" />
+      <SubmitButton text="Ingresar" />
     </form>
   </div>
   <h2 class="mt-6">
@@ -44,10 +44,24 @@ import SubmitButton from "../components/SubmitButton.astro";
   </h2>
 </Layout>
 <script>
+  import type { UserDTO } from "../lib/data.ts";
+  import { assistants, teachers } from "../lib/data.ts";
+
+  const users = [...assistants, ...teachers];
   const button = document.getElementById("submit-button");
   if (button) {
     button.addEventListener("click", () => {
-      localStorage.setItem("user", "asistente");
+      const email = document.getElementById("email") as HTMLInputElement;
+      const password = document.getElementById("password") as HTMLInputElement;
+      const user = users.find(
+        (u) => u.email === email.value && u.password === password.value
+      );
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+        window.location.href = "/team";
+      } else {
+        alert("Usuario o contraseña incorrectos");
+      }
     });
   }
 </script>

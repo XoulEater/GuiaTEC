@@ -1,14 +1,13 @@
 ---
 interface Props {
   text: string;
-  ref: string;
+  ref?: string;
 }
 
-const { text, ref } = Astro.props;
+const { text } = Astro.props;
 ---
 
 <a
-  href={ref}
   id="submit-button"
   class="bg-primary-dark text-white text-lg py-1 rounded-lg flex items-center justify-center w-full hover:bg-primary-light transition duration-300 ease-in-out group"
 >

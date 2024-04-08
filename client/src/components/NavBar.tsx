@@ -1,13 +1,14 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import type { UserDTO } from "../lib/data";
 import { NavBarTheme } from "../lib/themes";
 
 interface Props {
-  userType: "asistente" | "profesor";
   currentRoute: "equipo" | "estudiantes" | "profesores";
 }
 
 const Header: React.FC<Props> = ({ currentRoute }) => {
-  const userType = localStorage.getItem("user");
+  const user = localStorage.getItem("user");
+  const userDTO = JSON.parse(user as string) as UserDTO;
 
   function handleLogout() {
     console.log("Logging out...");
@@ -34,13 +35,13 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
           label={<Avatar alt="User settings" img="/userDefault.png" rounded />}
         >
           <Dropdown.Header>
-            <span className="block text-sm">Bonnie Green</span>
+            <span className="block text-sm">{userDTO.name}</span>
             <span className="block truncate text-sm font-medium">
-              name@flowbite.com
+              {userDTO.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item
-            className={userType == "asistente" ? "grid" : "hidden"}
+            className={userDTO.userType == "assistant" ? "grid" : "hidden"}
             href="/register"
             target="_blank"
           >

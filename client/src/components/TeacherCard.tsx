@@ -13,6 +13,8 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
 
   const [editing, setEditing] = useState(false);
 
+  const user = localStorage.getItem("user");
+
   // handle editing
   function handleSave() {
     setEditing(!editing);

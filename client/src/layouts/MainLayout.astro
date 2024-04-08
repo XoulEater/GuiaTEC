@@ -3,11 +3,10 @@ import Header from "../components/NavBar.tsx";
 
 interface Props {
   title: string;
-  userType: "asistente" | "profesor";
   currentRoute: "equipo" | "estudiantes" | "profesores";
 }
 
-const { title, userType, currentRoute } = Astro.props;
+const { title, currentRoute } = Astro.props;
 ---
 
 <!doctype html>
@@ -21,7 +20,7 @@ const { title, userType, currentRoute } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <Header client:only userType={userType} currentRoute={currentRoute} />
+    <Header client:only currentRoute={currentRoute} />
     <slot />
   </body>
 </html>

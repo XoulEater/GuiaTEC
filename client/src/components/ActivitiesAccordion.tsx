@@ -1,11 +1,17 @@
-import type { ActivityDTO } from "../lib/data";
+import type { ActivityDTO, ActivityStatus } from "../lib/data";
 
 function ActivitesAccordion(
   activitiesByWeek: { [week: number]: ActivityDTO[] },
   handleAccordionToggle: (week: number) => void,
   openAccordions: number[],
-  setSelectedActivity: React.Dispatch<React.SetStateAction<ActivityDTO | null>>
+  setSelectedActivity: React.Dispatch<React.SetStateAction<ActivityDTO | null>>,
+  setActivityStatus: React.Dispatch<React.SetStateAction<ActivityStatus | null>>
 ) {
+  function handleChangeSelected(activity: ActivityDTO) {
+    setSelectedActivity(activity);
+    setActivityStatus(activity.status);
+  }
+
   return (
     <section className=" my-6 w-5/12 h-[560px]  rounded-lg overflow-y-scroll no-scrollbar shadow-md ">
       {/* Accordion by week */}
@@ -47,7 +53,7 @@ function ActivitesAccordion(
                   <li
                     key={activity.name}
                     className={`p-2 my-2 rounded-lg bg-white relative ring-inset ring-0 cursor-pointer hover:ring-2 hover:ring-primary-light group transition duration-300 ease-in-out`}
-                    onClick={() => setSelectedActivity(activity)}
+                    onClick={() => handleChangeSelected(activity)}
                   >
                     <header className="flex justify-between ">
                       <h4 className="text-lg  font-semibold">
@@ -58,6 +64,8 @@ function ActivitesAccordion(
                           className={`text-2xl  absolute right-2 top-0 font-bold pointer-events-none ${
                             activity.status === "Realizada"
                               ? "text-green-500"
+                              : activity.status === "Publicada"
+                              ? "text-yellow-400"
                               : activity.status === "Planeada"
                               ? "text-purple-500"
                               : activity.status === "Cancelada"

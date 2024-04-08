@@ -1,15 +1,15 @@
 export interface UserDTO {
-  userType?: 'teacher' | 'assistant';
-  email: string;
-  password?: string;
-  campus: Campus;
+  userType?: 'teacher' | 'assistant'; // type of the user
+  name: string; // full name of the user
+  email: string; // email of the user
+  password: string; // password of the user
+  campus: Campus; // campus where the user is located
 }
 
 // DTOs for the data that will be used in the application
 export interface TeacherDTO extends UserDTO {
   userType: 'teacher';
   code: string; // unique identifier [campus]-[number]
-  name: string; // full name of the teacher
   officePNumber: string; // office phone number of the teacher
   personalPNumber: string; // personal phone number of the teacher
   photo?: string; // URL of the photo of the teacher
@@ -20,6 +20,7 @@ export interface AssistantDTO extends UserDTO {
   userType: 'assistant';
 }
 
+
 enum ActivityType {
   ORIENTADORA = "Orientadora",
   MOTIVACIONAL = "Motivacional",
@@ -28,8 +29,9 @@ enum ActivityType {
   RECREATIVA = "Recreativa",
 }
 
-enum ActivityStatus {
+export enum ActivityStatus {
   PLANEADA = "Planeada",
+  PUBLICADA = "Publicada",
   NOTIFICADA = "Notificada",
   REALIZADA = "Realizada",
   CANCELADA = "Cancelada",
@@ -141,6 +143,38 @@ export const teachers: TeacherDTO[] = [
   },
 ];
 
+export const assistants: (AssistantDTO)[] = [
+  {
+    name: "Assistant 1",
+    email: "assistant1@guiatec.com",
+    campus: Campus.CA,
+    password: "12345",
+    userType: 'assistant',
+  },
+  {
+    name: "Assistant 2",
+    email: "assistant2@guiatec.com",
+    campus: Campus.AL,
+    password: "12345",
+    userType: 'assistant',
+  },
+  {
+    name: "Assistant 3",
+    email: "assistant3@guiatec.com",
+    campus: Campus.SJ,
+    password: "12345",
+    userType: 'assistant',
+  },
+  {
+    name: "Assistant 4",
+    email: "assistant4@guiatec.com",
+    campus: Campus.SC,
+    password: "12345",
+    userType: 'assistant',
+  },
+];
+
+
 export const activities: ActivityDTO[] = [
 ];
 for (let i = 1; i <= 30; i++) {
@@ -208,6 +242,7 @@ for (let i = 1; i <= 24; i++) {
     carnet: `201800${i}`,
     name: `Student ${i}`,
     email: `email${i}`,
+    password: "12345",
     personalPNumber: Math.floor(Math.random() * 1000000000).toString(),
     campus: Object.values(Campus)[Math.floor(Math.random() * Object.keys(Campus).length / 2)],
   };

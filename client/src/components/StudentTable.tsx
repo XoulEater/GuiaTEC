@@ -1,8 +1,11 @@
-import type { StudentDTO } from "../lib/data.ts";
+import type { StudentDTO, UserDTO } from "../lib/data.ts";
 import { students } from "../lib/data.ts";
 import { useState } from "react";
 
 const StudentTable = () => {
+  const user = localStorage.getItem("user");
+  const userDTO = JSON.parse(user as string) as UserDTO;
+
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<StudentDTO | null>(
     null
@@ -66,6 +69,10 @@ const StudentTable = () => {
 
   function handleDownload() {
     // TODO: download students
+    // TODO: handle two types of download
+    // 1. Excel with a single sheet containing the students for an specific campus
+    // 2. Excel with multiple sheets, one for each campus
+
     // Solicita el archivo Excel al servidor y descárgalo
     fetch("/download")
       .then((response) => response.blob())
@@ -109,31 +116,33 @@ const StudentTable = () => {
         </button>
 
         <aside className="flex gap-3">
-          <button
-            id="upload-excel"
-            onClick={handleUpload}
-            className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-file-upload"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#ffffff"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          {userDTO.userType === "assistant" && (
+            <button
+              id="upload-excel"
+              onClick={handleUpload}
+              className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-              <path d="M12 11v6"></path>
-              <path d="M9.5 13.5l2.5 -2.5l2.5 2.5"></path>
-            </svg>
-            Subir
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-file-upload"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="#ffffff"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                <path d="M12 11v6"></path>
+                <path d="M9.5 13.5l2.5 -2.5l2.5 2.5"></path>
+              </svg>
+              Subir
+            </button>
+          )}
           <button
             id="download-excel"
             onClick={handleDownload}
@@ -235,7 +244,7 @@ const StudentTable = () => {
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                         stroke="currentColor"
                         fill="none"
                         strokeLinecap="round"
@@ -253,7 +262,7 @@ const StudentTable = () => {
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
-                        strokeWidth="2"
+                        strokeWidth="1.5"
                         stroke="currentColor"
                         fill="none"
                         strokeLinecap="round"
@@ -274,7 +283,7 @@ const StudentTable = () => {
                       width="32"
                       height="32"
                       viewBox="0 0 24 24"
-                      strokeWidth="2"
+                      strokeWidth="1.5"
                       stroke="currentColor"
                       fill="none"
                       strokeLinecap="round"
