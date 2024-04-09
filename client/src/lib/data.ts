@@ -6,6 +6,7 @@ export interface UserDTO {
   email: string; // email of the user
   password: string; // password of the user
   code?: string; // unique identifier of the user
+  photo?: string; // URL of the photo of the user
   campus: Campus; // campus where the user is located
 }
 

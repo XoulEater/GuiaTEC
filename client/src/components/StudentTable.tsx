@@ -5,6 +5,7 @@ import { useState } from "react";
 const StudentTable = () => {
   const user = localStorage.getItem("user");
   const userDTO = JSON.parse(user as string) as UserDTO;
+  const userCampus = userDTO.campus;
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<StudentDTO | null>(
@@ -27,6 +28,7 @@ const StudentTable = () => {
       listStudents.splice(listStudents.indexOf(selectedStudent), 1);
     }
     setConfirmDelete(false);
+    // TODO: delete student from the server
   }
 
   // handle edit student
@@ -49,6 +51,7 @@ const StudentTable = () => {
     });
     setStudents(updatedStudents);
     setEditStudent(null);
+    // TODO: save changes to the server
   }
   function handleSort() {
     const newSort =
@@ -172,7 +175,7 @@ const StudentTable = () => {
       </header>
 
       <div className="grid place-items-center ">
-        <section className="w-[90%] h-[500px] overflow-y-scroll rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10 ">
+        <section className="w-[90%] h-[500px] overflow-y-scroll no-scrollbar rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10 ">
           <header className="grid grid-cols-6 h-16 w-full items-center bg-zinc-200 px-2">
             <span className="font-semibold text-lg ">Sede</span>
             <span className="font-semibold text-lg ">Carne</span>
@@ -237,6 +240,7 @@ const StudentTable = () => {
                 {/* Editable */}
                 <div className="flex gap-2 items-center">
                   {editStudent?.carnet === student.carnet ? (
+                    // Save button
                     <button onClick={handleSave}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -255,10 +259,18 @@ const StudentTable = () => {
                       </svg>
                     </button>
                   ) : (
-                    <button onClick={() => handleEdit(student)}>
+                    // Edit button
+                    <button
+                      onClick={() => handleEdit(student)}
+                      disabled={userCampus === student.campus}
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className=" text-primary-light hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
+                        className={`${
+                          userCampus !== student.campus
+                            ? "text-primary-light hover:brightness-150 hover:scale-110"
+                            : "text-gray-500"
+                        }  transition-all  duration-300 ease-out`}
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
@@ -276,10 +288,17 @@ const StudentTable = () => {
                     </button>
                   )}
 
-                  <button onClick={() => handleDelete(student)}>
+                  <button
+                    onClick={() => handleDelete(student)}
+                    disabled={userCampus === student.campus}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
+                      className={`${
+                        userCampus !== student.campus
+                          ? "text-red-600 hover:brightness-150 hover:scale-110"
+                          : "text-gray-500"
+                      }  transition-all  duration-300 ease-out`}
                       width="32"
                       height="32"
                       viewBox="0 0 24 24"
@@ -301,37 +320,37 @@ const StudentTable = () => {
               </div>
             );
           })}
-          {confirmDelete && (
-            <div
-              className={
-                "absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"
-              }
-            >
-              <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
-                <h2 className="text-xl font-medium ">{`Está seguro de eliminar a ${selectedStudent?.name}?`}</h2>
-                <div className="flex gap-5">
-                  <button
-                    onClick={handleConfirmDelete}
-                    className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
-                  >
-                    <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
-                      Si
-                    </span>
-                  </button>
-                  <button
-                    onClick={() => setConfirmDelete(false)}
-                    className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
-                  >
-                    <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
-                      No
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </section>
       </div>
+      {confirmDelete && (
+        <div
+          className={
+            "fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"
+          }
+        >
+          <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
+            <h2 className="text-xl font-medium ">{`Está seguro de eliminar a ${selectedStudent?.name}?`}</h2>
+            <div className="flex gap-5">
+              <button
+                onClick={handleConfirmDelete}
+                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+              >
+                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                  Si
+                </span>
+              </button>
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+              >
+                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                  No
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -32,7 +32,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
         <Dropdown
           arrowIcon={false}
           inline
-          label={<Avatar alt="User settings" img="/userDefault.png" rounded />}
+          label={<Avatar alt="User settings" img={userDTO.photo} rounded />}
         >
           <Dropdown.Header>
             <span className="block text-sm">{userDTO.name}</span>
