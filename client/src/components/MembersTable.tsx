@@ -1,6 +1,6 @@
 import type { TeacherDTO, TeamDTO, UserDTO } from "../lib/data.ts";
-import { teachers, teams } from "../lib/data.ts";
-import { useState } from "react";
+import { teachers, teams, Campus } from "../lib/data.ts";
+import { useEffect, useState } from "react";
 
 const MembersTable = () => {
   const user = localStorage.getItem("user");
@@ -8,6 +8,18 @@ const MembersTable = () => {
   const isMainAssistant =
     userDTO.userType === "assistant" && userDTO.campus === "CA";
   const isAssistant = userDTO.userType === "assistant";
+
+  const [isValidTeam, setIsValidTeam] = useState(true);
+
+  // a team is valid if it has at least one member of each campus of the enum
+  function checkValidTeam() {
+    const campuses = Object.values(Campus);
+    setIsValidTeam(
+      campuses.every((campus) =>
+        teams.members.some((teacher) => teacher.campus === campus)
+      )
+    );
+  }
 
   const [teachers, setTeachers] = useState(teams.members);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -25,18 +37,23 @@ const MembersTable = () => {
     if (selectedTeacher) {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
     }
+    checkValidTeam();
     setConfirmDelete(false);
   }
 
   function handleLeaderChange(teacher: TeacherDTO) {
-    // FIXME: Implement leader change
     // set leader to false for all teachers
     teachers.forEach((t) => (t.isLeader = false));
     // set leader to true for selected teacher
     teacher.isLeader = true;
     // update state
+    console.log(teachers);
     setTeachers([...teachers]);
   }
+
+  useEffect(() => {
+    checkValidTeam();
+  }, []);
 
   return (
     <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">
@@ -62,6 +79,7 @@ const MembersTable = () => {
             />
             <span className=" col-span-2">{teacher.name}</span>
             <div className="flex col-span-2 gap-4  items-center">
+              {/* Button to view teacher details */}
               <a href={`teacher/${teacher.code}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -103,48 +121,43 @@ const MembersTable = () => {
                   </svg>
                 </button>
               )}
-              {isMainAssistant &&
-                (teacher.isLeader ? (
-                  <button onClick={() => handleLeaderChange(teacher)}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="text-amber-500 hover:brightness-125 hover:scale-110 transition-all  duration-300 ease-out"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
-                    </svg>
-                  </button>
-                ) : (
-                  <a>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="text-zinc-400 hover:brightness-90 hover:scale-110 transition-all  duration-300 ease-out"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                      <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
-                    </svg>
-                  </a>
-                ))}
+              {isMainAssistant && (
+                /* Button to change leader */
+                <button onClick={() => handleLeaderChange(teacher)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`${
+                      teacher.isLeader
+                        ? "text-amber-500 hover:brightness-125"
+                        : "text-zinc-400 hover:brightness-90"
+                    } hover:scale-110 transition-all  duration-300 ease-out`}
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         );
       })}
+      {/* Alert invalid team */}
+      {!isValidTeam && (
+        <div className="bg-red-800 text-white w-full h-12 rounded-b-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group">
+          <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+            Equipo incompleto
+          </span>
+        </div>
+      )}
+
       {confirmDelete && (
         <div
           className={

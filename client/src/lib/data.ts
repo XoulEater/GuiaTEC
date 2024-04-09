@@ -1,9 +1,12 @@
+// FIXME: This file is for testing purposes only, it will be removed in the future
+
 export interface UserDTO {
   userType?: 'teacher' | 'assistant'; // type of the user
   name: string; // full name of the user
   email: string; // email of the user
   password: string; // password of the user
   code?: string; // unique identifier of the user
+  photo?: string; // URL of the photo of the user
   campus: Campus; // campus where the user is located
 }
 
@@ -80,7 +83,7 @@ export interface StudentDTO extends UserDTO{
 }
 
 // Enum for the campus where the teacher is located
-enum Campus { 
+export enum Campus { 
   CA = "CA",
   AL = "AL",
   SJ = "SJ",
@@ -138,6 +141,19 @@ export const teachers: TeacherDTO[] = [
     photo:
       "https://images.pexels.com/photos/1181357/pexels-photo-1181357.jpeg?cs=srgb&dl=pexels-ron-lach-1181357.jpg&fm=jpg",
     campus: Campus.SC,
+    isLeader: false,
+    password: "12345",
+    userType: 'teacher',
+  },
+  {
+    code: "LI-05",
+    name: "Teacher 5",
+    email: "email5",
+    officePNumber: "123456",
+    personalPNumber: "123456",
+    photo:
+      "https://images.pexels.com/photos/1181357/pexels-photo-1181357.jpeg?cs=srgb&dl=pexels-ron-lach-1181357.jpg&fm=jpg",
+    campus: Campus.LI,
     isLeader: false,
     password: "12345",
     userType: 'teacher',

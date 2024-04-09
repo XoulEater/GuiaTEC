@@ -59,10 +59,19 @@ import SubmitButton from "../components/SubmitButton.astro";
           client:only
         />
       </div>
-      <a href="/" class="text-zinc-500">Volver al login</a>
-      {/* FIXME: ref change */}
-      <SubmitButton text="Enviar" ref="/" />
+      <SubmitButton text="Enviar" />
       {/* TODO: Pantalla de registro exitoso */}
     </form>
   </div>
 </Layout>
+<script>
+  // FIXME: This is a temporary solution to avoid using a backend
+
+  // redirect function
+  const button = document.getElementById("submit-button");
+  if (button) {
+    button.addEventListener("click", () => {
+      window.location.href = "/register-success";
+    });
+  }
+</script>
