@@ -1,3 +1,5 @@
+// FIXME: This file is for testing purposes only, it will be removed in the future
+
 export interface UserDTO {
   userType?: 'teacher' | 'assistant'; // type of the user
   name: string; // full name of the user
