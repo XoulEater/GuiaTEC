@@ -15,7 +15,7 @@ const RegisterTeacher = () => {
     <button
       id="add-member"
       onClick={handleRegister}
-      className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -57,11 +57,11 @@ const MembersTable = () => {
 
   return (
     <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">
-      <header className="grid grid-cols-6 h-16 w-full items-center bg-zinc-200 px-2">
-        <span className="font-semibold text-lg">Codigo</span>
-        <span className="font-semibold text-lg">Imagen</span>
-        <span className="font-semibold text-lg col-span-2">Nombre</span>
-        <span className="font-semibold text-lg col-span-2">Acciones</span>
+      <header className="grid items-center w-full h-16 grid-cols-6 px-2 bg-zinc-200">
+        <span className="text-lg font-semibold">Codigo</span>
+        <span className="text-lg font-semibold">Imagen</span>
+        <span className="col-span-2 text-lg font-semibold">Nombre</span>
+        <span className="col-span-2 text-lg font-semibold">Acciones</span>
       </header>
       {teachers.map((teacher: TeacherDTO, index) => {
         const rowColorClass = index % 2 === 0 ? "bg-white" : "bg-zinc-200";
@@ -73,17 +73,17 @@ const MembersTable = () => {
           >
             <span>{teacher.code}</span>
             <img
-              className="rounded-full h-12 aspect-square object-cover object-center"
+              className="object-cover object-center h-12 rounded-full aspect-square"
               src={teacher.photo}
               alt={teacher.name}
             />
-            <span className=" col-span-2">{teacher.name}</span>
-            <div className="flex col-span-2 gap-4  items-center">
+            <span className="col-span-2 ">{teacher.name}</span>
+            <div className="flex items-center col-span-2 gap-4">
               {/* Button to view teacher details */}
               <a href={`teacher/${teacher.code}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className=" text-primary-light hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
+                  className="transition-all duration-300 ease-out  text-primary-light hover:brightness-150 hover:scale-110"
                   width="32"
                   height="32"
                   viewBox="0 0 24 24"
@@ -103,7 +103,7 @@ const MembersTable = () => {
                 <button onClick={() => handleDelete(teacher)}>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className=" text-red-600 hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
+                    className="text-red-600 transition-all duration-300 ease-out  hover:brightness-150 hover:scale-110"
                     width="32"
                     height="32"
                     viewBox="0 0 24 24"
@@ -151,8 +151,8 @@ const MembersTable = () => {
       })}
       {/* Alert invalid team */}
       {!isValidTeam && (
-        <div className="bg-red-800 text-white w-full h-12 rounded-b-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group">
-          <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+        <div className="flex items-center justify-center w-full h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-b-md hover:brightness-125 group">
+          <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
             Equipo incompleto
           </span>
         </div>
@@ -164,22 +164,22 @@ const MembersTable = () => {
             "absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"
           }
         >
-          <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
+          <div className="flex flex-col gap-5 p-5 bg-white rounded-lg">
             <h2 className="text-xl font-medium ">{`Está seguro de eliminar a ${selectedTeacher?.name}?`}</h2>
             <div className="flex gap-5">
               <button
                 onClick={handleConfirmDelete}
-                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   Si
                 </span>
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-md hover:brightness-125 group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   No
                 </span>
               </button>

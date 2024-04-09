@@ -5,7 +5,6 @@ import { TabTheme } from "../lib/themes";
 import WorkplansTable from "./WorkplansTable";
 
 const TeamTabs = () => {
-
   return (
     <Tabs
       theme={TabTheme}
@@ -23,10 +22,7 @@ const TeamTabs = () => {
           <WorkplansTable />
         </div>
       </Tabs.Item>
-
     </Tabs>
-
-
   );
 };
 

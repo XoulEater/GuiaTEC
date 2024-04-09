@@ -65,12 +65,12 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
         alt={teacher?.name}
       />
       <aside className=" w-[90%] lgn:w-[60%] gap-5 flex flex-col items-center lgn:items-start ">
-        <header className="border-b-2 w-full border-zinc-400 flex flex-col lgn:flex-row gap-5 lgn:justify-between  items-center lgn:items-top pb-3 ">
-          <div className="flex flex-col items-center lgn:items-start order-2 lgn:order-1">
+        <header className="flex flex-col items-center w-full gap-5 pb-3 border-b-2 border-zinc-400 lgn:flex-row lgn:justify-between lgn:items-top ">
+          <div className="flex flex-col items-center order-2 lgn:items-start lgn:order-1">
             {editing ? (
               <input
                 type="text"
-                className="border-none pl-0 mr-1 py-2 text-xl"
+                className="py-2 pl-0 mr-1 text-xl border-none"
                 id="name"
                 defaultValue={teacher?.name}
               />
@@ -78,23 +78,23 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
               <h1 className="text-xl font-medium truncate">{teacher?.name}</h1>
             )}
 
-            <h2 className="text-zinc-400 text-sm">{teacher?.code}</h2>
+            <h2 className="text-sm text-zinc-400">{teacher?.code}</h2>
           </div>
           {canEdit && (
-            <div className="flex gap-3 order-1">
+            <div className="flex order-1 gap-3">
               <button
                 onClick={handleSave}
-                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   {editing ? "Guardar" : "Editar"}
                 </span>
               </button>
               <button
                 onClick={handleDelete}
-                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-md hover:brightness-125 group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   Eliminar
                 </span>
               </button>
@@ -106,7 +106,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
           {editing ? (
             <input
               type="text"
-              className=" border-none pl-0 mr-1 py-2"
+              className="py-2 pl-0 mr-1 border-none "
               id="email"
               defaultValue={teacher?.email}
             />
@@ -118,7 +118,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
           {editing ? (
             <input
               type="tel"
-              className=" border-none pl-0 mr-1 py-2"
+              className="py-2 pl-0 mr-1 border-none "
               id="officePNumber"
               defaultValue={teacher?.officePNumber}
             />
@@ -130,7 +130,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
           {editing ? (
             <input
               type="tel"
-              className="border-none pl-0 mr-1 py-2"
+              className="py-2 pl-0 mr-1 border-none"
               id="personalPNumber"
               defaultValue={teacher?.personalPNumber}
             />
@@ -146,22 +146,22 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
             "absolute top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"
           }
         >
-          <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
+          <div className="flex flex-col gap-5 p-5 bg-white rounded-lg">
             <h2 className="text-xl font-medium">¿Está seguro?</h2>
             <div className="flex gap-5">
               <button
                 onClick={handleConfirmDelete}
-                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   Si
                 </span>
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-md hover:brightness-125 group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   No
                 </span>
               </button>
