@@ -90,14 +90,31 @@ const StudentTable = () => {
   }
 
   function handleUpload() {
-    // TODO: upload students
+    // TODO: upload students in excel format
+    // Solicita al servidor que suba el archivo Excel
+    /*
+    input.onchange = async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        fetch("/upload", {
+          method: "POST",
+          body: formData,
+        }).then(() => {
+          // Recarga la página para mostrar los cambios
+          window.location.reload();
+        });
+      }
+    };
+    */
   }
 
   return (
     <div>
-      <header className=" flex justify-between mx-20 mb-4">
+      <header className="flex justify-between mx-20 mb-4 ">
         <button
-          className=" bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+          className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
           onClick={handleSort}
         >
           <svg
@@ -123,7 +140,7 @@ const StudentTable = () => {
             <button
               id="upload-excel"
               onClick={handleUpload}
-              className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+              className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -149,7 +166,7 @@ const StudentTable = () => {
           <button
             id="download-excel"
             onClick={handleDownload}
-            className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+            className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -176,13 +193,13 @@ const StudentTable = () => {
 
       <div className="grid place-items-center ">
         <section className="w-[90%] h-[500px] overflow-y-scroll no-scrollbar rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10 ">
-          <header className="grid grid-cols-6 h-16 w-full items-center bg-zinc-200 px-2">
-            <span className="font-semibold text-lg ">Sede</span>
-            <span className="font-semibold text-lg ">Carne</span>
-            <span className="font-semibold text-lg ">Nombre</span>
-            <span className="font-semibold text-lg ">Correo</span>
-            <span className="font-semibold text-lg ">Teléfono</span>
-            <span className="font-semibold text-lg ">Acciones</span>
+          <header className="grid items-center w-full h-16 grid-cols-6 px-2 bg-zinc-200">
+            <span className="text-lg font-semibold ">Sede</span>
+            <span className="text-lg font-semibold ">Carne</span>
+            <span className="text-lg font-semibold ">Nombre</span>
+            <span className="text-lg font-semibold ">Correo</span>
+            <span className="text-lg font-semibold ">Teléfono</span>
+            <span className="text-lg font-semibold ">Acciones</span>
           </header>
           {listStudents.map((student: StudentDTO, index) => {
             const rowColorClass = index % 2 === 0 ? "bg-white" : "bg-zinc-200";
@@ -198,7 +215,7 @@ const StudentTable = () => {
                 {editStudent?.carnet === student.carnet ? (
                   <input
                     type="text"
-                    className=" pl-0 mr-1"
+                    className="pl-0 mr-1 "
                     value={editStudent.name}
                     onChange={(e) =>
                       setEditStudent({ ...editStudent, name: e.target.value })
@@ -224,7 +241,7 @@ const StudentTable = () => {
                 {editStudent?.carnet === student.carnet ? (
                   <input
                     type="text"
-                    className=" pl-0 mr-1"
+                    className="pl-0 mr-1 "
                     value={editStudent.personalPNumber}
                     onChange={(e) =>
                       setEditStudent({
@@ -238,13 +255,13 @@ const StudentTable = () => {
                 )}
 
                 {/* Editable */}
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-2">
                   {editStudent?.carnet === student.carnet ? (
                     // Save button
                     <button onClick={handleSave}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className=" text-primary-light hover:brightness-150 hover:scale-110 transition-all  duration-300 ease-out"
+                        className="transition-all duration-300 ease-out text-primary-light hover:brightness-150 hover:scale-110"
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
@@ -328,22 +345,22 @@ const StudentTable = () => {
             "fixed top-0 left-0 w-full h-full bg-black bg-opacity-30 flex justify-center items-center z-50"
           }
         >
-          <div className="bg-white p-5 rounded-lg flex flex-col gap-5">
+          <div className="flex flex-col gap-5 p-5 bg-white rounded-lg">
             <h2 className="text-xl font-medium ">{`Está seguro de eliminar a ${selectedStudent?.name}?`}</h2>
             <div className="flex gap-5">
               <button
                 onClick={handleConfirmDelete}
-                className="bg-primary-dark text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   Si
                 </span>
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="bg-red-800 text-white w-32 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+                className="flex items-center justify-center w-32 h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-md hover:brightness-125 group"
               >
-                <span className="group-hover:scale-110 transition-transform duration-300 ease-in-out">
+                <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
                   No
                 </span>
               </button>

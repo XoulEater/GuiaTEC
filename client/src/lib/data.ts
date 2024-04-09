@@ -25,7 +25,7 @@ export interface AssistantDTO extends UserDTO {
 }
 
 
-enum ActivityType {
+export enum ActivityType {
   ORIENTADORA = "Orientadora",
   MOTIVACIONAL = "Motivacional",
   APOYO = "Apoyo",
@@ -41,7 +41,7 @@ export enum ActivityStatus {
   CANCELADA = "Cancelada",
 }
 
-enum Modalities {
+export enum Modalities {
   PRESENCIAL = "Presencial",
   VIRTUAL = "Virtual",
 }
@@ -247,7 +247,7 @@ export const teams: TeamDTO =
   {
     name: "TeamDTO 1",
     description: "Description 1",
-    members: teachers.slice(0, 2),
+    members: teachers.slice(0, 5),
     workPlans: workPlans,
   }
 
