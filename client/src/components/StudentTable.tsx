@@ -171,8 +171,8 @@ const StudentTable = () => {
         </aside>
       </header>
 
-      <div className="grid place-items-center">
-        <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10 ">
+      <div className="grid place-items-center ">
+        <section className="w-[90%] h-[500px] overflow-y-scroll rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10 ">
           <header className="grid grid-cols-6 h-16 w-full items-center bg-zinc-200 px-2">
             <span className="font-semibold text-lg ">Sede</span>
             <span className="font-semibold text-lg ">Carne</span>
