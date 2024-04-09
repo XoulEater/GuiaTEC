@@ -82,7 +82,7 @@ export interface StudentDTO extends UserDTO{
 }
 
 // Enum for the campus where the teacher is located
-enum Campus { 
+export enum Campus { 
   CA = "CA",
   AL = "AL",
   SJ = "SJ",
@@ -140,6 +140,19 @@ export const teachers: TeacherDTO[] = [
     photo:
       "https://images.pexels.com/photos/1181357/pexels-photo-1181357.jpeg?cs=srgb&dl=pexels-ron-lach-1181357.jpg&fm=jpg",
     campus: Campus.SC,
+    isLeader: false,
+    password: "12345",
+    userType: 'teacher',
+  },
+  {
+    code: "LI-05",
+    name: "Teacher 5",
+    email: "email5",
+    officePNumber: "123456",
+    personalPNumber: "123456",
+    photo:
+      "https://images.pexels.com/photos/1181357/pexels-photo-1181357.jpeg?cs=srgb&dl=pexels-ron-lach-1181357.jpg&fm=jpg",
+    campus: Campus.LI,
     isLeader: false,
     password: "12345",
     userType: 'teacher',

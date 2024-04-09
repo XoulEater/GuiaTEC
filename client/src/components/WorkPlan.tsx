@@ -3,6 +3,8 @@ import {
   type WorkPlanDTO,
   type ActivityDTO,
   ActivityStatus,
+  type UserDTO,
+  teachers,
 } from "../lib/data";
 import ActivitesAccordion from "./ActivitiesAccordion";
 
@@ -11,7 +13,11 @@ interface WorkPlanProps {
 }
 
 const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
+  const user = localStorage.getItem("user");
+  const userDTO = JSON.parse(user as string) as UserDTO;
   const workplan = workplanDTO;
+  let isLeader = false;
+
   const activities = workplan?.activities;
   // clasify activities by week
   const activitiesByWeek: {
@@ -31,6 +37,12 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
   const [activityStatus, setActivityStatus] = useState<ActivityStatus | null>(
     null
   );
+
+  if (userDTO.userType === "teacher") {
+    isLeader =
+      teachers.find((t) => t.isLeader && t.email === userDTO.email) !==
+      undefined;
+  }
 
   function handleAccordionToggle(week: number) {
     if (openAccordions.includes(week)) {
@@ -53,32 +65,34 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
       <header className="flex justify-between mx-20 my-6">
         <div>
           <h1 className="text-3xl font-bold">{workplan?.name}</h1>
-          <p>{workplan?.description}</p>
+          <p className="text-lg">{workplan?.description}</p>
         </div>
         <aside>
-          <button className="bg-primary-dark text-white  w-52 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-calendar-plus"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="#ffffff"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-              <path d="M16 3v4" />
-              <path d="M8 3v4" />
-              <path d="M4 11h16" />
-              <path d="M16 19h6" />
-              <path d="M19 16v6" />
-            </svg>
-            Nueva Actividad
-          </button>
+          {isLeader && (
+            <button className="bg-primary-dark text-white  w-52 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-calendar-plus"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="#ffffff"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                <path d="M16 3v4" />
+                <path d="M8 3v4" />
+                <path d="M4 11h16" />
+                <path d="M16 19h6" />
+                <path d="M19 16v6" />
+              </svg>
+              Nueva Actividad
+            </button>
+          )}
         </aside>
       </header>
       {/* Activities */}
@@ -155,167 +169,169 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                   </a>
                 )}
               </section>
-              <footer className="flex justify-center gap-3">
-                {selectedActivity.status === "Planeada" && (
-                  <button
-                    onClick={() =>
-                      handleActivityStatusChange(ActivityStatus.PUBLICADA)
-                    }
-                    className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className=" "
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+              {isLeader && (
+                <footer className="flex justify-center gap-3">
+                  {selectedActivity.status === "Planeada" && (
+                    <button
+                      onClick={() =>
+                        handleActivityStatusChange(ActivityStatus.PUBLICADA)
+                      }
+                      className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-                      <path d="M16 3v4" />
-                      <path d="M8 3v4" />
-                      <path d="M4 11h16" />
-                      <path d="M19 22v-6" />
-                      <path d="M22 19l-3 -3l-3 3" />
-                    </svg>
-                    Publicar
-                  </button>
-                )}
-                {selectedActivity.status === "Publicada" && (
-                  <button
-                    onClick={() =>
-                      handleActivityStatusChange(ActivityStatus.NOTIFICADA)
-                    }
-                    className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className=" "
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className=" "
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12.5 21h-6.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                        <path d="M16 3v4" />
+                        <path d="M8 3v4" />
+                        <path d="M4 11h16" />
+                        <path d="M19 22v-6" />
+                        <path d="M22 19l-3 -3l-3 3" />
+                      </svg>
+                      Publicar
+                    </button>
+                  )}
+                  {selectedActivity.status === "Publicada" && (
+                    <button
+                      onClick={() =>
+                        handleActivityStatusChange(ActivityStatus.NOTIFICADA)
+                      }
+                      className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M15 21h-9a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-                      <path d="M16 3v4" />
-                      <path d="M8 3v4" />
-                      <path d="M4 11h16" />
-                      <path d="M11 15h1" />
-                      <path d="M12 15v3" />
-                      <path d="M19 16v3" />
-                      <path d="M19 22v.01" />
-                    </svg>
-                    Notificar
-                  </button>
-                )}
-                {selectedActivity.status === "Notificada" && (
-                  <button
-                    onClick={() =>
-                      handleActivityStatusChange(ActivityStatus.REALIZADA)
-                    }
-                    className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className=" "
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className=" "
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M15 21h-9a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                        <path d="M16 3v4" />
+                        <path d="M8 3v4" />
+                        <path d="M4 11h16" />
+                        <path d="M11 15h1" />
+                        <path d="M12 15v3" />
+                        <path d="M19 16v3" />
+                        <path d="M19 22v.01" />
+                      </svg>
+                      Notificar
+                    </button>
+                  )}
+                  {selectedActivity.status === "Notificada" && (
+                    <button
+                      onClick={() =>
+                        handleActivityStatusChange(ActivityStatus.REALIZADA)
+                      }
+                      className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M11.5 21h-5.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6" />
-                      <path d="M16 3v4" />
-                      <path d="M8 3v4" />
-                      <path d="M4 11h16" />
-                      <path d="M15 19l2 2l4 -4" />
-                    </svg>
-                    Realizar
-                  </button>
-                )}
-                {selectedActivity.status === "Realizada" && (
-                  <button
-                    disabled
-                    className=" bg-gray-600 text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center transition duration-300 ease-in-out group"
-                  >
-                    Realizada
-                  </button>
-                )}
-                {selectedActivity.status !== "Cancelada" && (
-                  <button className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className=" "
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className=" "
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M11.5 21h-5.5a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6" />
+                        <path d="M16 3v4" />
+                        <path d="M8 3v4" />
+                        <path d="M4 11h16" />
+                        <path d="M15 19l2 2l4 -4" />
+                      </svg>
+                      Realizar
+                    </button>
+                  )}
+                  {selectedActivity.status === "Realizada" && (
+                    <button
+                      disabled
+                      className=" bg-gray-600 text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center transition duration-300 ease-in-out group"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M12 21h-6a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
-                      <path d="M16 3v4" />
-                      <path d="M8 3v4" />
-                      <path d="M4 11h16" />
-                      <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                      <path d="M19.001 15.5v1.5" />
-                      <path d="M19.001 21v1.5" />
-                      <path d="M22.032 17.25l-1.299 .75" />
-                      <path d="M17.27 20l-1.3 .75" />
-                      <path d="M15.97 17.25l1.3 .75" />
-                      <path d="M20.733 20l1.3 .75" />
-                    </svg>
-                    Editar
-                  </button>
-                )}
-                {selectedActivity.status !== "Cancelada" && (
-                  <button
-                    onClick={() =>
-                      handleActivityStatusChange(ActivityStatus.CANCELADA)
-                    }
-                    className="bg-red-800 text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="icon icon-tabler icon-tabler-calendar-x"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="#ffffff"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
+                      Realizada
+                    </button>
+                  )}
+                  {selectedActivity.status !== "Cancelada" && (
+                    <button className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className=" "
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M12 21h-6a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v5" />
+                        <path d="M16 3v4" />
+                        <path d="M8 3v4" />
+                        <path d="M4 11h16" />
+                        <path d="M19.001 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                        <path d="M19.001 15.5v1.5" />
+                        <path d="M19.001 21v1.5" />
+                        <path d="M22.032 17.25l-1.299 .75" />
+                        <path d="M17.27 20l-1.3 .75" />
+                        <path d="M15.97 17.25l1.3 .75" />
+                        <path d="M20.733 20l1.3 .75" />
+                      </svg>
+                      Editar
+                    </button>
+                  )}
+                  {selectedActivity.status !== "Cancelada" && (
+                    <button
+                      onClick={() =>
+                        handleActivityStatusChange(ActivityStatus.CANCELADA)
+                      }
+                      className="bg-red-800 text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
                     >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M13 21h-7a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6.5" />
-                      <path d="M16 3v4" />
-                      <path d="M8 3v4" />
-                      <path d="M4 11h16" />
-                      <path d="M22 22l-5 -5" />
-                      <path d="M17 22l5 -5" />
-                    </svg>
-                    Cancelar
-                  </button>
-                )}
-              </footer>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-calendar-x"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#ffffff"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M13 21h-7a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v6.5" />
+                        <path d="M16 3v4" />
+                        <path d="M8 3v4" />
+                        <path d="M4 11h16" />
+                        <path d="M22 22l-5 -5" />
+                        <path d="M17 22l5 -5" />
+                      </svg>
+                      Cancelar
+                    </button>
+                  )}
+                </footer>
+              )}
             </div>
           )}
         </aside>
