@@ -5,7 +5,7 @@ const User = require('../models/userSchema');
 
 // Ver usuarios
 
-router.get('/users', async (req, res) => {
+router.get('/User', async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -16,9 +16,8 @@ router.get('/users', async (req, res) => {
 
 
 // Registrar usuario
-router.post('/registerUser', async (req, res) => {
+router.post('/registerUser', async (req, res) => { 
   const { name, email, password } = req.body;
-  
   try {
     const user = await User.create({ name, email, password });
     res.status(200).json(user);
