@@ -59,6 +59,10 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
       // TODO: update activity
     }
   }
+  function handleEditActivity() {
+    // redirect to edit activity page
+    window.location.href = "/activity/edit-" + selectedActivity?.id;
+  }
 
   function handleNewActivity() {
     // redirect to new activity page
@@ -127,8 +131,7 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                   </span>
                 </div>
                 <p className="-mt-2 text-xl text-gray-600">
-                  {selectedActivity.date.toDateString()} -{" "}
-                  {selectedActivity.time}
+                  {selectedActivity.date.toDateString()}
                 </p>
               </header>
 
@@ -279,7 +282,10 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                     </button>
                   )}
                   {selectedActivity.status !== "Cancelada" && (
-                    <button className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group">
+                    <button
+                      onClick={handleEditActivity}
+                      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className=""

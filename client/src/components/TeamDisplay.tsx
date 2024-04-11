@@ -1,6 +1,6 @@
 import React from "react";
 import TeamTabs from "./TeamTabs";
-import type { UserDTO } from "../lib/data";
+import type { UserDTO, WorkPlanDTO } from "../lib/data";
 import { teachers } from "../lib/data";
 
 const TeamDisplay: React.FC = () => {
@@ -19,7 +19,18 @@ const TeamDisplay: React.FC = () => {
     window.location.href = "/teachers";
   }
   function handleNewPlan() {
-    // TODO: manage the creation of a new plan
+    // create a new plan and redirect to it
+
+    // this is a mock plan, the real plan should be created in the backend
+    const newPlan: WorkPlanDTO = {
+      id: "1",
+      name: "Nuevo plan",
+      description: "Descripcion del plan",
+      activities: [],
+    };
+
+    // redirect to the new plan page
+    window.location.href = "/workplan/" + newPlan.id;
   }
 
   return (
@@ -59,7 +70,10 @@ const TeamDisplay: React.FC = () => {
             </button>
           )}
           {isLeader && (
-            <button className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group">
+            <button
+              onClick={handleNewPlan}
+              className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="icon icon-tabler icon-tabler-settings-2"

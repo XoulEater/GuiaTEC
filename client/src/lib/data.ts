@@ -47,18 +47,19 @@ export enum Modalities {
 }
 
 export interface ActivityDTO {
+  id?: string; // unique identifier of the activity
   name: string; // name of the activity
   week: number; // week of the activity in the work plan
   date: Date; // date of the activity
-  time: string; // time of the activity
-  publicationDate: Date; // date of publication of the activity
+  publicationDate?: Date; // date of publication of the activity
+  prevDays?: number; // days before the activity to send the reminder
   reminderInterval: number; // interval of the reminder of the activity
   responsibles: TeacherDTO[]; // list of teachers responsible for the activity
   type: ActivityType; // type of the activity
   modality: Modalities; // modality of the activity
   status: ActivityStatus; // status of the activity
   link?: string; // link of the activity if it is virtual
-  attachmentsFiles?: string[]; // list of attachments of the activity
+  attachmentFile?: string; // attachment file of the activity
 }
 
 export interface WorkPlanDTO {
@@ -196,10 +197,10 @@ export const activities: ActivityDTO[] = [
 ];
 for (let i = 1; i <= 30; i++) {
   const activity1: ActivityDTO = {
+    id: i.toString(),
     name: `Activity ${i}`,
     week: Math.floor(Math.random() * 16) + 1,
     date: new Date(),
-    time: "10:00",
     publicationDate: new Date(),
     reminderInterval: 15,
     responsibles: teachers.slice(0, 2),
@@ -207,7 +208,7 @@ for (let i = 1; i <= 30; i++) {
     modality: Object.values(Modalities)[Math.floor(Math.random() * Object.keys(Modalities).length / 2)],
     status: Object.values(ActivityStatus)[Math.floor(Math.random() * Object.keys(ActivityStatus).length / 1)],
     link: "https://www.google.com",
-    attachmentsFiles: ["https://www.google.com"],
+    attachmentFile: "https://www.google.com",
 
   };
   activities.push(activity1);

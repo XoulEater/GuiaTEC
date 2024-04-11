@@ -1,15 +1,90 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ActivityStatus,
   ActivityType,
   Modalities,
   teachers,
+  type ActivityDTO,
+  type TeacherDTO,
 } from "../lib/data";
 
-function ActivityForm() {
+interface ActivityFormProps {
+  activity?: ActivityDTO; // Add an optional activity prop
+}
+
+const ActivityForm: React.FC<ActivityFormProps> = ({ activity }) => {
   // Implement your component logic here
   const [isVirtual, setIsVirtual] = React.useState(false);
   const [colaborators, setColaborators] = React.useState<string[]>([]);
+
+  useEffect(() => {
+    if (activity) {
+      // Set the date of the activity
+      const date = new Date(activity.date);
+      const dateInput = document.getElementById(
+        "activityDate"
+      ) as HTMLInputElement;
+      dateInput.value = date.toISOString().split(".")[0];
+      // Set the week of the activity
+      const weekInput = document.getElementById(
+        "activityWeek"
+      ) as HTMLInputElement;
+      weekInput.value = activity.week.toString();
+
+      // Set the prevDays of the activity, if published disable the input
+      if (activity.status === ActivityStatus.PUBLICADA) {
+        const prevDaysInput = document.getElementById(
+          "activityPrevDays"
+        ) as HTMLInputElement;
+        prevDaysInput.value = (activity.prevDays ?? "").toString();
+        prevDaysInput.disabled = true;
+      }
+
+      // Set the reminderInterval of the activity
+      const reminderIntervalInput = document.getElementById(
+        "activityReminderInterval"
+      ) as HTMLInputElement;
+      reminderIntervalInput.value = activity.reminderInterval.toString();
+
+      // Set the link of the activity
+      const linkInput = document.getElementById(
+        "activityLink"
+      ) as HTMLInputElement;
+      linkInput.value = activity.link ?? "";
+
+      // Set the type of the activity
+      const typeInput = document.getElementById(
+        "activityType"
+      ) as HTMLSelectElement;
+      typeInput.value = activity.type;
+
+      // Set the modality of the activity
+      const modalityInput = document.getElementById(
+        "activityModality"
+      ) as HTMLSelectElement;
+      modalityInput.value = activity.modality;
+
+      // Set the responsibles of the activity
+      setColaborators(activity.responsibles.map((t) => t.name));
+
+      // Set the isVirtual state
+      setIsVirtual(activity.modality === Modalities.VIRTUAL);
+
+      // Set the name of the activity
+      const nameInput = document.getElementById(
+        "activityName"
+      ) as HTMLInputElement;
+      nameInput.value = activity.name;
+
+      // Set the attachment of the activity
+      /* FIXME: Fix the attachment input when the backend is ready
+      const attachmentInput = document.getElementById(
+        "activityAttachment"
+      ) as HTMLInputElement;
+      attachmentInput.value = activity.attachmentFile ?? "";
+      */
+    }
+  }, [activity]);
 
   function handleModalityChange() {
     const modality = document.getElementById(
@@ -29,8 +104,78 @@ function ActivityForm() {
       setColaborators([...colaborators, colaborator]);
   }
 
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const name = data.get("activityName") as string;
+    name: data.get("activityName") as string;
+    const week = parseInt(data.get("activityWeek") as string);
+    const date = new Date(data.get("activityDate") as string);
+    const prevDays = parseInt(data.get("activityPrevDays") as string);
+    const reminderInterval = parseInt(
+      data.get("activityReminderInterval") as string
+    );
+    const responsibles = colaborators.map((name) => {
+      const teacher = teachers.find((t) => t.name === name);
+      return teacher as TeacherDTO;
+    });
+    const type = data.get("activityType") as ActivityType;
+    const modality = data.get("activityModality") as Modalities;
+    const status = ActivityStatus.PLANEADA;
+    const link = data.get("activityLink") as string;
+    const attachmentFile = data.get("activityAttachment") as string;
+    // Create the activity object
+    if (activity) {
+      // Call the function to update the activity
+      updateActivity({
+        ...activity,
+        name,
+        week,
+        date,
+        prevDays,
+        reminderInterval,
+        responsibles,
+        type,
+        modality,
+        status,
+        link,
+        attachmentFile,
+      });
+    } else {
+      // Call the function to create the activity
+      createActivity({
+        name,
+        week,
+        date,
+        prevDays,
+        reminderInterval,
+        responsibles,
+        type,
+        modality,
+        status,
+        link,
+        attachmentFile,
+      });
+    }
+    if (window.confirm("Actividad creada exitosamente")) {
+      window.history.back();
+    }
+  }
+  function createActivity(activity: ActivityDTO) {
+    // TODO: Send the activity to the backend to be saved
+    // TODO: Validate the answer from the backend
+    // if the activity was saved successfully, redirect to the work plan page
+  }
+  function updateActivity(activity: ActivityDTO) {
+    // TODO: Send the activity to the backend to be updated
+  }
+
   return (
-    <form className="flex flex-col w-4/5 gap-5 p-10 h-[80%] bg-slate-100 rounded-xl">
+    <form
+      className="flex flex-col w-4/5 gap-5 p-10 h-[90%] bg-slate-100 rounded-xl overflow-y-scroll no-scrollbar"
+      onSubmit={handleSubmit}
+    >
       <section className="flex justify-between gap-10">
         {/* Activity Name */}
         <div className="flex flex-col w-full">
@@ -207,8 +352,17 @@ function ActivityForm() {
               name="activityDate"
               required
             />
+            <input
+              className=" w-1/3 py-3 transition-all duration-300 ease-in-out border rounded-lg text-zinc-500  border-zinc-300 focus:outline-none focus:ring-1 focus:ring-primary-light focus:border-zinc-500"
+              id="activityWeek"
+              type="number"
+              name="activityWeek"
+              placeholder="Semana"
+              required
+            />
           </div>
         </div>
+
         {/* Archivo adjunto */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityAttachment" className="hidden lgn:block">
@@ -228,7 +382,7 @@ function ActivityForm() {
       <section className="flex justify-between gap-10">
         {/* Cantidad de dias previos para publicar */}
         <div className="flex flex-col w-full">
-          <label htmlFor="activityReminder" className="hidden lgn:block">
+          <label htmlFor="activityPrevDays" className="hidden lgn:block">
             Días previos para publicar
           </label>
           <div className="relative flex flex-row items-center text-primary-dark">
@@ -253,10 +407,10 @@ function ActivityForm() {
               <path d="M18 21v-7m3 3l-3 -3l-3 3" />
             </svg>
             <input
-              className="w-full py-3 transition-all duration-300 ease-in-out border rounded-lg text-zinc-500 pl-11 border-zinc-300 focus:outline-none focus:ring-1 focus:ring-primary-light focus:border-zinc-500"
-              id="activityReminder"
+              className="w-full py-3 transition-all disabled:bg-zinc-200 duration-300 ease-in-out border rounded-lg text-zinc-500 pl-11 border-zinc-300 focus:outline-none focus:ring-1 focus:ring-primary-light focus:border-zinc-500"
+              id="activityPrevDays"
               type="number"
-              name="activityReminder"
+              name="activityPrevDays"
               placeholder="Ingrese la cantidad de días"
               required
             />
@@ -374,8 +528,17 @@ function ActivityForm() {
           </div>
         </div>
       </section>
+
+      <section className="flex justify-end gap-10">
+        <button
+          type="submit"
+          className="w-40 h-12 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light"
+        >
+          {activity ? "Actualizar" : "Crear"}
+        </button>
+      </section>
     </form>
   );
-}
+};
 
 export default ActivityForm;
