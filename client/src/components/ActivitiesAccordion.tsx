@@ -15,11 +15,11 @@ function ActivitesAccordion(
   return (
     <section className=" my-6 w-5/12 h-[560px]  rounded-lg overflow-y-scroll no-scrollbar shadow-md ">
       {/* Accordion by week */}
-      <div className=" bg-primary-dark px-6 py-2 ">
+      <div className="px-6 py-2  bg-primary-dark">
         {Object.keys(activitiesByWeek).map((week) => (
           <div key={week} className="">
             <div
-              className="text-xl font-bold py-2 text-white border-b-2 flex justify-between cursor-pointer pointer-events-auto"
+              className="flex justify-between py-2 text-xl font-bold text-white border-b-2 cursor-pointer pointer-events-auto"
               onClick={() => handleAccordionToggle(parseInt(week))}
             >
               Semana {week}
@@ -56,9 +56,7 @@ function ActivitesAccordion(
                     onClick={() => handleChangeSelected(activity)}
                   >
                     <header className="flex justify-between ">
-                      <h4 className="text-lg  font-semibold">
-                        {activity.name}
-                      </h4>
+                      <h4 className="text-lg font-semibold">{activity.name}</h4>
                       {
                         <span
                           className={`text-2xl  absolute right-2 top-0 font-bold pointer-events-none ${

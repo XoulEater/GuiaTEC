@@ -33,14 +33,14 @@ const MyComponent: React.FC<Props> = ({
 
   return (
     <div className="flex flex-col w-full">
-      <label htmlFor={formType} className=" text-zinc-700 hidden lgn:block">
+      <label htmlFor={formType} className="hidden  text-zinc-700 lgn:block">
         {title}
       </label>
 
-      <div className="flex relative items-center flex-row">
+      <div className="relative flex flex-row items-center">
         <img src={logo} alt={formType} className="absolute left-2 w-7 " />
         <input
-          className="w-full text-zinc-500 py-3 pl-11 border border-zinc-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-light focus:border-zinc-500 transition-all duration-300 ease-in-out"
+          className="w-full py-3 transition-all duration-300 ease-in-out border rounded-lg text-zinc-500 pl-11 border-zinc-300 focus:outline-none focus:ring-1 focus:ring-primary-light focus:border-zinc-500"
           id={formType}
           type={formType}
           name={formType}

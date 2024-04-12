@@ -59,6 +59,15 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
       // TODO: update activity
     }
   }
+  function handleEditActivity() {
+    // redirect to edit activity page
+    window.location.href = "/activity/edit-" + selectedActivity?.id;
+  }
+
+  function handleNewActivity() {
+    // redirect to new activity page
+    window.location.href = "/new-activity";
+  }
 
   return (
     <article>
@@ -69,7 +78,10 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
         </div>
         <aside>
           {isLeader && (
-            <button className="bg-primary-dark text-white  w-52 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
+            <button
+              onClick={handleNewActivity}
+              className="flex items-center justify-center h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark w-52 hover:bg-primary-light group"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="icon icon-tabler icon-tabler-calendar-plus"
@@ -96,7 +108,7 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
         </aside>
       </header>
       {/* Activities */}
-      <div className="flex mx-20 gap-10">
+      <div className="flex gap-10 mx-20">
         {ActivitesAccordion(
           activitiesByWeek,
           handleAccordionToggle,
@@ -107,39 +119,38 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
         {/* Activity Details */}
         <aside className="my-6 w-8/12 h-[560px] rounded-lg overflow-y-scroll no-scrollbar shadow-md ">
           {selectedActivity && (
-            <div className="p-4 bg-white rounded-lg h-full flex flex-col gap-2">
+            <div className="flex flex-col h-full gap-2 p-4 bg-white rounded-lg">
               <header>
                 <div className="flex justify-between">
                   <h2 className="text-2xl font-bold">
                     {selectedActivity.name}
                   </h2>
 
-                  <span className="border-2 py-1 px-2 rounded-full border-primary-light text-primary-light text-lg">
+                  <span className="px-2 py-1 text-lg border-2 rounded-full border-primary-light text-primary-light">
                     {selectedActivity.type}
                   </span>
                 </div>
-                <p className="text-xl text-gray-600 -mt-2">
-                  {selectedActivity.date.toDateString()} -{" "}
-                  {selectedActivity.time}
+                <p className="-mt-2 text-xl text-gray-600">
+                  {selectedActivity.date.toDateString()}
                 </p>
               </header>
 
               <section className="flex justify-between">
                 <div>
-                  <p className=" text-xl  font-bold">Responsables:</p>
+                  <p className="text-xl font-bold ">Responsables:</p>
                   <ul>
                     {selectedActivity.responsibles.map((teacher) => (
-                      <li key={teacher.name} className=" text-lg">
+                      <li key={teacher.name} className="text-lg ">
                         - {teacher.name}
                       </li>
                     ))}
                   </ul>
                 </div>
-                <button className=" my-2 shadow-sm flex gap-4  place-items-center px-3 text-gray-400 text-lg rounded-md border-2 border-black/10">
+                <button className="flex gap-4 px-3 my-2 text-lg text-gray-400 border-2 rounded-md shadow-sm place-items-center border-black/10">
                   Archivo <br /> adjunto
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className=" "
+                    className=""
                     width="46"
                     height="46"
                     viewBox="0 0 24 24"
@@ -159,11 +170,11 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
               </section>
               <section>
                 <p className="text-xl font-bold">Descripción:</p>
-                <p className=" text-lg">{selectedActivity.modality}</p>
+                <p className="text-lg ">{selectedActivity.modality}</p>
                 {selectedActivity.modality === "Virtual" && (
                   <a
                     href={selectedActivity.link}
-                    className="text-primary-light text-lg hover:underline"
+                    className="text-lg text-primary-light hover:underline"
                   >
                     Enlace
                   </a>
@@ -176,11 +187,11 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                       onClick={() =>
                         handleActivityStatusChange(ActivityStatus.PUBLICADA)
                       }
-                      className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+                      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className=" "
+                        className=""
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
@@ -206,11 +217,11 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                       onClick={() =>
                         handleActivityStatusChange(ActivityStatus.NOTIFICADA)
                       }
-                      className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+                      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className=" "
+                        className=""
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
@@ -238,11 +249,11 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                       onClick={() =>
                         handleActivityStatusChange(ActivityStatus.REALIZADA)
                       }
-                      className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group"
+                      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className=" "
+                        className=""
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
@@ -265,16 +276,19 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                   {selectedActivity.status === "Realizada" && (
                     <button
                       disabled
-                      className=" bg-gray-600 text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center transition duration-300 ease-in-out group"
+                      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out bg-gray-600 rounded-md group"
                     >
                       Realizada
                     </button>
                   )}
                   {selectedActivity.status !== "Cancelada" && (
-                    <button className="bg-primary-dark text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:bg-primary-light transition duration-300 ease-in-out group">
+                    <button
+                      onClick={handleEditActivity}
+                      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className=" "
+                        className=""
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
@@ -305,7 +319,7 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                       onClick={() =>
                         handleActivityStatusChange(ActivityStatus.CANCELADA)
                       }
-                      className="bg-red-800 text-white w-40 h-12 rounded-md flex gap-2 items-center justify-center hover:brightness-125 transition duration-300 ease-in-out group"
+                      className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-md hover:brightness-125 group"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -5,9 +5,9 @@ import TeacherCard from "../../components/TeacherCard.tsx";
 const { id } = Astro.params;
 ---
 
-<Layout title="GuíaTEC" userType="asistente" currentRoute="profesores">
+<Layout title="GuíaTEC" currentRoute="profesores">
   <div
-    class="absolute -z-10 inset-0 pt-24 lgn:pt-12 h-screen grid place-items-center"
+    class="absolute inset-0 grid h-screen pt-24 -z-10 lgn:pt-12 place-items-center"
   >
     <TeacherCard teacherID={id ?? ""} client:only />
   </div>

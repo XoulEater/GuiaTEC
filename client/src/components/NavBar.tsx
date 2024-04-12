@@ -21,10 +21,10 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
       <Navbar.Brand>
         <img
           src="/favicon copy.svg"
-          className="mr-2 h-20"
+          className="h-20 mr-2"
           alt="Flowbite React Logo"
         />
-        <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white ">
+        <span className="self-center text-3xl font-semibold whitespace-nowrap dark:text-white ">
           GuíaTEC
         </span>
       </Navbar.Brand>
@@ -36,7 +36,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
         >
           <Dropdown.Header>
             <span className="block text-sm">{userDTO.name}</span>
-            <span className="block truncate text-sm font-medium">
+            <span className="block text-sm font-medium truncate">
               {userDTO.email}
             </span>
           </Dropdown.Header>
