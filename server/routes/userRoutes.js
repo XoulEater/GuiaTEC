@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/userSchema');
-
+const User = require('../schemas/userSchema');
 
 // Ver usuarios
 
 router.get('/User', async (req, res) => {
   try {
-    const users = await User.find();
-    res.json(users);
+    const usersss = await User.find();
+    res.json(usersss);
   } catch (error) {
     res.json({ message: error });
   }
@@ -26,8 +25,5 @@ router.post('/registerUser', async (req, res) => {
     res.json({ message: error });
   }
 });
-
-
-
 
 module.exports = router;

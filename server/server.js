@@ -1,38 +1,26 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const routes = require('./routes/rutas');
+const routes = require('./routes/userRoutes');
 
 const app = express();
 
 app.use(express.json());
 
-// Routes
+// Routess
 app.use(routes);
 
 
-
-
 mongoose.connect(process.env.MONGO_URL)
-.then(() => {
-  app.listen(process.env.PORT, () => {
-    console.log('Server is running on ', process.env.PORT);
-    mongoose.connection.db.listCollections().toArray(function (err, names) {
-      if (err) {
-        console.log(err);
-      } else {
-        names.forEach(function (e, i, a) {
-          console.log("-->", e.name);
-        });
-      }
-    });
+  .then(() => {
+    app.listen(process.env.PORT, () => {
+      console.log('Server is running and connected to DB on', process.env.PORT);
+    }); // Add closing parenthesis here
+  })
+
+  .catch((err) => {
+    console.log('Error connecting to database', err);
   });
 
+
   
-})
-
-.catch((err) => {
-  console.log('Error connecting to database', err);
-});
-
-
