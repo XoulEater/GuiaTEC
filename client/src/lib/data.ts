@@ -5,7 +5,7 @@ export interface UserDTO {
   name: string; // full name of the user
   email: string; // email of the user
   password: string; // password of the user
-  code?: string; // unique identifier of the user
+  _id?: string; // unique identifier of the user
   photo?: string; // URL of the photo of the user
   campus: Campus; // campus where the user is located
 }
@@ -13,7 +13,7 @@ export interface UserDTO {
 // DTOs for the data that will be used in the application
 export interface TeacherDTO extends UserDTO {
   userType: 'teacher';
-  code: string; // unique identifier [campus]-[number]
+  _id: string; // unique identifier [campus]-[number]
   officePNumber: string; // office phone number of the teacher
   personalPNumber: string; // personal phone number of the teacher
   photo?: string; // URL of the photo of the teacher
@@ -95,7 +95,7 @@ export enum Campus {
 // Sample data for the development of the application
 export const teachers: TeacherDTO[] = [
   {
-    code: "CA-01",
+    _id: "CA-01",
     name: "Teacher 10",
     email: "email1",
     officePNumber: "123456",
@@ -108,7 +108,7 @@ export const teachers: TeacherDTO[] = [
     userType: 'teacher',
   },
   {
-    code: "AL-02",
+    _id: "AL-02",
     name: "Teacher 2",
     email: "email2",
     officePNumber: "123456",
@@ -121,7 +121,7 @@ export const teachers: TeacherDTO[] = [
     userType: 'teacher',
   },
   {
-    code: "SJ-03",
+    _id: "SJ-03",
     name: "Teacher 3",
     email: "email3",
     officePNumber: "123456",
@@ -134,7 +134,7 @@ export const teachers: TeacherDTO[] = [
     userType: 'teacher',
   },
   {
-    code: "SC-04",
+    _id: "SC-04",
     name: "Teacher 4",
     email: "email4",
     officePNumber: "123456",
@@ -147,7 +147,7 @@ export const teachers: TeacherDTO[] = [
     userType: 'teacher',
   },
   {
-    code: "LI-05",
+    _id: "LI-05",
     name: "Teacher 5",
     email: "email5",
     officePNumber: "123456",

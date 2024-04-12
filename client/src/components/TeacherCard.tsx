@@ -10,11 +10,11 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   const user = localStorage.getItem("user");
   const userDTO = JSON.parse(user as string) as UserDTO;
   const teacher = teachers.find(
-    (teacher: TeacherDTO) => teacher.code === teacherID
+    (teacher: TeacherDTO) => teacher._id === teacherID
   );
 
   const canEdit =
-    userDTO.userType === "assistant" || teacher?.code === userDTO.code;
+    userDTO.userType === "assistant" || teacher?._id === userDTO._id;
 
   const [editing, setEditing] = useState(false);
 
@@ -78,7 +78,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
               <h1 className="text-xl font-medium truncate">{teacher?.name}</h1>
             )}
 
-            <h2 className="text-sm text-zinc-400">{teacher?.code}</h2>
+            <h2 className="text-sm text-zinc-400">{teacher?._id}</h2>
           </div>
           {canEdit && (
             <div className="flex order-1 gap-3">

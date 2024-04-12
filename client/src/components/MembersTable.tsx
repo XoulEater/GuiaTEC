@@ -71,7 +71,7 @@ const MembersTable = () => {
             key={index}
             className={`grid grid-cols-6 h-16 w-full items-center ${rowColorClass} px-2`}
           >
-            <span>{teacher.code}</span>
+            <span>{teacher._id}</span>
             <img
               className="object-cover object-center h-12 rounded-full aspect-square"
               src={teacher.photo}
@@ -80,7 +80,7 @@ const MembersTable = () => {
             <span className="col-span-2 ">{teacher.name}</span>
             <div className="flex items-center col-span-2 gap-4">
               {/* Button to view teacher details */}
-              <a href={`teacher/${teacher.code}`}>
+              <a href={`teacher/${teacher._id}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="transition-all duration-300 ease-out  text-primary-light hover:brightness-150 hover:scale-110"
