@@ -1,4 +1,4 @@
-import mongoose, { Schema, SchemaTypes } from 'mongoose';
+import mongoose, { Schema, SchemaTypes } from "mongoose";
 
 // Define the student schema
 const studentSchema: Schema = new Schema({
@@ -10,4 +10,4 @@ const studentSchema: Schema = new Schema({
 });
 
 // Create and export the student model
-export default mongoose.model('Student', studentSchema);
+export default mongoose.model("Student", studentSchema);

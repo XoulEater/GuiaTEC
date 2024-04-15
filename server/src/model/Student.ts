@@ -7,7 +7,13 @@ export default class StudentDAO {
     private phoneNumber: string;
     private campus: CampusENUM;
 
-    constructor(carnet: string, name: string, email: string, phoneNumber: string, campus: CampusENUM) {
+    constructor(
+        carnet: string,
+        name: string,
+        email: string,
+        phoneNumber: string,
+        campus: CampusENUM
+    ) {
         this.carnet = carnet;
         this.name = name;
         this.email = email;

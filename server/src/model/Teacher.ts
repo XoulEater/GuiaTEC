@@ -1,21 +1,31 @@
-import Campus from './campusENUM';
-import User from './User';
+import Campus from "./campusENUM";
+import User from "./User";
 
 export default class Teacher extends User {
     private officePNumber: string;
     private personalPNumber: string;
     private isLeader: boolean;
-    private userType: 'teacher';
+    private userType: "teacher";
 
     // Constructor
-    constructor(_id: string, name: string, email: string, password: string, campus: Campus, officePNumber: string, personalPNumber: string, isLeader: boolean, userType: 'teacher', photo?: string) {
+    constructor(
+        _id: string,
+        name: string,
+        email: string,
+        password: string,
+        campus: Campus,
+        officePNumber: string,
+        personalPNumber: string,
+        isLeader: boolean,
+        userType: "teacher",
+        photo?: string
+    ) {
         super(_id, name, email, password, photo, campus);
         this.officePNumber = officePNumber;
         this.personalPNumber = personalPNumber;
         this.isLeader = isLeader;
         this.userType = userType;
     }
-
 
     // Getter and Setter for officePNumber
     getOfficePNumber(): string {
@@ -44,4 +54,3 @@ export default class Teacher extends User {
         this.isLeader = isLeader;
     }
 }
-    

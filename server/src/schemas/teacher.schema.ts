@@ -1,44 +1,52 @@
-import mongoose, { Schema } from 'mongoose';
-
+import mongoose, { Schema } from "mongoose";
 
 // Define the schema for the Teacher collection
 const teacherSchema: Schema = new Schema({
-    _id: { // Code of the teacher (e.g. AL-01), includes the campus code
+    _id: {
+        // Code of the teacher (e.g. AL-01), includes the campus code
         type: String,
-        required: true
+        required: true,
     },
-    name: { // Name of the teacher
+    name: {
+        // Name of the teacher
         type: String,
-        required: true
+        required: true,
     },
-    email: { // Email of the teacher
+    email: {
+        // Email of the teacher
         type: String,
-        required: true
+        required: true,
     },
-    password: { // Password of the teacher
+    password: {
+        // Password of the teacher
         type: String,
-        required: true
+        required: true,
     },
-    photo : { // Photo of the teacher (URL)
+    photo: {
+        // Photo of the teacher (URL)
         type: String,
-        required: false
+        required: false,
     },
-    officePNumber: { // Office phone number of the teacher
+    officePNumber: {
+        // Office phone number of the teacher
         type: String,
-        required: true
+        required: true,
     },
-    personalPNumber: { // Personal phone number of the teacher
+    personalPNumber: {
+        // Personal phone number of the teacher
         type: String,
-        required: true
+        required: true,
     },
-    isLeader: { // Indicates if the teacher is the leader of the team
+    isLeader: {
+        // Indicates if the teacher is the leader of the team
         type: Boolean,
-        required: true
+        required: true,
     },
-    campus: { // Campus of the teacher
+    campus: {
+        // Campus of the teacher
         type: String,
-        required: true
+        required: true,
     },
 });
 // Create and export the Teacher model
-export default mongoose.model('Teacher', teacherSchema);
+export default mongoose.model("Teacher", teacherSchema);

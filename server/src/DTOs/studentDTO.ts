@@ -1,5 +1,4 @@
-
-import CampusENUM from '../model/campusENUM';
+import CampusENUM from "../model/campusENUM";
 
 export interface StudentDTO {
     carnet: string;

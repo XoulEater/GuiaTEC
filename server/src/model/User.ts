@@ -1,6 +1,6 @@
 // User OOP class
 
-import Campus from './campusENUM';
+import Campus from "./campusENUM";
 
 class User {
     private id: string;
@@ -11,7 +11,14 @@ class User {
     private campus: Campus;
 
     // Constructor
-    constructor(id: string, name: string, email: string, password: string, photo: string, campus: Campus) {
+    constructor(
+        id: string,
+        name: string,
+        email: string,
+        password: string,
+        photo: string,
+        campus: Campus
+    ) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -69,7 +76,6 @@ class User {
     public setCampus(campus: Campus): void {
         this.campus = campus;
     }
-
 }
 
 export default User;

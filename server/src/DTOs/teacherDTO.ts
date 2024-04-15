@@ -1,6 +1,6 @@
 // Purpose: Interface for teacherDTO.
 
-import Campus from '../model/campusENUM';
+import Campus from "../model/campusENUM";
 
 interface TeacherDTO {
     _id?: string; // unique identifier of the teacher
@@ -8,7 +8,7 @@ interface TeacherDTO {
     email: string; // email of the teacher
     password: string; // password of the teacher
     campus: Campus; // campus of the teacher
-    userType: 'teacher'; // type of the user
+    userType: "teacher"; // type of the user
     photo?: string; // URL of the photo of the teacher
     officePNumber: string; // office phone number of the teacher
     personalPNumber: string; // personal phone number of the teacher
@@ -16,4 +16,3 @@ interface TeacherDTO {
 }
 
 export default TeacherDTO;
-
