@@ -24,11 +24,11 @@ app.use("/api/excel", excelRoutes);
 
 // default get route
 app.get("/", (req, res) => {
-    res.send("Hello World");
+  res.send("Hello World");
 });
 
 app.listen(1234, () => {
-    console.log("Server is running on port 1234");
+  console.log("Server is running on port 1234");
 });
 
 // Database
@@ -38,8 +38,8 @@ const mongoURL = "mongodb+srv://whiit:1228@guiatec.95rtdmj.mongodb.net/";
 mongoose.Promise = Promise;
 mongoose.connect(mongoURL);
 mongoose.connection.on("error", (err) => {
-    console.error(err);
-    process.exit();
+  console.error(err);
+  process.exit();
 });
 
 export default app;

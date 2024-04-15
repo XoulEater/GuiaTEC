@@ -1,16 +1,16 @@
 // API fetch routes for teachers
 
-import type { TeacherDTO } from '../lib/data';
+import type { TeacherDTO } from "../lib/data";
 
-const API_URL = 'http://localhost:1234/api';
+const API_URL = "http://localhost:1234/api";
 
 /**
  * Get all the teachers
  * @returns a promise with the teachers
  */
 export async function getAllTeachers(): Promise<TeacherDTO[]> {
-  const response = await fetch(`${API_URL}/teachers`);
-  return response.json();   
+    const response = await fetch(`${API_URL}/teachers`);
+    return response.json();
 }
 
 /**
@@ -19,9 +19,11 @@ export async function getAllTeachers(): Promise<TeacherDTO[]> {
  * @returns a promise with the teachers
  */
 
-export async function getTeachersByCampus(campus: string): Promise<TeacherDTO[]> {
-  const response = await fetch(`${API_URL}/teachers/campus/${campus}`);
-  return response.json();
+export async function getTeachersByCampus(
+    campus: string
+): Promise<TeacherDTO[]> {
+    const response = await fetch(`${API_URL}/teachers/campus/${campus}`);
+    return response.json();
 }
 
 /**
@@ -30,8 +32,8 @@ export async function getTeachersByCampus(campus: string): Promise<TeacherDTO[]>
  * @returns a promise with the teacher
  */
 export async function getTeacherByCode(code: string): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/teachers/${code}`);
-  return response.json();
+    const response = await fetch(`${API_URL}/teachers/${code}`);
+    return response.json();
 }
 
 /**
@@ -40,15 +42,14 @@ export async function getTeacherByCode(code: string): Promise<TeacherDTO> {
  * @returns a promise with the new teacher
  */
 export async function createTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/teachers`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(teacher)
-  });
-  return response.json();
-
+    const response = await fetch(`${API_URL}/teachers`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(teacher),
+    });
+    return response.json();
 }
 
 /**
@@ -57,14 +58,14 @@ export async function createTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
  * @returns a promise with the updated teacher
  */
 export async function updateTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/teachers/${teacher._id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(teacher)
-  });
-  return response.json();
+    const response = await fetch(`${API_URL}/teachers/${teacher._id}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(teacher),
+    });
+    return response.json();
 }
 
 /**
@@ -74,9 +75,8 @@ export async function updateTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
  */
 
 export async function deleteTeacher(code: string): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/teachers/${code}`, {
-    method: 'DELETE'
-  });
-  return response.json();
+    const response = await fetch(`${API_URL}/teachers/${code}`, {
+        method: "DELETE",
+    });
+    return response.json();
 }
-
