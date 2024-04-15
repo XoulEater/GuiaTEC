@@ -7,7 +7,7 @@ import Teacher from '../model/Teacher';
 /**
  * Class that communicates with the database to perform CRUD operations
  */
-export class TeacherDAO {
+export default class TeacherDAO {
   /**
    * Get all the teachers from the database
    * @returns a list with all the teachers

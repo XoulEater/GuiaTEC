@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import teacherRoutes from './routes/teacherRoutes';
+import excelRoutes from './routes/excelRoutes';
 
 
 const app = express();
@@ -20,6 +21,8 @@ app.use(compression());
 
 // Routes
 app.use('/api/teachers', teacherRoutes);
+app.use('/api/excel', excelRoutes);
+
 
 // default get route
 app.get('/', (req, res) => {

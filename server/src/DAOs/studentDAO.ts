@@ -1,7 +1,7 @@
 // Student DAO that communicates with the database
 
 import StudentSchema from '../schemas/student.schema';
-import Student from 'model/student';
+import Student from 'model/Student';
 
 export default class StudentDAO {
 
@@ -17,13 +17,21 @@ export default class StudentDAO {
     }
 
     /**
+     * Create multiple students in the database
+     * @param students the students to be created
+        */
+    public static async createStudents(students: Student[]) {
+        await StudentSchema.insertMany(students);
+    }
+
+
+    /**
      * Get all the students from the database
-     * @param carnet carnet of the student
      * @returns the student with the given carnet
      */
-    public static async getStudentByCarnet(carnet: string): Promise<Student> {
-        const student = await StudentSchema.findOne({ carnet: carnet });
-        return student ? student.toObject() : null;
+    public static async getAllStudents(): Promise<Student[]> {
+        const student = await StudentSchema.find().exec();
+        return student.map(student => student.toObject());
     }
 
     /**
