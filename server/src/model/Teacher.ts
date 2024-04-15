@@ -1,31 +1,21 @@
-// Teacher OOP class
-
 import Campus from './campusENUM';
 import User from './User';
-import TeacherDTO from '../DTOs/teacherDTO';
 
-
-export class Teacher extends User {
+export default class Teacher extends User {
     private officePNumber: string;
     private personalPNumber: string;
     private isLeader: boolean;
     private userType: 'teacher';
 
     // Constructor
-    constructor(codeOrDTO: string | TeacherDTO, name?: string, email?: string, officePNumber?: string, personalPNumber?: string, photo?: string, campus?: Campus, isLeader?: boolean, password?: string) {
-        if (typeof codeOrDTO === 'string') {
-            super(codeOrDTO, name!, email!, password!, photo!, campus!);
-            this.officePNumber = officePNumber!;
-            this.personalPNumber = personalPNumber!;
-            this.isLeader = isLeader!;
-        } else {
-            const teacherDTO = codeOrDTO;
-            super(teacherDTO._id, teacherDTO.name, teacherDTO.email, teacherDTO.password, teacherDTO.photo, teacherDTO.campus);
-            this.officePNumber = teacherDTO.officePNumber;
-            this.personalPNumber = teacherDTO.personalPNumber;
-            this.isLeader = teacherDTO.isLeader;
-        }
+    constructor(_id: string, name: string, email: string, password: string, campus: Campus, officePNumber: string, personalPNumber: string, isLeader: boolean, userType: 'teacher', photo?: string) {
+        super(_id, name, email, password, photo, campus);
+        this.officePNumber = officePNumber;
+        this.personalPNumber = personalPNumber;
+        this.isLeader = isLeader;
+        this.userType = userType;
     }
+
 
     // Getter and Setter for officePNumber
     getOfficePNumber(): string {

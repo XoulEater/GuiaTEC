@@ -2,7 +2,7 @@
 
 import type { TeacherDTO } from '../lib/data';
 
-const API_URL = 'http://localhost:1234';
+const API_URL = 'http://localhost:1234/api';
 
 /**
  * Get all the teachers
@@ -30,7 +30,7 @@ export async function getTeachersByCampus(campus: string): Promise<TeacherDTO[]>
  * @returns a promise with the teacher
  */
 export async function getTeacherByCode(code: string): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/teacher/${code}`);
+  const response = await fetch(`${API_URL}/teachers/${code}`);
   return response.json();
 }
 

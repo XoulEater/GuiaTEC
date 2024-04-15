@@ -3,9 +3,7 @@
 
 import { Request, Response } from 'express';
 import { TeacherDAO } from '../DAOs/teacherDAO';
-import { Teacher } from '../model/Teacher';
-import TeacherDTO from '../DTOs/teacherDTO';
-import Campus from '../model/campusENUM';
+import Teacher from '../model/Teacher';
 
 
 /**
@@ -49,17 +47,16 @@ export class TeacherController {
    * @param res the response
    */
   public static async createTeacher(req: Request, res: Response): Promise<void> {
-    const teacher: TeacherDTO = req.body;
-
+    const teacher: Teacher = req.body;
     // Generate the code of the teacher (e.g. AL-01)
-    const campus = teacher.campus;
+    const campus = teacher.getCampus();
     const teachers = await TeacherDAO.getTeachersByCampus(campus);
     const lastTeacher = teachers[teachers.length - 1];
-    const lastCode = lastTeacher ? lastTeacher._id : `${campus}-00`;
+    const lastCode = lastTeacher ? lastTeacher.getId() : `${campus}-00`;
     const lastNumber = parseInt(lastCode.split('-')[1]);
     const newNumber = lastNumber + 1;
     const code = `${campus}-${newNumber.toString().padStart(2, '0')}`;
-    teacher._id = code;
+    teacher.setId(code);
     console.log(teacher); 
 
     const newTeacher = await TeacherDAO.createTeacher(teacher);
@@ -73,7 +70,7 @@ export class TeacherController {
    */
   public static async updateTeacher(req: Request, res: Response): Promise<void> {
     const code = req.params.code;
-    const teacher: TeacherDTO = req.body;
+    const teacher: Teacher = req.body;
     const updatedTeacher = await TeacherDAO.updateTeacher(code, teacher);
     res.json(updatedTeacher);
   }

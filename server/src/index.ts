@@ -5,7 +5,8 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
-import routes from './routes/teacherRoutes';
+import teacherRoutes from './routes/teacherRoutes';
+
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(cookieParser());
 app.use(compression());
 
 // Routes
-app.use(routes);
+app.use('/api/teachers', teacherRoutes);
 
 // default get route
 app.get('/', (req, res) => {

@@ -1,8 +1,8 @@
 // Teacher DAO that communicates with the database
+import TeacherSchema from '../schemas/teacher.schema';
+import Teacher from '../model/Teacher';
 
-import Teacher from '../schemas/teacher.schema';
-import TeacherDTO  from '../DTOs/teacherDTO';
-import Campus from 'model/campusENUM';
+
 
 /**
  * Class that communicates with the database to perform CRUD operations
@@ -12,8 +12,8 @@ export class TeacherDAO {
    * Get all the teachers from the database
    * @returns a list with all the teachers
    */
-  public static async getAllTeachers(): Promise<TeacherDTO[]> {
-    const teachers = await Teacher.find().exec();
+  public static async getAllTeachers(): Promise<Teacher[]> {
+    const teachers = await TeacherSchema.find().exec();
     return teachers.map(teacher => teacher.toObject());
   }
 
@@ -22,8 +22,8 @@ export class TeacherDAO {
    * @param code code of the teacher
    * @returns the teacher with the given code
    */
-  public static async getTeacherByCode(code: string): Promise<TeacherDTO> {
-    const teacher = await Teacher.findOne({ _id: code }).exec();
+  public static async getTeacherByCode(code: string): Promise<Teacher> {
+    const teacher = await TeacherSchema.findOne({ _id: code }).exec();
     return teacher ? teacher.toObject() : null;
   }
 
@@ -32,8 +32,8 @@ export class TeacherDAO {
    * @param teacher the teacher to be created
    * @returns the created teacher
    */
-  public static async createTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
-    const newTeacher = await Teacher.create(teacher);
+  public static async createTeacher(teacher: Teacher): Promise<Teacher> {
+    const newTeacher = await TeacherSchema.create(teacher);
     return newTeacher.toObject();
   }
 
@@ -45,9 +45,9 @@ export class TeacherDAO {
    */
   public static async updateTeacher(
     code: string,
-    teacher: TeacherDTO
-  ): Promise<TeacherDTO> {
-    const updatedTeacher = await Teacher.findOneAndUpdate({ _id: code }, teacher, {
+    teacher: Teacher
+  ): Promise<Teacher> {
+    const updatedTeacher = await TeacherSchema.findOneAndUpdate({ _id: code }, teacher, {
       new: true,
     }).exec();
     return updatedTeacher ? updatedTeacher.toObject() : null;
@@ -58,8 +58,8 @@ export class TeacherDAO {
    * @param code code of the teacher
    * @returns the deleted teacher
    */
-  public static async deleteTeacher(code: string): Promise<TeacherDTO> {
-    const teacher = await Teacher.findOneAndDelete({ _id: code }).exec();
+  public static async deleteTeacher(code: string): Promise<Teacher> {
+    const teacher = await TeacherSchema.findOneAndDelete({ _id: code }).exec();
     return teacher ? teacher.toObject() : null;
   }
 
@@ -68,8 +68,8 @@ export class TeacherDAO {
    * @param campus campus of the teachers
    * @returns a list with all the teachers from the campus
    */
-  public static async getTeachersByCampus(campus: string): Promise<TeacherDTO[]> {
-    const teachers = await Teacher.find({ _id: { $regex: `^${campus}-` } }).exec();
+  public static async getTeachersByCampus(campus: string): Promise<Teacher[]> {
+    const teachers = await TeacherSchema.find({ _id: { $regex: `^${campus}-` } }).exec();
     return teachers.map(teacher => teacher.toObject());
   }
 }
