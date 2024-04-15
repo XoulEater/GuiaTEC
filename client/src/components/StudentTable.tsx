@@ -28,7 +28,7 @@ const StudentTable = () => {
       listStudents.splice(listStudents.indexOf(selectedStudent), 1);
     }
     setConfirmDelete(false);
-    // TODO: delete student from the server
+    // TODO: delete student from the backend
   }
 
   // handle edit student
@@ -51,7 +51,7 @@ const StudentTable = () => {
     });
     setStudents(updatedStudents);
     setEditStudent(null);
-    // TODO: save changes to the server
+    // TODO: save changes to the backend
   }
   function handleSort() {
     const newSort =

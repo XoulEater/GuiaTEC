@@ -3,7 +3,7 @@ import { teams } from "../lib/data.ts";
 import { useEffect, useState } from "react";
 import * as teachersService from "../API/teachersService.ts";
 
-const MembersTable = () => {
+const TeachersTable = () => {
   const user = localStorage.getItem("user");
   const userDTO = JSON.parse(user as string) as UserDTO;
   const isAssistant = userDTO.userType === "assistant";
@@ -22,7 +22,7 @@ const MembersTable = () => {
         ...teacher,
         photo:
           teacher.photo ||
-          "https://static.thenounproject.com/png/1095867-200.png",
+          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
       };
     });
     setTeachers(formattedTeachers);
@@ -30,7 +30,7 @@ const MembersTable = () => {
 
   useEffect(() => {
     loadTeachers();
-  }, []);
+  }, [teachers]);
 
   // handle delete
   function handleDelete(teacher: TeacherDTO) {
@@ -43,11 +43,12 @@ const MembersTable = () => {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
     }
     setConfirmDelete(false);
+    // TODO: Implement delete teacher from database?
   }
 
   function handleIncludeTeacher(teacher: TeacherDTO) {
     setTeamTeachers((prevTeachers) => [...prevTeachers, teacher]);
-    // TODO: Implement update team members
+    // TODO: Implement update team members in database
   }
 
   return (
@@ -69,7 +70,7 @@ const MembersTable = () => {
           >
             <span>{teacher._id}</span>
             <img
-              className="object-cover object-center h-12 rounded-full aspect-square"
+              className="object-cover object-center h-12 rounded-full aspect-square border-2 border-white/50 shadow-sm"
               src={teacher.photo}
               alt={teacher.name}
             />
@@ -181,4 +182,4 @@ const MembersTable = () => {
   );
 };
 
-export default MembersTable;
+export default TeachersTable;

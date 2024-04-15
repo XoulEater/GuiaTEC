@@ -9,7 +9,7 @@ const API_URL = 'http://localhost:1234';
  * @returns a promise with the teachers
  */
 export async function getAllTeachers(): Promise<TeacherDTO[]> {
-  const response = await fetch(`${API_URL}/`);
+  const response = await fetch(`${API_URL}/teachers`);
   return response.json();   
 }
 
@@ -20,7 +20,7 @@ export async function getAllTeachers(): Promise<TeacherDTO[]> {
  */
 
 export async function getTeachersByCampus(campus: string): Promise<TeacherDTO[]> {
-  const response = await fetch(`${API_URL}/campus/${campus}`);
+  const response = await fetch(`${API_URL}/teachers/campus/${campus}`);
   return response.json();
 }
 
@@ -30,7 +30,7 @@ export async function getTeachersByCampus(campus: string): Promise<TeacherDTO[]>
  * @returns a promise with the teacher
  */
 export async function getTeacherByCode(code: string): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/${code}`);
+  const response = await fetch(`${API_URL}/teacher/${code}`);
   return response.json();
 }
 
@@ -40,7 +40,7 @@ export async function getTeacherByCode(code: string): Promise<TeacherDTO> {
  * @returns a promise with the new teacher
  */
 export async function createTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/`, {
+  const response = await fetch(`${API_URL}/teachers`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -57,7 +57,7 @@ export async function createTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
  * @returns a promise with the updated teacher
  */
 export async function updateTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/${teacher._id}`, {
+  const response = await fetch(`${API_URL}/teachers/${teacher._id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -72,8 +72,9 @@ export async function updateTeacher(teacher: TeacherDTO): Promise<TeacherDTO> {
  * @param code the code of the teacher to delete
  * @returns a promise with the deleted teacher
  */
+
 export async function deleteTeacher(code: string): Promise<TeacherDTO> {
-  const response = await fetch(`${API_URL}/${code}`, {
+  const response = await fetch(`${API_URL}/teachers/${code}`, {
     method: 'DELETE'
   });
   return response.json();

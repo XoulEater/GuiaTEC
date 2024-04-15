@@ -20,8 +20,7 @@ const TeamDisplay: React.FC = () => {
   }
   function handleNewPlan() {
     // create a new plan and redirect to it
-
-    // this is a mock plan, the real plan should be created in the backend
+    // TODO: this is a mock plan, the real plan should be created in the backend
     const newPlan: WorkPlanDTO = {
       id: "1",
       name: "Nuevo plan",

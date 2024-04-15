@@ -36,6 +36,7 @@ const MembersTable = () => {
   function handleConfirmDelete() {
     if (selectedTeacher) {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
+      // TODO: delete teacher from team members in backend
     }
     checkValidTeam();
     setConfirmDelete(false);
@@ -47,8 +48,8 @@ const MembersTable = () => {
     // set leader to true for selected teacher
     teacher.isLeader = true;
     // update state
-    console.log(teachers);
     setTeachers([...teachers]);
+    // TODO: update team in backend
   }
 
   useEffect(() => {

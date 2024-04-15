@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import type { TeacherDTO, UserDTO } from "../lib/data";
-import { teachers } from "../lib/data";
+import * as teachersService from "../API/teachersService";
 
 interface Props {
   teacherID: string;
@@ -9,9 +9,22 @@ interface Props {
 const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   const user = localStorage.getItem("user");
   const userDTO = JSON.parse(user as string) as UserDTO;
-  const teacher = teachers.find(
-    (teacher: TeacherDTO) => teacher._id === teacherID
-  );
+  const [teacher, setTeacher] = useState<TeacherDTO | null>(null);
+
+  async function loadTeacher() {
+    const res = await teachersService.getTeacherByCode(teacherID);
+    const formattedTeacher = {
+      ...res,
+      photo:
+        res.photo ||
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+    };
+    setTeacher(formattedTeacher);
+  }
+
+  useEffect(() => {
+    loadTeacher();
+  }, []);
 
   const canEdit =
     userDTO.userType === "assistant" || teacher?._id === userDTO._id;

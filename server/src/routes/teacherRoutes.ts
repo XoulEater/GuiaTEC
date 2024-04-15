@@ -7,17 +7,17 @@ const router = express.Router();
 
 // instantiate the controller
 
-router.get('/', TeacherController.getAllTeachers);
+router.get('/teachers/', TeacherController.getAllTeachers);
 
-router.get('/:code', TeacherController.getTeacherByCode);
+router.get('/teacher/:code', TeacherController.getTeacherByCode);
 
-router.get('/campus/:campus', TeacherController.getTeachersByCampus);
+router.get('/teachers/campus/:campus', TeacherController.getTeachersByCampus);
 
-router.post('/', TeacherController.createTeacher);
+router.post('/teacher/', TeacherController.createTeacher);
 
-router.put('/:code', TeacherController.updateTeacher);
+router.put('/teacher/:code', TeacherController.updateTeacher);
 
-router.delete('/:code', TeacherController.deleteTeacher);
+router.delete('/teacher/:code', TeacherController.deleteTeacher);
 
 export default router;
 

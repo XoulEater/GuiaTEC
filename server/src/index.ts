@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 
-// Default 
+// Default middlewares
 app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
