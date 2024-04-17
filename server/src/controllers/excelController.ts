@@ -3,7 +3,7 @@
 
 import { Request, Response } from "express";
 import StudentDAO from "../DAOs/studentDAO";
-import StudentDTO from "DTOs/studentDTO";
+import Student from "model/Student";
 import CampusENUM from "../model/campusENUM";
 // excel import
 import * as xlsx from "xlsx";
@@ -24,8 +24,6 @@ export class ExcelController {
   ): Promise<void> {
     const campus = req.params.campus;
     let students = await StudentDAO.getStudentsByCampus(campus);
-
-    students = students.map(({ campus, ...rest }) => rest);
 
     // Create the excel file
     // cols: carnet, fullName, email, phone
@@ -89,14 +87,14 @@ export class ExcelController {
     // Read the excel file
     const wb = xlsx.readFile(file.path);
     const ws = wb.Sheets[wb.SheetNames[0]];
-    const students = xlsx.utils.sheet_to_json(ws) as StudentDTO[];
+    const students = xlsx.utils.sheet_to_json(ws) as Student[];
 
     // Add the campus to the students
-    const newStudents = students.map((student) => {
-      return { ...student, campus: campus };
+    students.map((student) => {
+      student.setCampus(campus);
     });
 
-    await StudentDAO.createStudents(newStudents);
+    await StudentDAO.createStudents(students);
 
     res.send("File uploaded");
   }
@@ -112,14 +110,15 @@ export class ExcelController {
     res: Response
   ): Promise<void> {
     // Generate the random students
-    const students: StudentDTO[] = [];
+    const students: Student[] = [];
     for (let i = 0; i < 10; i++) {
-      students.push({
-        carnet: Math.floor(Math.random() * 1000000),
-        name: `Student ${i}`,
-        email: `email ${i}`,
-        phoneNumber: `phone ${i}`,
-      });
+      const student = new Student(
+        Math.floor(Math.random() * 1000000),
+        `Student${i}`,
+        `email${i}`,
+        `phone${i}`,
+        CampusENUM.SJ
+      );
     }
     // Create the excel file
     const wb = xlsx.utils.book_new();
