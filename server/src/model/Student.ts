@@ -1,6 +1,6 @@
 import CampusENUM from "./campusENUM";
 
-export default class StudentDAO {
+export default class Student {
   private carnet: number;
   private name: string;
   private email: string;
