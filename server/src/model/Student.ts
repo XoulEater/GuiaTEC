@@ -1,14 +1,14 @@
 import CampusENUM from "./campusENUM";
 
 export default class StudentDAO {
-  private carnet: string;
+  private carnet: number;
   private name: string;
   private email: string;
   private phoneNumber: string;
   private campus: CampusENUM;
 
   constructor(
-    carnet: string,
+    carnet: number,
     name: string,
     email: string,
     phoneNumber: string,
@@ -22,7 +22,7 @@ export default class StudentDAO {
   }
 
   // Getters
-  public getCarnet(): string {
+  public getCarnet(): number {
     return this.carnet;
   }
 
@@ -43,7 +43,7 @@ export default class StudentDAO {
   }
 
   // Setters
-  public setCarnet(carnet: string): void {
+  public setCarnet(carnet: number): void {
     this.carnet = carnet;
   }
 

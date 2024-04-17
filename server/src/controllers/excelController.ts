@@ -3,7 +3,7 @@
 
 import { Request, Response } from "express";
 import StudentDAO from "../DAOs/studentDAO";
-import Student from "../model/Student";
+import StudentDTO from "DTOs/studentDTO";
 import CampusENUM from "../model/campusENUM";
 // excel import
 import * as xlsx from "xlsx";
@@ -23,13 +23,15 @@ export class ExcelController {
     res: Response
   ): Promise<void> {
     const campus = req.params.campus;
-    const students = await StudentDAO.getStudentsByCampus(campus);
+    let students = await StudentDAO.getStudentsByCampus(campus);
+
+    students = students.map(({ campus, ...rest }) => rest);
 
     // Create the excel file
     // cols: carnet, fullName, email, phone
     const wb = xlsx.utils.book_new();
     const ws = xlsx.utils.json_to_sheet(students);
-    // TODO: remove unnecessary columns
+
     xlsx.utils.book_append_sheet(wb, ws, "Students");
     const excelFileName = `students-${campus}.xlsx`;
     xlsx.writeFile(wb, excelFileName);
@@ -55,6 +57,7 @@ export class ExcelController {
       campuses.map(async (campus) => {
         // Get the students for the campus
         const campusStudents = await StudentDAO.getStudentsByCampus(campus);
+
         const ws = xlsx.utils.json_to_sheet(campusStudents);
         xlsx.utils.book_append_sheet(wb, ws, campus);
       })
@@ -75,31 +78,58 @@ export class ExcelController {
     res: Response
   ): Promise<void> {
     // Get the file
+    const campus = req.body.campus as CampusENUM;
+
     const file = req.file;
     if (!file) {
       res.status(400).send("No file uploaded");
       return;
     }
-    const campus = req.body.campus;
 
     // Read the excel file
     const wb = xlsx.readFile(file.path);
     const ws = wb.Sheets[wb.SheetNames[0]];
-    const students = xlsx.utils.sheet_to_json(ws) as Student[];
+    const students = xlsx.utils.sheet_to_json(ws) as StudentDTO[];
 
-    // Create the students
-    const newStudents = students.map(
-      (student) =>
-        new Student(
-          student.getCarnet(),
-          student.getName(),
-          student.getEmail(),
-          student.getPhoneNumber(),
-          campus
-        )
-    );
+    // Add the campus to the students
+    const newStudents = students.map((student) => {
+      return { ...student, campus: campus };
+    });
+
     await StudentDAO.createStudents(newStudents);
 
     res.send("File uploaded");
+  }
+
+  /**
+   * Generate sample excel file
+   * @param req the request
+   * @param res the response
+   */
+
+  public static async generateSampleFile(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    // Generate the random students
+    const students: StudentDTO[] = [];
+    for (let i = 0; i < 10; i++) {
+      students.push({
+        carnet: Math.floor(Math.random() * 1000000),
+        name: `Student ${i}`,
+        email: `email ${i}`,
+        phoneNumber: `phone ${i}`,
+      });
+    }
+    // Create the excel file
+    const wb = xlsx.utils.book_new();
+    const ws = xlsx.utils.json_to_sheet(students);
+    // remove column E (campus) from the excel file
+
+    xlsx.utils.book_append_sheet(wb, ws, "Students");
+    const excelFileName = `students-sample.xlsx`;
+    xlsx.writeFile(wb, excelFileName);
+
+    res.download(excelFileName);
   }
 }

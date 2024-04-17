@@ -18,6 +18,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(compression());
 
+app.use(express.static("public"));
+
 // Routes
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/excel", excelRoutes);

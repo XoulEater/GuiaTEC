@@ -13,4 +13,6 @@ router.get("/download/", ExcelController.downloadAllStudents);
 
 router.post("/upload", upload.single("file"), ExcelController.uploadStudents);
 
+router.get("/sample/", ExcelController.generateSampleFile);
+
 export default router;

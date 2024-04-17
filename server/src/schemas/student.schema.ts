@@ -2,7 +2,7 @@ import mongoose, { Schema, SchemaTypes } from "mongoose";
 
 // Define the student schema
 const studentSchema: Schema = new Schema({
-  carnet: { type: SchemaTypes.ObjectId, required: true },
+  carnet: { type: Number, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
   phoneNumber: { type: String, required: true },
