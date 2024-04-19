@@ -18,7 +18,6 @@ export async function getAllTeachers(): Promise<TeacherDTO[]> {
  * @param campus the campus
  * @returns a promise with the teachers
  */
-
 export async function getTeachersByCampus(
     campus: string
 ): Promise<TeacherDTO[]> {
