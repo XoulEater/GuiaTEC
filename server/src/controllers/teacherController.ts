@@ -2,7 +2,7 @@
 // uses the TeacherDAO to perform the operations
 
 import { Request, Response } from "express";
-import TeacherDAO from "../DAOs/teacherDAO";
+import TeacherDAO from "../DAOs/teacher";
 import Teacher from "../model/Teacher";
 
 /**
