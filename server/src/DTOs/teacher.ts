@@ -3,7 +3,7 @@
 import Campus from "../model/campusENUM";
 
 interface TeacherDTO {
-  _id?: string; // unique identifier of the teacher
+  id?: string; // unique identifier of the teacher
   name: string; // name of the teacher
   email: string; // email of the teacher
   password: string; // password of the teacher

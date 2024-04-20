@@ -12,12 +12,12 @@ class User {
 
   // Constructor
   constructor(
-    id: string,
     name: string,
     email: string,
     password: string,
     photo: string,
-    campus: Campus
+    campus: Campus,
+    id?: string,
   ) {
     this.id = id;
     this.name = name;
