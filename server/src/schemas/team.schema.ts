@@ -15,20 +15,20 @@ const teamSchema: Schema = new Schema({
     type: String,
     required: true,
   },
-  workPlans  : {
+  workPlans: {
+    // FIXME: check how to do nested schemas
     type: Array,
     required: false,
   },
 
   members: {
+    // FIXME: check how to do nested schemas
     type: Array,
     required: true,
   },
-
 });
 // Create and export the Teacher model
 export default mongoose.model("Team", teamSchema);
-
 
 // {
 //   "id" : "T1",

@@ -5,9 +5,16 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import teacherRoutes from "./routes/teacherRoutes";
 import excelRoutes from "./routes/excelRoutes";
 import teamRoutes from "./routes/teamRoutes";
+
+dotenv.config();
+
+// TODO: Add the connection string to the .env file
+// get the conection string from the environment
+const connectionString = process.env.MONGO_CONNECTION_STRING;
 
 const app = express();
 
@@ -36,7 +43,7 @@ app.listen(1234, () => {
 });
 
 // Database
-const mongoURL = "mongodb+srv://david:1234@guiatec-clusetr0.iapwai5.mongodb.net/GuiaTEC?retryWrites=true&w=majority&appName=guiaTEC-Clusetr0";
+const mongoURL = connectionString;
 
 // Connect to MongoDB
 mongoose.Promise = Promise;

@@ -7,6 +7,7 @@ export default class Team {
   private workPlans: Array<any>;
   private members: Array<any>;
 
+  // FIXME: add the option of a normal constructor, not only the DTO [see Teacher.ts]
   constructor(team: TeamDTO) {
     this.id = team.id;
     this.name = team.name;
