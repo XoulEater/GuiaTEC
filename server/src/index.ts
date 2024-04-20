@@ -12,10 +12,6 @@ import teamRoutes from "./routes/teamRoutes";
 
 dotenv.config();
 
-// TODO: Add the connection string to the .env file
-// get the conection string from the environment
-const connectionString = process.env.MONGO_CONNECTION_STRING;
-
 const app = express();
 
 app.use(express.json());
@@ -42,12 +38,10 @@ app.listen(1234, () => {
   console.log("Server is running on port 1234");
 });
 
-// Database
-const mongoURL = connectionString;
-
 // Connect to MongoDB
 mongoose.Promise = Promise;
-mongoose.connect(mongoURL);
+// TODO: Add the connection string to the .env file
+mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 mongoose.connection.on("error", (err) => {
   console.error(err);
   process.exit();
