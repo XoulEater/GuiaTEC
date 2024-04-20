@@ -34,7 +34,7 @@ app.listen(1234, () => {
 });
 
 // Database
-const mongoURL = "mongodb+srv://whiit:1228@guiatec.95rtdmj.mongodb.net/";
+const mongoURL = "mongodb+srv://david:1234@guiatec-clusetr0.iapwai5.mongodb.net/GuiaTEC?retryWrites=true&w=majority&appName=guiaTEC-Clusetr0";
 
 // Connect to MongoDB
 mongoose.Promise = Promise;
@@ -42,6 +42,9 @@ mongoose.connect(mongoURL);
 mongoose.connection.on("error", (err) => {
   console.error(err);
   process.exit();
+});
+mongoose.connection.once("open", () => {
+  console.log("Conexión exitosa a la base de datos.");
 });
 
 export default app;

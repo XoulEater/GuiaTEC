@@ -2,7 +2,7 @@
 // uses the studentDAO to perform the operations
 
 import { Request, Response } from "express";
-import StudentDAO from "../DAOs/studentDAO";
+import StudentDAO from "../DAOs/student";
 import Student from "../model/Student";
 
 /**
