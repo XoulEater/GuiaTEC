@@ -4,6 +4,7 @@
 import { Request, Response } from "express";
 import TeacherDAO from "../DAOs/teacher";
 import Teacher from "../model/Teacher";
+import TeacherDTO from "DTOs/teacher";
 
 /**
  * Class that handles the requests related to teachers
@@ -58,7 +59,8 @@ export class TeacherController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const teacher: Teacher = req.body;
+    const teacherData: TeacherDTO = req.body;
+    const teacher = new Teacher(teacherData);
     // Generate the code of the teacher (e.g. AL-01)
     const campus = teacher.getCampus();
     const teachers = await TeacherDAO.getTeachersByCampus(campus);
@@ -70,8 +72,8 @@ export class TeacherController {
     teacher.setId(code);
     console.log(teacher);
 
-    const newTeacher = await TeacherDAO.createTeacher(teacher);
-    res.json(newTeacher);
+    await TeacherDAO.createTeacher(teacher);
+    res.json({ message: "Teacher created" });
   }
 
   /**
@@ -84,9 +86,10 @@ export class TeacherController {
     res: Response
   ): Promise<void> {
     const code = req.params.code;
-    const teacher: Teacher = req.body;
-    const updatedTeacher = await TeacherDAO.updateTeacher(code, teacher);
-    res.json(updatedTeacher);
+    const teacherData: TeacherDTO = req.body;
+    const teacher = new Teacher(teacherData);
+    await TeacherDAO.updateTeacher(code, teacher);
+    res.json({ message: "Teacher updated" });
   }
 
   /**
@@ -99,7 +102,7 @@ export class TeacherController {
     res: Response
   ): Promise<void> {
     const code = req.params.code;
-    const teacher = await TeacherDAO.deleteTeacher(code);
-    res.json(teacher);
+    await TeacherDAO.deleteTeacher(code);
+    res.json({ message: "Teacher deleted" });
   }
 }
