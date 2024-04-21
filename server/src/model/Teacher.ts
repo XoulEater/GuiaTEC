@@ -1,3 +1,4 @@
+import TeacherDTO from "DTOs/teacher";
 import Campus from "./campusENUM";
 import User from "./User";
 
@@ -7,24 +8,37 @@ export default class Teacher extends User {
   private isLeader: boolean;
   private userType: "teacher";
 
-  // Constructor
+  // Constructor, include the posibility to use TeacherDTO instead of all the parameters
   constructor(
-    _id: string,
-    name: string,
-    email: string,
-    password: string,
-    campus: Campus,
-    officePNumber: string,
-    personalPNumber: string,
-    isLeader: boolean,
-    userType: "teacher",
+    IDorDTO: string | TeacherDTO,
+    name?: string,
+    email?: string,
+    password?: string,
+    campus?: Campus,
+    officePNumber?: string,
+    personalPNumber?: string,
+    isLeader?: boolean,
     photo?: string
   ) {
-    super(_id, name, email, password, photo, campus);
-    this.officePNumber = officePNumber;
-    this.personalPNumber = personalPNumber;
-    this.isLeader = isLeader;
-    this.userType = userType;
+    if (typeof IDorDTO === "string") {
+      super(name, email, password, photo, campus, IDorDTO);
+      this.officePNumber = officePNumber;
+      this.personalPNumber = personalPNumber;
+      this.isLeader = isLeader;
+      this.userType = "teacher";
+    } else {
+      super(
+        IDorDTO.name,
+        IDorDTO.email,
+        IDorDTO.password,
+        IDorDTO.photo,
+        IDorDTO.campus,
+        IDorDTO.id
+      );
+      this.officePNumber = IDorDTO.officePNumber;
+      this.personalPNumber = IDorDTO.personalPNumber;
+      this.isLeader = IDorDTO.isLeader;
+    }
   }
 
   // Getter and Setter for officePNumber

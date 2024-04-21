@@ -3,7 +3,7 @@
 
 import { Request, Response } from "express";
 import StudentDAO from "../DAOs/student";
-import Student from "model/Student";
+import Student from "../model/Student";
 import CampusENUM from "../model/campusENUM";
 // excel import
 import * as xlsx from "xlsx";

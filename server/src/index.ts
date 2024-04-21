@@ -5,8 +5,12 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import cors from "cors";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import teacherRoutes from "./routes/teacherRoutes";
 import excelRoutes from "./routes/excelRoutes";
+import teamRoutes from "./routes/teamRoutes";
+
+dotenv.config();
 
 const app = express();
 
@@ -23,6 +27,7 @@ app.use(express.static("public"));
 // Routes
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/excel", excelRoutes);
+app.use("/api/teams", teamRoutes);
 
 // default get route
 app.get("/", (req, res) => {
@@ -33,15 +38,16 @@ app.listen(1234, () => {
   console.log("Server is running on port 1234");
 });
 
-// Database
-const mongoURL = "mongodb+srv://whiit:1228@guiatec.95rtdmj.mongodb.net/";
-
 // Connect to MongoDB
 mongoose.Promise = Promise;
-mongoose.connect(mongoURL);
+// TODO: Add the connection string to the .env file
+mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 mongoose.connection.on("error", (err) => {
   console.error(err);
   process.exit();
+});
+mongoose.connection.once("open", () => {
+  console.log("Conexión exitosa a la base de datos.");
 });
 
 export default app;
