@@ -46,10 +46,8 @@ export class WorkplanController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const workplan: Workplan = req.body;
-    // Generate the id of the workplan 
-    // hacer 
-
+    const workplan = new Workplan("Plan de Trabajo", "Descripcion", [], 2024, 1);
+    
     const newWorkplan = await WorkplanDAO.createWorkplan(workplan);
     res.json(newWorkplan);
   }

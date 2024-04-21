@@ -3,7 +3,7 @@ import { WorkplanController } from "../controllers/workplanController";
 
 const router = express.Router();
 
-// Teacher routes
+// Workplan routes
 router.get("/", WorkplanController.getAllWorkplans);
 router.get("/:code", WorkplanController.getWorkplanById);
 router.post("/", WorkplanController.createWorkplan);

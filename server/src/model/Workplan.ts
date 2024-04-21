@@ -1,20 +1,30 @@
-//import Activity from "./Activity.ts"
+ class Activity {
+
+
+ }
+
 export default class Workplan  {
     private name: string;
     private description: string;
     private activities: Activity[];
+    private year: number;
+    private semester: number;
   
     // Constructor
     constructor(
       name: string,
       description: string,
-      activity: Activity[],
+      activities: Activity[],
+      year: number,
+      semester: number
 
     ) {
       
       this.name = name;
       this.description = description;
-      this.activities = this.activities;
+      this.activities = activities;
+      this.year = year;
+      this.semester = semester;
     }
   
     // Getter and Setter for name

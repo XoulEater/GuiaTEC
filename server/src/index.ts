@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import teacherRoutes from "./routes/teacherRoutes";
 import excelRoutes from "./routes/excelRoutes";
 import teamRoutes from "./routes/teamRoutes";
+import workplanRoutes from "./routes/workplanRoutes";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use(express.static("public"));
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/excel", excelRoutes);
 app.use("/api/teams", teamRoutes);
+app.use("/api/workplans", workplanRoutes);
 
 // default get route
 app.get("/", (req, res) => {

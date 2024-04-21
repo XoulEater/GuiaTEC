@@ -3,11 +3,7 @@ import mongoose, { Schema, SchemaTypes } from "mongoose";
 
 // Define the schema for the Teacher collection
 const workplanSchema: Schema = new Schema({
-    _id: {
-      // Code of the workplan
-      type: String,
-      required: true,
-    },
+    
     name: {
       // Name of the workplan
       type: String,
