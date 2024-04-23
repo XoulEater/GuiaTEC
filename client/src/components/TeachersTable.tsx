@@ -1,5 +1,4 @@
 import type { TeacherDTO, TeamDTO, UserDTO } from "../lib/data.ts";
-import { teams } from "../lib/data.ts";
 import { useEffect, useState } from "react";
 import * as teachersService from "../API/teachersService.ts";
 import * as teamService from "../API/teamService.ts";
@@ -31,14 +30,22 @@ const TeachersTable = () => {
 
   const loadMembers = async () => {
     const res = await teamService.getAllMembers();
-    setTeamTeachers(res);
+    const formattedTeachers = res.map((teacher) => {
+      return {
+        ...teacher,
+        photo:
+          teacher.photo ||
+          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+      };
+    });
+    setTeamTeachers(formattedTeachers);
   }
 
 
   useEffect(() => {
     loadTeachers();
     loadMembers();
-  }, [teachers, teamTeachers]);
+  }, []);
 
   // handle delete
   function handleDelete(teacher: TeacherDTO) {
@@ -56,7 +63,7 @@ const TeachersTable = () => {
 
   function handleIncludeTeacher(teacher: TeacherDTO) {
     setTeamTeachers((prevTeachers) => [...prevTeachers, teacher]);
-    // TODO: Implement update team members in database
+    teamService.addMember(teacher.id);
   }
 
   return (
@@ -76,7 +83,7 @@ const TeachersTable = () => {
             key={index}
             className={`grid grid-cols-8 h-16 w-full items-center ${rowColorClass} px-2`}
           >
-            <span>{teacher._id}</span>
+            <span>{teacher.id}</span>
             <img
               className="object-cover object-center h-12 rounded-full aspect-square border-2 border-white/50 shadow-sm"
               src={teacher.photo}
@@ -85,7 +92,7 @@ const TeachersTable = () => {
             <span className="col-span-2 ">{teacher.name}</span>
             <span className="col-span-2 ">{teacher.personalPNumber}</span>
             <div className="flex items-center col-span-2 gap-4">
-              <a href={`teacher/${teacher._id}`}>
+              <a href={`teacher/${teacher.id}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="transition-all duration-300 ease-out  text-primary-light hover:brightness-150 hover:scale-110"
@@ -127,9 +134,9 @@ const TeachersTable = () => {
                 </button>
               )}
 
-              {teacher !==
-                teamTeachers.find(
-                  (teamTeacher) => teamTeacher._id === teacher._id
+              {
+                !teamTeachers.find(
+                  (teamTeacher) => teamTeacher.id === teacher.id
                 ) &&
                 isAssistant && (
                   <button onClick={() => handleIncludeTeacher(teacher)}>

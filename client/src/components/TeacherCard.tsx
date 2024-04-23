@@ -27,7 +27,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   }, []);
 
   const canEdit =
-    userDTO.userType === "assistant" || teacher?._id === userDTO._id;
+    userDTO.userType === "assistant" || teacher?.id === userDTO.id;
 
   const [editing, setEditing] = useState(false);
 
@@ -91,7 +91,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
               <h1 className="text-xl font-medium truncate">{teacher?.name}</h1>
             )}
 
-            <h2 className="text-sm text-zinc-400">{teacher?._id}</h2>
+            <h2 className="text-sm text-zinc-400">{teacher?.id}</h2>
           </div>
           {canEdit && (
             <div className="flex order-1 gap-3">

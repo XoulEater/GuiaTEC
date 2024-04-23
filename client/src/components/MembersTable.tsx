@@ -1,6 +1,7 @@
 import type { TeacherDTO, TeamDTO, UserDTO } from "../lib/data.ts";
 import { teachers, teams, Campus } from "../lib/data.ts";
 import { useEffect, useState } from "react";
+import * as teamService from "../API/teamService.ts";
 
 const MembersTable = () => {
   const user = localStorage.getItem("user");
@@ -16,16 +17,39 @@ const MembersTable = () => {
     const campuses = Object.values(Campus);
     setIsValidTeam(
       campuses.every((campus) =>
-        teams.members.some((teacher) => teacher.campus === campus)
+        teachers.some((teacher) => teacher.campus === campus)
       )
     );
   }
 
-  const [teachers, setTeachers] = useState(teams.members);
+  const [currentLeader, setCurrentLeader] = useState<string | null>(null);
+  const [teachers, setTeachers] = useState<TeacherDTO[]>([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(
     null
   );
+
+  const loadTeachers = async () => {
+    const res = await teamService.getAllMembers();
+    const formattedTeachers = res.map((teacher) => {
+      if (teacher.isLeader) {
+        console.log("leader", teacher);
+        setCurrentLeader(teacher.id);
+      }
+      return {
+        ...teacher,
+        photo:
+          teacher.photo ||
+          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
+      };
+    });
+    setTeachers(formattedTeachers);
+  };
+  
+
+  useEffect(() => {
+    loadTeachers();
+  }, []);
 
   // handle delete
   function handleDelete(teacher: TeacherDTO) {
@@ -36,20 +60,16 @@ const MembersTable = () => {
   function handleConfirmDelete() {
     if (selectedTeacher) {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
-      // TODO: delete teacher from team members in backend
+      teamService.removeMember(selectedTeacher.id);
     }
     checkValidTeam();
     setConfirmDelete(false);
   }
 
-  function handleLeaderChange(teacher: TeacherDTO) {
+  async function handleLeaderChange(teacher: TeacherDTO) {
     // set leader to false for all teachers
-    teachers.forEach((t) => (t.isLeader = false));
-    // set leader to true for selected teacher
-    teacher.isLeader = true;
-    // update state
-    setTeachers([...teachers]);
-    // TODO: update team in backend
+    await teachers.forEach((t) => t === teacher ? teamService.setCoordinator(t.id, true) :  teamService.setCoordinator(t.id, false));
+    setCurrentLeader(teacher.id);
   }
 
   useEffect(() => {
@@ -66,13 +86,12 @@ const MembersTable = () => {
       </header>
       {teachers.map((teacher: TeacherDTO, index) => {
         const rowColorClass = index % 2 === 0 ? "bg-white" : "bg-zinc-200";
-
         return (
           <div
             key={index}
             className={`grid grid-cols-6 h-16 w-full items-center ${rowColorClass} px-2`}
           >
-            <span>{teacher._id}</span>
+            <span>{teacher.id}</span>
             <img
               className="object-cover object-center h-12 rounded-full aspect-square"
               src={teacher.photo}
@@ -81,7 +100,7 @@ const MembersTable = () => {
             <span className="col-span-2 ">{teacher.name}</span>
             <div className="flex items-center col-span-2 gap-4">
               {/* Button to view teacher details */}
-              <a href={`teacher/${teacher._id}`}>
+              <a href={`teacher/${teacher.id}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="transition-all duration-300 ease-out  text-primary-light hover:brightness-150 hover:scale-110"
@@ -128,7 +147,7 @@ const MembersTable = () => {
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className={`${
-                      teacher.isLeader
+                      teacher.id === currentLeader
                         ? "text-amber-500 hover:brightness-125"
                         : "text-zinc-400 hover:brightness-90"
                     } hover:scale-110 transition-all  duration-300 ease-out`}

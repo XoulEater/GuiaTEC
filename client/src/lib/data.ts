@@ -1,19 +1,19 @@
 // FIXME: This file is for testing purposes only, it will be removed in the future
 
 export interface UserDTO {
-  userType?: 'teacher' | 'assistant'; // type of the user
+  userType?: "teacher" | "assistant"; // type of the user
   name: string; // full name of the user
   email: string; // email of the user
   password: string; // password of the user
-  _id?: string; // unique identifier of the user
+  id?: string; // unique identifier of the user
   photo?: string; // URL of the photo of the user
   campus: Campus; // campus where the user is located
 }
 
 // DTOs for the data that will be used in the application
 export interface TeacherDTO extends UserDTO {
-  userType: 'teacher';
-  _id: string; // unique identifier [campus]-[number]
+  userType: "teacher";
+  id: string; // unique identifier [campus]-[number]
   officePNumber: string; // office phone number of the teacher
   personalPNumber: string; // personal phone number of the teacher
   photo?: string; // URL of the photo of the teacher
@@ -21,9 +21,8 @@ export interface TeacherDTO extends UserDTO {
 }
 
 export interface AssistantDTO extends UserDTO {
-  userType: 'assistant';
+  userType: "assistant";
 }
-
 
 export enum ActivityType {
   ORIENTADORA = "Orientadora",
@@ -65,7 +64,7 @@ export interface ActivityDTO {
 export interface WorkPlanDTO {
   id: string; // unique identifier of the work plan
   name: string; // name of the work plan
-  description: string; // description of the work plan 
+  description: string; // description of the work plan
   activities: ActivityDTO[]; // list of activities in the work plan
 }
 
@@ -76,15 +75,15 @@ export interface TeamDTO {
   workPlans: WorkPlanDTO[]; // list of work plans in the team
 }
 
-export interface StudentDTO extends UserDTO{
-  carnet: string; // unique identifier of the student 
+export interface StudentDTO extends UserDTO {
+  carnet: string; // unique identifier of the student
   name: string; // full name of the student
   email: string; // email of the student
   personalPNumber: string; // personal phone number of the student
 }
 
 // Enum for the campus where the teacher is located
-export enum Campus { 
+export enum Campus {
   CA = "CA",
   AL = "AL",
   SJ = "SJ",
@@ -95,7 +94,7 @@ export enum Campus {
 // Sample data for the development of the application
 export const teachers: TeacherDTO[] = [
   {
-    _id: "CA-01",
+    id: "CA-01",
     name: "Teacher 10",
     email: "email1",
     officePNumber: "123456",
@@ -105,10 +104,10 @@ export const teachers: TeacherDTO[] = [
     campus: Campus.CA,
     isLeader: true,
     password: "12345",
-    userType: 'teacher',
+    userType: "teacher",
   },
   {
-    _id: "AL-02",
+    id: "AL-02",
     name: "Teacher 2",
     email: "email2",
     officePNumber: "123456",
@@ -118,10 +117,10 @@ export const teachers: TeacherDTO[] = [
     campus: Campus.AL,
     isLeader: false,
     password: "12345",
-    userType: 'teacher',
+    userType: "teacher",
   },
   {
-    _id: "SJ-03",
+    id: "SJ-03",
     name: "Teacher 3",
     email: "email3",
     officePNumber: "123456",
@@ -131,10 +130,10 @@ export const teachers: TeacherDTO[] = [
     campus: Campus.SJ,
     isLeader: false,
     password: "12345",
-    userType: 'teacher',
+    userType: "teacher",
   },
   {
-    _id: "SC-04",
+    id: "SC-04",
     name: "Teacher 4",
     email: "email4",
     officePNumber: "123456",
@@ -144,10 +143,10 @@ export const teachers: TeacherDTO[] = [
     campus: Campus.SC,
     isLeader: false,
     password: "12345",
-    userType: 'teacher',
+    userType: "teacher",
   },
   {
-    _id: "LI-05",
+    id: "LI-05",
     name: "Teacher 5",
     email: "email5",
     officePNumber: "123456",
@@ -157,44 +156,42 @@ export const teachers: TeacherDTO[] = [
     campus: Campus.LI,
     isLeader: false,
     password: "12345",
-    userType: 'teacher',
+    userType: "teacher",
   },
 ];
 
-export const assistants: (AssistantDTO)[] = [
+export const assistants: AssistantDTO[] = [
   {
     name: "Assistant 1",
     email: "assistant1@guiatec.com",
     campus: Campus.CA,
     password: "12345",
-    userType: 'assistant',
+    userType: "assistant",
   },
   {
     name: "Assistant 2",
     email: "assistant2@guiatec.com",
     campus: Campus.AL,
     password: "12345",
-    userType: 'assistant',
+    userType: "assistant",
   },
   {
     name: "Assistant 3",
     email: "assistant3@guiatec.com",
     campus: Campus.SJ,
     password: "12345",
-    userType: 'assistant',
+    userType: "assistant",
   },
   {
     name: "Assistant 4",
     email: "assistant4@guiatec.com",
     campus: Campus.SC,
     password: "12345",
-    userType: 'assistant',
+    userType: "assistant",
   },
 ];
 
-
-export const activities: ActivityDTO[] = [
-];
+export const activities: ActivityDTO[] = [];
 for (let i = 1; i <= 30; i++) {
   const activity1: ActivityDTO = {
     id: i.toString(),
@@ -204,12 +201,19 @@ for (let i = 1; i <= 30; i++) {
     publicationDate: new Date(),
     reminderInterval: 15,
     responsibles: teachers.slice(0, 2),
-    type: Object.values(ActivityType)[Math.floor(Math.random() * Object.keys(ActivityType).length / 2)],
-    modality: Object.values(Modalities)[Math.floor(Math.random() * Object.keys(Modalities).length / 2)],
-    status: Object.values(ActivityStatus)[Math.floor(Math.random() * Object.keys(ActivityStatus).length / 1)],
+    type: Object.values(ActivityType)[
+      Math.floor((Math.random() * Object.keys(ActivityType).length) / 2)
+    ],
+    modality:
+      Object.values(Modalities)[
+        Math.floor((Math.random() * Object.keys(Modalities).length) / 2)
+      ],
+    status:
+      Object.values(ActivityStatus)[
+        Math.floor((Math.random() * Object.keys(ActivityStatus).length) / 1)
+      ],
     link: "https://www.google.com",
     attachmentFile: "https://www.google.com",
-
   };
   activities.push(activity1);
 }
@@ -242,19 +246,14 @@ export const workPlans: WorkPlanDTO[] = [
   },
 ];
 
+export const teams: TeamDTO = {
+  name: "TeamDTO 1",
+  description: "Description 1",
+  members: teachers.slice(0, 5),
+  workPlans: workPlans,
+};
 
-
-export const teams: TeamDTO = 
-  {
-    name: "TeamDTO 1",
-    description: "Description 1",
-    members: teachers.slice(0, 5),
-    workPlans: workPlans,
-  }
-
-export const students: StudentDTO[] = [
-
-];
+export const students: StudentDTO[] = [];
 for (let i = 1; i <= 24; i++) {
   const student: StudentDTO = {
     carnet: `201800${i}`,
@@ -262,7 +261,10 @@ for (let i = 1; i <= 24; i++) {
     email: `email${i}`,
     password: "12345",
     personalPNumber: Math.floor(Math.random() * 1000000000).toString(),
-    campus: Object.values(Campus)[Math.floor(Math.random() * Object.keys(Campus).length / 2)],
+    campus:
+      Object.values(Campus)[
+        Math.floor((Math.random() * Object.keys(Campus).length) / 2)
+      ],
   };
   students.push(student);
 }
