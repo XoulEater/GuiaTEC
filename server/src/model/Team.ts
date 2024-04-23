@@ -7,13 +7,28 @@ export default class Team {
   private workPlans: Array<any>;
   private members: Array<any>;
 
-  // FIXME: add the option of a normal constructor, not only the DTO [see Teacher.ts]
-  constructor(team: TeamDTO) {
-    this.id = team.id;
-    this.name = team.name;
-    this.description = team.description;
-    this.workPlans = team.workPlans;
-    this.members = team.members;
+  constructor(
+    IDOrDTO: string | TeamDTO,
+    id?: string, 
+    name?: string,
+    description?: string,
+    workPlans?: Array<any>,
+    members?: Array<any>
+    ){
+      if (typeof IDOrDTO === "string") {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.workPlans = workPlans;
+        this.members = members;
+      } else 
+      {
+        IDOrDTO.id,
+        IDOrDTO.name,
+        IDOrDTO.description,
+        IDOrDTO.workPlans,
+        IDOrDTO.members
+      }
   }
 
   public getId(): string {
