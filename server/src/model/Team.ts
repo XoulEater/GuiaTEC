@@ -1,4 +1,6 @@
 import TeamDTO from "DTOs/team";
+import TeacherModel from "./Teacher";
+import WorkPlan from "./Workplan";
 
 export default class Team {
   private id: string;
@@ -12,8 +14,8 @@ export default class Team {
     id?: string, 
     name?: string,
     description?: string,
-    workPlans?: Array<any>,
-    members?: Array<any>
+    workPlans?: Array<WorkPlan>,
+    members?: Array<TeacherModel>
     ){
       if (typeof IDOrDTO === "string") {
         this.id = id;

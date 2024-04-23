@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import Teacher from "./teacher.schema";
 
 const teamSchema: Schema = new Schema({
   id: {
@@ -22,8 +23,8 @@ const teamSchema: Schema = new Schema({
   },
 
   members: {
-    // FIXME: check how to do nested schemas
-    type: Array,
+    type: [Schema.Types.ObjectId],
+    ref: 'Teacher', // This should match the name you used when creating the Teacher model
     required: true,
   },
 });
@@ -35,5 +36,14 @@ export default mongoose.model("Team", teamSchema);
 //   "name" : "Team 1",
 //   "description" : "This is the first team",
 //   "workPlans" : ["WP1", "WP2"],
-//   "members" : ["member1", "member2", "member3"]
+//   "members" : [{
+//   "name" : "Teacher 1",
+//   "email" : "hola@gmail.com  ",  
+//   "password" : "12345",
+//   "photo" : "https://images.pexels.com",
+//   "officePNumber" : "123456",
+//   "personalPNumber" : "123456",
+//   "isLeader" : false,
+//   "campus" : "AL"
+// }]
 // }

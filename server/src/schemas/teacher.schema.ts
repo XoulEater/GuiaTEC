@@ -52,3 +52,4 @@ const teacherSchema: Schema = new Schema({
 });
 // Create and export the Teacher model
 export default mongoose.model("Teacher", teacherSchema);
+
