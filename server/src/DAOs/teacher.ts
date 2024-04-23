@@ -16,6 +16,52 @@ export default class TeacherDAO {
   }
 
   /**
+   * Get all the members from the database
+   * @returns a list with all the members
+   */
+  public static async getAllMembers() {
+    const membersData = await TeacherSchema.find({ isMember: true }).exec();
+    return membersData.map((member) => new Teacher(member.toObject()));
+  }
+
+  /**
+   * Add a teacher as a member
+   * @param pCode code of the teacher
+   */
+  public static async addMember(pCode: string) {
+    await TeacherSchema.findOneAndUpdate(
+      { id: pCode },
+      { isMember: true },
+      { new: true }
+    ).exec();
+  }
+
+  /**
+   * Remove a teacher as a member
+   * @param pCode code of the teacher
+   */
+  public static async removeMember(pCode: string) {
+    await TeacherSchema.findOneAndUpdate(
+      { id: pCode },
+      { isMember: false, isLeader: false },
+      { new: true }
+    ).exec();
+  }
+
+  /**
+   * Set a teacher as a coordinator
+   * @param pCode code of the teacher
+   * @param pCoordinator true if the teacher is a coordinator, false otherwise
+   */
+  public static async setCoordinator(pCode: string, pLeader: boolean) {
+    await TeacherSchema.findOneAndUpdate(
+      { id: pCode },
+      { isLeader: pLeader },
+      { new: true }
+    ).exec();
+  }
+
+  /**
    * Get a teacher by its code
    * @param pCode code of the teacher
    * @returns the teacher with the given code
@@ -30,7 +76,7 @@ export default class TeacherDAO {
    * @param teacher the teacher to be created
    */
   public static async createTeacher(teacher: Teacher) {
-    const newTeacher = await TeacherSchema.create(teacher);
+    await TeacherSchema.create(teacher);
   }
 
   /**
@@ -39,13 +85,9 @@ export default class TeacherDAO {
    * @param teacher the teacher with the new information
    */
   public static async updateTeacher(pCode: string, teacher: Teacher) {
-    const updatedTeacher = await TeacherSchema.findOneAndUpdate(
-      { id: pCode },
-      teacher,
-      {
-        new: true,
-      }
-    ).exec();
+    await TeacherSchema.findOneAndUpdate({ id: pCode }, teacher, {
+      new: true,
+    }).exec();
   }
 
   /**
@@ -53,10 +95,9 @@ export default class TeacherDAO {
    * @param pCode code of the teacher
    */
   public static async deleteTeacher(pCode: string) {
-    const teacher = await TeacherSchema.findOneAndDelete({
+    await TeacherSchema.findOneAndDelete({
       id: pCode,
     }).exec();
-    return teacher ? teacher.toObject() : null;
   }
 
   /**

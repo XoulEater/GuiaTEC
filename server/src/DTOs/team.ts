@@ -1,4 +1,4 @@
-// FIXME: fix the any type of workPlans and members
+// TODO: delete this file
 import TeacherDTO from "./teacher";
 import WorkPlanDTO from "./workplan";
 

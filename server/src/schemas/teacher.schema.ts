@@ -42,7 +42,14 @@ const teacherSchema: Schema = new Schema({
   isLeader: {
     // Indicates if the teacher is the leader of the team
     type: Boolean,
-    required: true,
+    required: false,
+    default: false,
+  },
+  isMember: {
+    // Indicates if the teacher is a member of the team
+    type: Boolean,
+    required: false,
+    default: false,
   },
   campus: {
     // Campus of the teacher
@@ -53,3 +60,13 @@ const teacherSchema: Schema = new Schema({
 // Create and export the Teacher model
 export default mongoose.model("Teacher", teacherSchema);
 
+// json for testing api
+// {
+//   "name": "Alejandro",
+//   "email": "
+//   "password": "123456",
+//   "photo": "https://www.google.com",
+//   "officePNumber": "123456789",
+//   "personalPNumber": "123456789",
+//  "campus": "AL"
+// }

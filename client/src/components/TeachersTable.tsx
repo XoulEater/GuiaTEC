@@ -2,6 +2,7 @@ import type { TeacherDTO, TeamDTO, UserDTO } from "../lib/data.ts";
 import { teams } from "../lib/data.ts";
 import { useEffect, useState } from "react";
 import * as teachersService from "../API/teachersService.ts";
+import * as teamService from "../API/teamService.ts";
 
 const TeachersTable = () => {
   const user = localStorage.getItem("user");
@@ -9,7 +10,7 @@ const TeachersTable = () => {
   const isAssistant = userDTO.userType === "assistant";
   const [teachers, setTeachers] = useState<TeacherDTO[]>([]);
 
-  const [teamTeachers, setTeamTeachers] = useState(teams.members);
+  const [teamTeachers, setTeamTeachers] = useState<TeacherDTO[]>([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(
     null
@@ -28,9 +29,16 @@ const TeachersTable = () => {
     setTeachers(formattedTeachers);
   };
 
+  const loadMembers = async () => {
+    const res = await teamService.getAllMembers();
+    setTeamTeachers(res);
+  }
+
+
   useEffect(() => {
     loadTeachers();
-  }, [teachers]);
+    loadMembers();
+  }, [teachers, teamTeachers]);
 
   // handle delete
   function handleDelete(teacher: TeacherDTO) {

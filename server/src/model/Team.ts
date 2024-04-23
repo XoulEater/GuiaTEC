@@ -1,59 +1,49 @@
 import TeamDTO from "DTOs/team";
-import TeacherModel from "./Teacher";
+import Teacher from "./Teacher";
 import WorkPlan from "./Workplan";
-
+// TODO: delete this file
 export default class Team {
-  private id: string;
-  private name: string;
-  private description: string;
-  private workPlans: Array<any>;
-  private members: Array<any>;
+  // singleton instance
+  private static instance: Team;
+  private name = "Equipo Guia";
+  private description =
+    "Este es el equipo guia del Instituto Tecnologico de Costa Rica";
+  private workPlans: Array<WorkPlan>;
+  private members: Array<Teacher>;
 
-  constructor(
-    IDOrDTO: string | TeamDTO,
-    id?: string, 
-    name?: string,
-    description?: string,
-    workPlans?: Array<WorkPlan>,
-    members?: Array<TeacherModel>
-    ){
-      if (typeof IDOrDTO === "string") {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.workPlans = workPlans;
-        this.members = members;
-      } else 
-      {
-        IDOrDTO.id,
-        IDOrDTO.name,
-        IDOrDTO.description,
-        IDOrDTO.workPlans,
-        IDOrDTO.members
-      }
+  private constructor() {
+    this.workPlans = [];
+    this.members = [];
   }
 
-  public getId(): string {
-    return this.id;
+  public static getInstance(): Team {
+    if (!Team.instance) {
+      Team.instance = new Team();
+    }
+
+    return Team.instance;
   }
 
   public getName(): string {
     return this.name;
   }
-
   public getDescription(): string {
     return this.description;
   }
 
-  public getWorkPlans(): Array<any> {
+  public getWorkPlans(): Array<WorkPlan> {
     return this.workPlans;
   }
 
-  public getMembers(): Array<any> {
+  public getMembers(): Array<Teacher> {
     return this.members;
   }
 
-  public setId(id: string) {
-    this.id = id;
+  public setWorkPlans(workPlans: Array<WorkPlan>): void {
+    this.workPlans = workPlans;
+  }
+
+  public setMembers(members: Array<Teacher>): void {
+    this.members = members;
   }
 }
