@@ -487,7 +487,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ activity }) => {
               required
             >
               {teachers.map((teacher) => (
-                <option key={teacher.code} value={teacher.name}>
+                <option key={teacher.id} value={teacher.name}>
                   {teacher.name}
                 </option>
               ))}

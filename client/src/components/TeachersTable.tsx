@@ -1,4 +1,4 @@
-import type { TeacherDTO, TeamDTO, UserDTO } from "../lib/data.ts";
+import type { TeacherDTO, UserDTO } from "../lib/data.ts";
 import { useEffect, useState } from "react";
 import * as teachersService from "../API/teachersService.ts";
 import * as teamService from "../API/teamService.ts";

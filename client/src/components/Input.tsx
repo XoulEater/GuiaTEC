@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 interface Props {
+  id: string;
   title: string;
   formType: string;
   placeHolderLG: string;
@@ -9,11 +10,13 @@ interface Props {
 }
 
 const MyComponent: React.FC<Props> = ({
+  id,
   title,
   formType,
   placeHolderLG,
   placeHolderSM,
   logo,
+
 }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -41,7 +44,7 @@ const MyComponent: React.FC<Props> = ({
         <img src={logo} alt={formType} className="absolute left-2 w-7 " />
         <input
           className="w-full py-3 transition-all duration-300 ease-in-out border rounded-lg text-zinc-500 pl-11 border-zinc-300 focus:outline-none focus:ring-1 focus:ring-primary-light focus:border-zinc-500"
-          id={formType}
+          id={id}
           type={formType}
           name={formType}
           placeholder={placeholder}

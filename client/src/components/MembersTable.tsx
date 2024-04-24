@@ -1,5 +1,6 @@
 import type { TeacherDTO, TeamDTO, UserDTO } from "../lib/data.ts";
-import { teachers, teams, Campus } from "../lib/data.ts";
+
+import { Campus } from "../lib/data.ts";
 import { useEffect, useState } from "react";
 import * as teamService from "../API/teamService.ts";
 
@@ -9,12 +10,18 @@ const MembersTable = () => {
   const isMainAssistant =
     userDTO.userType === "assistant" && userDTO.campus === "CA";
   const isAssistant = userDTO.userType === "assistant";
-
+  const [currentLeader, setCurrentLeader] = useState<string | null>(null);
+  const [teachers, setTeachers] = useState<TeacherDTO[]>([]);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(
+    null
+  );
   const [isValidTeam, setIsValidTeam] = useState(true);
 
   // a team is valid if it has at least one member of each campus of the enum
   function checkValidTeam() {
     const campuses = Object.values(Campus);
+    console.log(teachers.map((teacher) => teacher.campus));
     setIsValidTeam(
       campuses.every((campus) =>
         teachers.some((teacher) => teacher.campus === campus)
@@ -22,12 +29,7 @@ const MembersTable = () => {
     );
   }
 
-  const [currentLeader, setCurrentLeader] = useState<string | null>(null);
-  const [teachers, setTeachers] = useState<TeacherDTO[]>([]);
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [selectedTeacher, setSelectedTeacher] = useState<TeacherDTO | null>(
-    null
-  );
+ 
 
   const loadTeachers = async () => {
     const res = await teamService.getAllMembers();
@@ -49,7 +51,11 @@ const MembersTable = () => {
 
   useEffect(() => {
     loadTeachers();
-  }, []);
+  }, [] );
+
+  useEffect(() => {
+    checkValidTeam();
+  }, [teachers]);
 
   // handle delete
   function handleDelete(teacher: TeacherDTO) {
@@ -72,9 +78,7 @@ const MembersTable = () => {
     setCurrentLeader(teacher.id);
   }
 
-  useEffect(() => {
-    checkValidTeam();
-  }, []);
+
 
   return (
     <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">

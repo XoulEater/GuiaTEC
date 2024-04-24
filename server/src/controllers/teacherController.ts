@@ -70,10 +70,13 @@ export class TeacherController {
     const newNumber = lastNumber + 1;
     const code = `${campus}-${newNumber.toString().padStart(2, "0")}`;
     teacher.setId(code);
-    console.log(teacher);
 
-    await TeacherDAO.createTeacher(teacher);
-    res.json({ message: "Teacher created" });
+    try {
+      await TeacherDAO.createTeacher(teacher);
+      res.json({ message: "Teacher created" });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
   }
 
   /**

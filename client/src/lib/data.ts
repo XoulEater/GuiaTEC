@@ -17,7 +17,7 @@ export interface TeacherDTO extends UserDTO {
   officePNumber: string; // office phone number of the teacher
   personalPNumber: string; // personal phone number of the teacher
   photo?: string; // URL of the photo of the teacher
-  isLeader: boolean; // if the teacher is the leader of the team
+  isLeader?: boolean; // if the teacher is the leader of the team
 }
 
 export interface AssistantDTO extends UserDTO {

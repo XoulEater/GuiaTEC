@@ -32,25 +32,15 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   const [editing, setEditing] = useState(false);
 
   // handle editing
-  function handleSave() {
+  async function handleSave() {
     setEditing(!editing);
     if (editing) {
       if (teacher) {
-        let email = (document.getElementById("email") as HTMLInputElement)
-          .value;
-        let name = (document.getElementById("name") as HTMLInputElement).value;
-        let officePNumber = (
-          document.getElementById("officePNumber") as HTMLInputElement
-        ).value;
-        let personalPNumber = (
-          document.getElementById("personalPNumber") as HTMLInputElement
-        ).value;
-        console.log(email, name, officePNumber, personalPNumber);
-        // TODO: update teacher
-        teacher.email = email;
-        teacher.name = name;
-        teacher.officePNumber = officePNumber;
-        teacher.personalPNumber = personalPNumber;
+        teacher.email = (document.getElementById("email") as HTMLInputElement).value;
+        teacher.name = (document.getElementById("name") as HTMLInputElement).value;
+        teacher.officePNumber = (document.getElementById("officePNumber") as HTMLInputElement).value;
+        teacher.personalPNumber = (document.getElementById("personalPNumber") as HTMLInputElement).value;
+        await teachersService.updateTeacher(teacher);
       }
     }
   }
@@ -67,15 +57,16 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
     setConfirmDelete(false);
     if (typeof window !== "undefined") {
       window.history.back();
+      // TODO: delete teacher
     }
   }
 
   return (
-    <article className=" overflow-y-scroll lgn:overflow-hidden h-screen lgn:h-[80%] w-[90%] lgn:w-[75%] bg-slate-200 rounded-3xl p-5 flex flex-col lgn:flex-row   lgn:place-content-center items-center align-top gap-5 shadow-lg">
+    <article className=" overflow-y-scroll  lgn:overflow-hidden h-screen lgn:h-[80%] w-[90%] lgn:w-[75%] bg-slate-200 rounded-3xl p-5 flex flex-col lgn:flex-row   lgn:place-content-center items-center align-top gap-5 shadow-lg">
       <img
-        className="rounded-full h-[200px] aspect-square object-cover object-center"
+        className="rounded-full h-[210px] aspect-square object-cover object-center border-2 border-white "
         src={teacher?.photo}
-        alt={teacher?.name}
+        alt={teacher?.name} 
       />
       <aside className=" w-[90%] lgn:w-[60%] gap-5 flex flex-col items-center lgn:items-start ">
         <header className="flex flex-col items-center w-full gap-5 pb-3 border-b-2 border-zinc-400 lgn:flex-row lgn:justify-between lgn:items-top ">
