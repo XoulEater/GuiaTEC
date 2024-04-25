@@ -9,8 +9,8 @@ const API_URL = "http://localhost:1234/api";
  * @returns a promise with the students
  */
 export async function getAllStudents(): Promise<StudentDTO[]> {
-    const response = await fetch(`${API_URL}/students`);
-    return response.json();
+  const response = await fetch(`${API_URL}/students`);
+  return response.json();
 }
 
 /**
@@ -19,10 +19,10 @@ export async function getAllStudents(): Promise<StudentDTO[]> {
  * @returns a promise with the students
  */
 export async function getStudentsByCampus(
-    campus: string
+  campus: string
 ): Promise<StudentDTO[]> {
-    const response = await fetch(`${API_URL}/students/campus/${campus}`);
-    return response.json();
+  const response = await fetch(`${API_URL}/students/campus/${campus}`);
+  return response.json();
 }
 
 /**
@@ -30,11 +30,11 @@ export async function getStudentsByCampus(
  * @param carnet the id of the student to delete
  * @returns a promise with the deleted student
  */
-export async function deleteStudent(carnet: string): Promise<StudentDTO> {
-    const response = await fetch(`${API_URL}/students/${carnet}`, {
-        method: "DELETE",
-    });
-    return response.json();
+export async function deleteStudent(carnet: number): Promise<StudentDTO> {
+  const response = await fetch(`${API_URL}/students/${carnet}`, {
+    method: "DELETE",
+  });
+  return response.json();
 }
 
 /**
@@ -43,13 +43,12 @@ export async function deleteStudent(carnet: string): Promise<StudentDTO> {
  * @returns a promise with the updated student
  */
 export async function updateStudent(student: StudentDTO): Promise<StudentDTO> {
-    const response = await fetch(`${API_URL}/students/${student.carnet}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(student),
-    });
-    return response.json();
+  const response = await fetch(`${API_URL}/students/${student.carnet}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(student),
+  });
+  return response.json();
 }
-

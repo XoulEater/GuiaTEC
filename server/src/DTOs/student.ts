@@ -4,6 +4,6 @@ export default interface StudentDTO {
   carnet: number;
   name: string;
   email: string;
-  phoneNumber: string;
+  personalPNumber: number;
   campus?: CampusENUM;
 }
