@@ -73,30 +73,4 @@ export default class WorkplanDAO {
     });
     return workplan ? workplan.toObject() : null;
   }
-
-  /**
-   * Get all the activities from the database
-   * @returns a list with all the activities
-   */
-  public static async getAllActivities() {
-    const workplan = await WorkplanSchema.find().exec();
-    return workplan.map((workplan) => new Activity(workplan.toObject()));
-  }
-
-  /**
-   * Add an activity to the workplan
-   * @returns a list with all the activities
-   */
-  public static async addActivityToWorkplan(
-    workplanId: string,
-    activity: Activity
-  ): Promise<Workplan | null> {
-    const workplan = await WorkplanSchema.findOneAndUpdate(
-      { _id: workplanId },
-      { $push: { activities: activity } },
-      { new: true }
-    );
-    return workplan ? workplan.toObject() : null;
-  }
-
 }

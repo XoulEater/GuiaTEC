@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import ActivityDAO from "../DAOs/activity";
 import Activity from "../model/Activity";
 import ActivityDTO from "../DTOs/activity";
-import WorkplanDTO from "../DAOs/workplan";
+import WorkplanDAO from "../DAOs/workplan";
 
 /**
  * Class that handles the requests related to activities
@@ -17,8 +17,9 @@ export class ActivityController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const activities = await WorkplanDTO.getAllActivities();
-    res.json(activities);
+    const workplanId = req.params.wid;
+    const workplan = await WorkplanDAO.getWorkplanById(workplanId);
+    res.json(workplan.getActivities());
   }
 
   /**
@@ -30,10 +31,14 @@ export class ActivityController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const activityData: ActivityDTO = req.body;
-    const activity = new Activity(activityData);
-    await ActivityDAO.createActivity(activity);
-    res.json(activity);
+    const activityDTO: ActivityDTO = req.body;
+    const workplanId = req.params.wid;
+
+    const activity = new Activity(activityDTO);
+    const workplan = await WorkplanDAO.getWorkplanById(workplanId);
+    workplan.addActivity(activity);
+    await WorkplanDAO.updateWorkplan(workplanId, workplan);
+    res.json("Activity created");
   }
 
   /**
@@ -47,7 +52,7 @@ export class ActivityController {
     res: Response
   ): Promise<void> {
     const activityId = req.params.id;
-    await ActivityDAO.cancelActivity(activityId);
+    //await ActivityDAO.cancelActivity(activityId);
     res.json({ message: "Activity cancelled" });
   }
 }
