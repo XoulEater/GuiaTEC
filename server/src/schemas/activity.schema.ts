@@ -75,3 +75,21 @@ const activitySchema: Schema = new Schema({
 });
 // Create and export the Teacher model
 export default mongoose.model("Activity", activitySchema);
+
+// {
+//   "name" : "Test Activity",
+//   "description": "This is a test activity",
+//   "startDate": new Date(),
+//   "publishDate" : new Date(),
+//   "notificationInterval": 1,
+//   "type" : "Test",
+//   "responsibles": ["John Doe", "Jane Smith"],
+//   "attachement": "test.pdf",
+//   "modality": "Online",
+//   "link": "https://example.com",
+//   "status": "Active",
+//   "forum": "https://example.com/forum"
+// };
+
+
+

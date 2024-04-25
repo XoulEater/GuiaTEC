@@ -1,8 +1,4 @@
- class Activity {
-
-
- }
-
+import Activity from "./Activity";
 export default class Workplan  {
     private name: string;
     private description: string;

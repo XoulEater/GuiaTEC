@@ -1,5 +1,5 @@
 import mongoose, { Schema, SchemaTypes } from "mongoose";
-//import Activity from "./activitySchema.ts"; 
+import activitySchema from "./activity.schema";
 
 // Define the schema for the Teacher collection
 const workplanSchema: Schema = new Schema({
@@ -14,12 +14,9 @@ const workplanSchema: Schema = new Schema({
       type: String,
       required: true,
     },
-    activities: [{
-      // Array of activities within the workplan
-      type: Schema.Types.ObjectId,
-      ref: 'Activity',
-      required: true,
-    }],
+    activities: {
+      type: [activitySchema]
+    },
     year: {
       // year of the workplan
       type: Number,
@@ -33,4 +30,44 @@ const workplanSchema: Schema = new Schema({
   });
   // Create and export the Workplan model
   export default mongoose.model("Workplan", workplanSchema);
+
+  // json example
+
+  // {
+  //   "name": "Workplan 1",
+  //   "description": "This is the first workplan",
+  //   "activities": [
+  //     {
+  //       "name": "Activity 1",
+  //       "description": "This is the first activity",
+  //       "date": "2021-09-01",
+  //       "time": "09:00",
+  //       "place": "Classroom 1",
+  //       "type": "Class",
+  //       "status": "Pending",
+  //       "teacher": "Teacher 1",
+  //     },
+  //     {
+  //       "name": "Activity 2",
+  //       "description": "This is the second activity",
+  //       "date": "2021-09-02",
+  //       "time": "10:00",
+  //       "place": "Classroom 2",
+  //       "type": "Class",
+  //       "status": "Pending",
+  //       "teacher": "Teacher 2",
+  //     },
+  //   ],
+  //   "year": 2021,
+  //   "semester": 1,
+  // }
+
+  // {
+  //   "name": "Workplan 1",
+  //   "description": "This is the first workplan",
+  //   "activities": [],
+  //   "year": 2021,
+  //   "semester": 1,
+  // }
+  
   
