@@ -5,7 +5,7 @@ const studentSchema: Schema = new Schema({
   carnet: { type: Number, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
-  phoneNumber: { type: String, required: true },
+  personalPNumber: { type: String, required: true },
   campus: { type: String, required: true },
 });
 

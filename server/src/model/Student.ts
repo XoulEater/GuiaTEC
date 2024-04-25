@@ -1,24 +1,33 @@
+import StudentDTO from "DTOs/student";
 import CampusENUM from "./campusENUM";
 
 export default class Student {
   private carnet: number;
   private name: string;
   private email: string;
-  private phoneNumber: string;
+  private personalPNumber: number;
   private campus: CampusENUM;
 
   constructor(
-    carnet: number,
-    name: string,
-    email: string,
-    phoneNumber: string,
-    campus: CampusENUM
+    carnetOrStudentDTO: number | StudentDTO,
+    name?: string,
+    email?: string,
+    personalPNumber?: number,
+    campus?: CampusENUM
   ) {
-    this.carnet = carnet;
-    this.name = name;
-    this.email = email;
-    this.phoneNumber = phoneNumber;
-    this.campus = campus;
+    if (typeof carnetOrStudentDTO === "number") {
+      this.carnet = carnetOrStudentDTO;
+      this.name = name;
+      this.email = email;
+      this.personalPNumber = personalPNumber;
+      this.campus = campus;
+    } else {
+      this.carnet = carnetOrStudentDTO.carnet;
+      this.name = carnetOrStudentDTO.name;
+      this.email = carnetOrStudentDTO.email;
+      this.personalPNumber = carnetOrStudentDTO.personalPNumber;
+      this.campus = carnetOrStudentDTO.campus;
+    }
   }
 
   // Getters
@@ -34,8 +43,8 @@ export default class Student {
     return this.email;
   }
 
-  public getPhoneNumber(): string {
-    return this.phoneNumber;
+  public getPhoneNumber(): number {
+    return this.personalPNumber;
   }
 
   public getCampus(): CampusENUM {
@@ -55,8 +64,8 @@ export default class Student {
     this.email = email;
   }
 
-  public setPhoneNumber(phoneNumber: string): void {
-    this.phoneNumber = phoneNumber;
+  public setPhoneNumber(personalPNumber: number): void {
+    this.personalPNumber = personalPNumber;
   }
 
   public setCampus(campus: CampusENUM): void {

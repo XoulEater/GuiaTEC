@@ -76,7 +76,7 @@ export interface TeamDTO {
 }
 
 export interface StudentDTO extends UserDTO {
-  carnet: string; // unique identifier of the student
+  carnet: number; // unique identifier of the student
   name: string; // full name of the student
   email: string; // email of the student
   personalPNumber: string; // personal phone number of the student
@@ -252,19 +252,3 @@ export const teams: TeamDTO = {
   members: teachers.slice(0, 5),
   workPlans: workPlans,
 };
-
-export const students: StudentDTO[] = [];
-for (let i = 1; i <= 24; i++) {
-  const student: StudentDTO = {
-    carnet: `201800${i}`,
-    name: `Student ${i}`,
-    email: `email${i}`,
-    password: "12345",
-    personalPNumber: Math.floor(Math.random() * 1000000000).toString(),
-    campus:
-      Object.values(Campus)[
-        Math.floor((Math.random() * Object.keys(Campus).length) / 2)
-      ],
-  };
-  students.push(student);
-}
