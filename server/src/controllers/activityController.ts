@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import ActivityDAO from "../DAOs/activity";
 import Activity from "../model/Activity";
 import ActivityDTO from "../DTOs/activity";
+import WorkplanDTO from "../DAOs/workplan";
 
 /**
  * Class that handles the requests related to activities
@@ -16,7 +17,7 @@ export class ActivityController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const activities = await ActivityDAO.getAllActivities();
+    const activities = await WorkplanDTO.getAllActivities();
     res.json(activities);
   }
 
