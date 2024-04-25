@@ -1,34 +1,71 @@
-import Activity from '../model/Activity';
-import ActivitySchema from '../schemas/activity.schema';
-
+import ActivityDTO from "DTOs/activity";
+import Activity from "../model/Activity";
+import ActivitySchema from "../schemas/activity.schema";
+import Workplan from "../schemas/workplan.schema";
 
 /**
  * Class that communicates with the database to perform CRUD operations
  */
 export default class ActivityDAO {
-  static cancelActivity(activityId: string) {
-    throw new Error("Method not implemented.");
-  }
   /**
-   * Get all the activities from the database
-   * @returns a list with all the activities
+   * Add a new activity to a workplan
+   * @param workplanId Id of the workplan
    */
-  public static async getAllActivities(): Promise<Activity[]> {
-    const activities = await ActivitySchema.find().exec();
-    return activities.map((activity) => new Activity(activity.toObject()));
+  public static async addActivityToWorkplan(
+    workplanId: string,
+    newActivity: Activity
+  ) {
+    await Workplan.findByIdAndUpdate(
+      workplanId,
+      { $push: { activities: newActivity } },
+      { new: true, useFindAndModify: false }
+    );
   }
 
-  public static async createActivity(activity: Activity) {
-    const newActivity = new ActivitySchema(activity);
-    await newActivity.save();
+  /**
+   * Get all activities from a workplan
+   * @param workplanId Id of the workplan
+   */
+  public static async getActivitiesFromWorkplan(workplanId: string) {
+    const workplan = await Workplan.findById(workplanId);
+    (workplan.activities as ActivityDTO[]).map((activity) => {
+      new Activity(activity);
+    });
   }
 
-  public cancelActivity(activityId: string) {
-    ActivitySchema.findOneAndUpdate(
-      { id: activityId },
-      { status: 'cancelled' },
-      { new: true }
-    ).exec();
+  /**
+   * Get an activity from a workplan
+   * @param workplanId Id of the workplan
+   * @param activityId Id of the activity
+   */
+  public static async getActivityFromWorkplan(
+    workplanId: string,
+    activityId: string
+  ) {
+    const workplan = await Workplan.findById(workplanId).select({
+      activities: { $elemMatch: { _id: activityId } },
+    });
+    return new Activity((workplan.activities as ActivityDTO[])[0]);
   }
 
+  /**
+   * Update an activity from a workplan
+   * @param workplanId Id of the workplan
+   * @param activityId Id of the activity
+   */
+  public static async updateActivityFromWorkplan(
+    workplanId: string,
+    activityId: string,
+    updatedActivity: Activity
+  ) {
+    await Workplan.findOneAndUpdate(
+      { _id: workplanId, "activities._id": activityId },
+      {
+        $set: {
+          "activities.$": updatedActivity,
+        },
+      },
+      { new: true, useFindAndModify: false }
+    );
+  }
 }

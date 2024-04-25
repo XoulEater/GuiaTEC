@@ -7,12 +7,12 @@ const activitySchema: Schema = new Schema({
     required: true,
   },
 
-  description : {
+  description: {
     // Description of the activity
     type: String,
     required: true,
   },
-  
+
   startDate: {
     // Start date of the activity
     type: Date,
@@ -55,7 +55,7 @@ const activitySchema: Schema = new Schema({
     required: true,
   },
 
-  link : { 
+  link: {
     // Link of the activity
     type: String,
     required: true,
@@ -71,10 +71,10 @@ const activitySchema: Schema = new Schema({
     // Forum of the activity
     type: String,
     required: true,
-  }
+  },
 });
 // Create and export the Teacher model
-export default mongoose.model("Activity", activitySchema);
+export default activitySchema;
 
 // {
 //   "name" : "Test Activity",
@@ -90,6 +90,3 @@ export default mongoose.model("Activity", activitySchema);
 //   "status": "Active",
 //   "forum": "https://example.com/forum"
 // };
-
-
-
