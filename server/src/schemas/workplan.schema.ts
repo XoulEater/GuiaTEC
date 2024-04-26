@@ -27,8 +27,10 @@ const workplanSchema: Schema = new Schema({
     required: true,
   },
 });
-// Create and export the Workplan model
+
 export default mongoose.model("Workplan", workplanSchema);
+
+
 
 // json example
 
