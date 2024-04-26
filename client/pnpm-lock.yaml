@@ -32,6 +32,9 @@ importers:
       astro:
         specifier: ^4.5.5
         version: 4.5.5(typescript@5.4.2)
+      cookie:
+        specifier: ^0.6.0
+        version: 0.6.0
       flowbite:
         specifier: ^2.3.0
         version: 2.3.0
