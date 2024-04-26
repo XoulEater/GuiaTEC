@@ -19,6 +19,7 @@ export class ActivityController {
   ): Promise<void> {
     const workplanId = req.params.wid;
     const workplan = await WorkplanDAO.getWorkplanById(workplanId);
+
     res.json(workplan.getActivities());
   }
 
