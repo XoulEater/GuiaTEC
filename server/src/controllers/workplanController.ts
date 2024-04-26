@@ -9,8 +9,7 @@ import Workplan from "../model/Workplan";
  * Class that handles the requests related to workplans
  */
 export class WorkplanController {
-
-    /**
+  /**
    * Get all the workplans
    * @param req the request
    * @param res the response
@@ -46,8 +45,14 @@ export class WorkplanController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const workplan = new Workplan("Plan de Trabajo", "Descripcion", [], 2024, 1);
-    
+    const workplan = new Workplan(
+      "Plan de Trabajo",
+      "Descripcion",
+      [],
+      2024,
+      1
+    );
+
     const newWorkplan = await WorkplanDAO.createWorkplan(workplan);
     res.json(newWorkplan);
   }
@@ -80,6 +85,4 @@ export class WorkplanController {
     const workplan = await WorkplanDAO.deleteWorkplan(id);
     res.json(workplan);
   }
-
-
 }

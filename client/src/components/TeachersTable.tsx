@@ -39,8 +39,7 @@ const TeachersTable = () => {
       };
     });
     setTeamTeachers(formattedTeachers);
-  }
-
+  };
 
   useEffect(() => {
     loadTeachers();
@@ -134,10 +133,9 @@ const TeachersTable = () => {
                 </button>
               )}
 
-              {
-                !teamTeachers.find(
-                  (teamTeacher) => teamTeacher.id === teacher.id
-                ) &&
+              {!teamTeachers.find(
+                (teamTeacher) => teamTeacher.id === teacher.id
+              ) &&
                 isAssistant && (
                   <button onClick={() => handleIncludeTeacher(teacher)}>
                     <svg
