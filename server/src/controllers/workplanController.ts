@@ -45,6 +45,7 @@ export class WorkplanController {
     req: Request,
     res: Response
   ): Promise<void> {
+    // TODO: Generate a workplan
     const workplan = new Workplan(
       "Plan de Trabajo",
       "Descripcion",
@@ -54,7 +55,7 @@ export class WorkplanController {
     );
 
     const newWorkplan = await WorkplanDAO.createWorkplan(workplan);
-    res.json(newWorkplan);
+    res.json({ id: newWorkplan.getID() });
   }
 
   /**
@@ -82,7 +83,9 @@ export class WorkplanController {
     res: Response
   ): Promise<void> {
     const id = req.params.id;
+    console.log("Deleting workplan with id: " + id);
     const workplan = await WorkplanDAO.deleteWorkplan(id);
+    console.log("Workplan deleted successfully with id: " + id);
     res.json(workplan);
   }
 }

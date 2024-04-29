@@ -1,77 +1,86 @@
 import ActivityDTO from "DTOs/activity";
 
 export default class Activity {
-  private name: string; // name of the activity
-  private description: string; // description of the activity
-  private startDate: Date; // start date of the activity
-  private publishDate: Date; // publish date of the activity
-  private notificationInterval: number; // notification interval of the activity
-  private type: string; // type of the activity
-  private responsibles: Array<string>; // responsibles of the activity
-  private attachement: string; // attachement of the activity
-  private modality: string; // modality of the activity
-  private link: string; // link of the activity
-  private status: string; // status of the activity
-  private forum: string; // forum of the activity
+  private id: string;
+  private name: string;
+  private week: number;
+  private date: Date;
+  private prevDays: number;
+  private reminderInterval: number;
+  private responsibles: string[];
+  private type: string;
+  private modality: string;
+  private status: string;
+  private link?: string;
+  private attachmentFile?: string;
+  private forum?: string[];
 
-
-  // Constructor, include the posibility to use TeacherDTO instead of all the parameters
+  // Constructor
   constructor(
-    IDorDTO: string | ActivityDTO,
-    name?: string,
-    description?: string,
-    startDate?: Date,
-    publishDate?: Date,
-    notificationInterval?: number,
+    NameOrDTO: string | ActivityDTO,
+    week?: number,
+    date?: Date,
+    prevDays?: number,
+    reminderInterval?: number,
+    responsibles?: string[],
     type?: string,
-    responsibles?: Array<string>,
-    attachement?: string,
     modality?: string,
-    link?: string,
     status?: string,
-    forum?: string
+    link?: string,
+    attachmentFile?: string,
+    forum?: string[]
   ) {
-    if (typeof IDorDTO === "string") {
-      this.name = name;
-      this.description = description;
-      this.startDate = startDate;
-      this.publishDate = publishDate;
-      this.notificationInterval = notificationInterval;
-      this.type = type;
+    if (typeof NameOrDTO === "string") {
+      this.name = NameOrDTO;
+      this.week = week;
+      this.date = date;
+      this.prevDays = prevDays;
+      this.reminderInterval = reminderInterval;
       this.responsibles = responsibles;
-      this.attachement = attachement;
+      this.type = type;
       this.modality = modality;
-      this.link = link;
       this.status = status;
+      this.link = link;
+      this.attachmentFile = attachmentFile;
       this.forum = forum;
-      
     } else {
-      this.name = IDorDTO.name;
-      this.description = IDorDTO.description;
-      this.startDate = IDorDTO.startDate;
-      this.publishDate = IDorDTO.publishDate;
-      this.notificationInterval = IDorDTO.notificationInterval;
-      this.type = IDorDTO.type;
-      this.responsibles = IDorDTO.responsibles;
-      this.attachement = IDorDTO.attachement;
-      this.modality = IDorDTO.modality;
-      this.link = IDorDTO.link;
-      this.status = IDorDTO.status;
-      this.forum = IDorDTO.forum;
-
+      this.id = NameOrDTO._id.toString();
+      this.name = NameOrDTO.name;
+      this.week = NameOrDTO.week;
+      this.date = NameOrDTO.date;
+      this.prevDays = NameOrDTO.prevDays;
+      this.reminderInterval = NameOrDTO.reminderInterval;
+      this.responsibles = NameOrDTO.responsibles;
+      this.type = NameOrDTO.type;
+      this.modality = NameOrDTO.modality;
+      this.status = NameOrDTO.status;
+      this.link = NameOrDTO.link;
+      this.attachmentFile = NameOrDTO.attachmentFile;
+      // TODO: this.forum = NameOrDTO.forum;
     }
   }
 
-  // Getter and Setter for officePNumber
+  // Getter and Setter for name
   getName(): string {
     return this.name;
   }
 
-  getResponsibles(): Array<string> {
-    return this.responsibles;
+  setName(name: string): void {
+    this.name = name;
   }
 
-  getStatus(): string {
-    return this.status;
+  // Getter and Setter for week
+  getWeek(): number {
+    return this.week;
   }
+
+  setWeek(week: number): void {
+    this.week = week;
+  }
+
+  getID(): string {
+    return this.id;
+  }
+
+  // Getter and Setter
 }
