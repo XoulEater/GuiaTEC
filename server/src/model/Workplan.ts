@@ -2,6 +2,7 @@ import Activity from "./Activity";
 import WorkplanDTO from "../DTOs/workplan";
 
 export default class Workplan {
+  private id: string;
   private name: string;
   private description: string;
   private activities: Activity[];
@@ -10,26 +11,26 @@ export default class Workplan {
 
   // Constructor
   constructor(
-    nameOrDTO: string | WorkplanDTO,
+    NameOrDTO: string | WorkplanDTO,
     description?: string,
     activities?: Activity[],
     year?: number,
     semester?: number
   ) {
-    if (typeof nameOrDTO === "string") {
-      this.name = nameOrDTO;
+    if (typeof NameOrDTO === "string") {
+      this.name = NameOrDTO;
       this.description = description;
       this.activities = activities;
       this.year = year;
       this.semester = semester;
-
-    } 
-    else {
-      this.name = nameOrDTO.name;
-      this.description = nameOrDTO.description;
-      this.activities = nameOrDTO.activities.map(activityDTO => new Activity(activityDTO));
+    } else {
+      this.id = NameOrDTO._id.toString();
+      this.name = NameOrDTO.name;
+      this.description = NameOrDTO.description;
+      this.activities = NameOrDTO.activities.map(
+        (activityDTO) => new Activity(activityDTO)
+      );
     }
-
   }
 
   // Getter and Setter for name
@@ -61,5 +62,9 @@ export default class Workplan {
 
   addActivity(activity: Activity): void {
     this.activities.push(activity);
+  }
+
+  getID(): string {
+    return this.id;
   }
 }

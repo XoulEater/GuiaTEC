@@ -9,6 +9,8 @@ class User {
   private password: string;
   private photo: string;
   private campus: Campus;
+  private isLeader: boolean = false;
+  private userType: "teacher" | "assistant";
 
   // Constructor
   constructor(
@@ -17,7 +19,9 @@ class User {
     password: string,
     photo: string,
     campus: Campus,
-    id?: string,
+    userType: "teacher" | "assistant",
+    isLeader?: boolean,
+    id?: string
   ) {
     this.id = id;
     this.name = name;
@@ -25,6 +29,8 @@ class User {
     this.password = password;
     this.photo = photo;
     this.campus = campus;
+    this.userType = userType;
+    this.isLeader = isLeader;
   }
 
   // Getters

@@ -5,11 +5,13 @@ import Workplan from "../model/Workplan";
 export default class WorkplanDAO {
   /**
    * Create a new workplan in the database
-   * @param pWorkplanDTO the workplan to be created
+   * @param pWorkplan the workplan to be created
    * @returns the created workplan
    */
-  public static async createWorkplan(pWorkplanDTO: Workplan) {
-    await WorkplanSchema.create(pWorkplanDTO);
+  public static async createWorkplan(workplan: Workplan): Promise<Workplan> {
+    const workplanData = new WorkplanSchema(workplan);
+    await workplanData.save();
+    return new Workplan(workplanData.toObject());
   }
 
   /**

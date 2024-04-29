@@ -7,25 +7,25 @@ const activitySchema: Schema = new Schema({
     required: true,
   },
 
-  description: {
-    // Description of the activity
-    type: String,
+  week: {
+    // Week of the activity
+    type: Number,
     required: true,
   },
 
-  startDate: {
+  date: {
     // Start date of the activity
     type: Date,
     required: true,
   },
 
-  publishDate: {
+  prevDays: {
     // Publish date of the activity
-    type: Date,
+    type: Number,
     required: true,
   },
 
-  notificationInterval: {
+  reminderInterval: {
     // Notification interval of the activity
     type: Number,
     required: true,
@@ -43,7 +43,7 @@ const activitySchema: Schema = new Schema({
     required: true,
   },
 
-  attachement: {
+  attachementFile: {
     // Attachements of the activity
     type: String,
     required: true,
