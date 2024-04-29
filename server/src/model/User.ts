@@ -17,10 +17,10 @@ class User {
     name: string,
     email: string,
     password: string,
-    photo: string,
     campus: Campus,
     userType: "teacher" | "assistant",
     isLeader?: boolean,
+    photo?: string,
     id?: string
   ) {
     this.id = id;
