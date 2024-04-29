@@ -33,7 +33,6 @@ app.use("/api/excel", excelRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/workplans", workplanRoutes);
 app.use("/api/activities", activitiesRoutes);
-
 app.use("/api/students", studentRoutes);
 
 // default get route

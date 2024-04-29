@@ -69,6 +69,7 @@ export class TeacherController {
     const lastNumber = parseInt(lastCode.split("-")[1]);
     const newNumber = lastNumber + 1;
     const code = `${campus}-${newNumber.toString().padStart(2, "0")}`;
+
     teacher.setId(code);
 
     try {

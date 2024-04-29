@@ -40,7 +40,6 @@ export class TeamController {
    */
   public static async addMember(req: Request, res: Response): Promise<void> {
     const code = req.params.code;
-    console.log(code);
     await TeacherDAO.addMember(code);
     res.json({ message: "Member added" });
   }
