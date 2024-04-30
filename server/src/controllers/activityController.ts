@@ -17,10 +17,22 @@ export class ActivityController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const workplanId = req.params.wid;
-    const workplan = await WorkplanDAO.getWorkplanById(workplanId);
+    try {
+      const workplanId = req.params.wid;
 
-    res.json(workplan.getActivities());
+      // Get the workplan
+      let workplan;
+      try {
+        workplan = await WorkplanDAO.getWorkplanById(workplanId);
+      } catch (error) {
+        res.status(500).json({ error: "Error retrieving workplan" });
+        return;
+      }
+
+      res.status(200).json(workplan.getActivities());
+    } catch (error) {
+      res.status(500).json({ error: "Error retrieving activities" });
+    }
   }
 
   /**
@@ -32,15 +44,33 @@ export class ActivityController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const workplanId = req.params.wid;
-    const activityId = req.params.aid;
-    const workplan = await WorkplanDAO.getWorkplanById(workplanId);
+    try {
+      // Get the workplan id and the activity id from the request
+      const workplanId = req.params.wid;
+      const activityId = req.params.aid;
 
-    const activity = workplan
-      .getActivities()
-      .find((activity) => activity.getID() === activityId);
+      // Get the workplan
+      let workplan;
+      try {
+        workplan = await WorkplanDAO.getWorkplanById(workplanId);
+      } catch (error) {
+        res.status(500).json({ error: "Error retrieving workplan" });
+        return;
+      }
 
-    res.json(activity);
+      // Get the activity
+      const activity = workplan
+        .getActivities()
+        .find((activity) => activity.getID() === activityId);
+      if (!activity) {
+        res.status(404).json({ error: "Activity not found" });
+        return;
+      }
+
+      res.status(200).json(activity);
+    } catch (error) {
+      res.status(500).json({ error: "Error retrieving activity" });
+    }
   }
 
   /**
@@ -52,12 +82,41 @@ export class ActivityController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const activityDTO: ActivityDTO = req.body;
-    const workplanId = req.params.wid;
-    const activity = new Activity(activityDTO);
-    const workplan = await WorkplanDAO.getWorkplanById(workplanId);
-    workplan.addActivity(activity);
-    await WorkplanDAO.updateWorkplan(workplanId, workplan);
-    res.json("Activity created");
+    try {
+      const activityDTO: ActivityDTO = req.body;
+      const workplanId = req.params.wid;
+
+      // Create the activity
+      let activity;
+      try {
+        activity = new Activity(activityDTO);
+      } catch (error) {
+        res.status(500).json({ error: "Error instantiating activity" });
+        return;
+      }
+
+      // Get the workplan
+      let workplan;
+      try {
+        workplan = await WorkplanDAO.getWorkplanById(workplanId);
+      } catch (error) {
+        res.status(500).json({ error: "Error retrieving workplan" });
+        return;
+      }
+
+      workplan.addActivity(activity);
+
+      // Update the workplan
+      try {
+        await WorkplanDAO.updateWorkplan(workplanId, workplan);
+      } catch (error) {
+        res.status(500).json({ error: "Error creating activity" });
+        return;
+      }
+
+      res.status(200).json({ message: "Activity created successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Error creating activity" });
+    }
   }
 }
