@@ -44,7 +44,8 @@ export default class Activity {
       this.attachmentFile = attachmentFile;
       this.forum = forum;
     } else {
-      this.id = NameOrDTO._id.toString();
+      //this.id = NameOrDTO._id.toString();
+      this.id = "120";
       this.name = NameOrDTO.name;
       this.week = NameOrDTO.week;
       this.date = NameOrDTO.date;

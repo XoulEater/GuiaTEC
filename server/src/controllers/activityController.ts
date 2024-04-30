@@ -110,13 +110,55 @@ export class ActivityController {
       try {
         await WorkplanDAO.updateWorkplan(workplanId, workplan);
       } catch (error) {
-        res.status(500).json({ error: "Error creating activity" });
+        res.status(500).json({ error: "Error updating workplan" });
         return;
       }
 
       res.status(200).json({ message: "Activity created successfully" });
     } catch (error) {
       res.status(500).json({ error: "Error creating activity" });
+    }
+  }
+
+  public static async updateActivity(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const activityDTO: ActivityDTO = req.body;
+      const workplanId = req.params.wid;
+      const activityIndex = req.params.aid;
+
+      // Create the activity
+      let activity;
+      try {
+        activity = new Activity(activityDTO);
+      } catch (error) {
+        res.status(500).json({ error: "Error instantiating activity" });
+        return;
+      }
+
+      // Get the workplan
+      let workplan;
+      try {
+        workplan = await WorkplanDAO.getWorkplanById(workplanId);
+      } catch (error) {
+        res.status(500).json({ error: "Error retrieving workplan" });
+        return;
+      }
+
+      // Update the workplan
+      workplan.updateActivity(activityIndex, activity);
+      try {
+        await WorkplanDAO.updateWorkplan(workplanId, workplan);
+      } catch (error) {
+        res.status(500).json({ error: "Error updating workplan" });
+        return;
+      }
+
+      res.status(200).json({ message: "Activity updated successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Error updating activity" });
     }
   }
 }
