@@ -47,23 +47,33 @@ export class ExcelController {
     req: Request,
     res: Response
   ): Promise<void> {
-    // Create the excel file
-    const wb = xlsx.utils.book_new();
+    try {
+      // Get the students for each campus
+      const campuses = Object.values(CampusENUM);
 
-    // Create a sheet for each campus
-    const campuses = Object.values(CampusENUM);
-    await Promise.all(
-      campuses.map(async (campus) => {
-        // Get the students for the campus
-        const campusStudents = await StudentDAO.getStudentsByCampus(campus);
+      let students: Student[][];
+      try {
+        students = await Promise.all(
+          campuses.map(async (campus) => {
+            return await StudentDAO.getStudentsByCampus(campus);
+          })
+        );
+      } catch (error) {
+        res.status(500).send("Error retrieving students");
+      }
+      // Create the excel file
+      const wb = xlsx.utils.book_new();
+      students.forEach((campusStudents, index) => {
         const ws = xlsx.utils.json_to_sheet(campusStudents);
-        xlsx.utils.book_append_sheet(wb, ws, campus);
-      })
-    );
+        xlsx.utils.book_append_sheet(wb, ws, campuses[index]);
+      });
 
-    const excelFileName = `students-all.xlsx`;
-    xlsx.writeFile(wb, excelFileName);
-    res.download(excelFileName);
+      const excelFileName = `students-all.xlsx`;
+      xlsx.writeFile(wb, excelFileName);
+      res.download(excelFileName);
+    } catch (error) {
+      res.status(500).send("Error downloading excel file");
+    }
   }
 
   /**
@@ -75,42 +85,52 @@ export class ExcelController {
     req: Request,
     res: Response
   ): Promise<void> {
-    // Get the file
-    const campus = req.headers.campus as CampusENUM;
-    const file = req.file;
-    if (!file) {
-      res.status(400).send("No file uploaded");
-      return;
+    try {
+      // Get the file
+      const campus = req.headers.campus as CampusENUM;
+      const file = req.file;
+      if (!file) {
+        res.status(400).send("No file uploaded");
+        return;
+      }
+
+      let students: Student[];
+      try {
+        // Read the excel file
+        const wb = xlsx.readFile(file.path);
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const studentsData = xlsx.utils.sheet_to_json(ws) as StudentDTO[];
+        // Create the students
+        const students = studentsData.map(
+          (studentData) =>
+            new Student(
+              studentData.carnet,
+              studentData.name,
+              studentData.email,
+              studentData.personalPNumber,
+              campus
+            )
+        );
+      } catch (error) {
+        res.status(500).send("Error reading file");
+      }
+      try {
+        // Create the students
+        await StudentDAO.createStudents(students);
+        res.status(200).send("Students created");
+      } catch (error) {
+        res.status(500).send("Error creating students");
+      }
+    } catch (error) {
+      res.status(500).send("Error uploading file");
     }
-
-    // Read the excel file
-    const wb = xlsx.readFile(file.path);
-    const ws = wb.Sheets[wb.SheetNames[0]];
-    const studentsData = xlsx.utils.sheet_to_json(ws) as StudentDTO[];
-
-    // Create the students
-    const students = studentsData.map(
-      (studentData) =>
-        new Student(
-          studentData.carnet,
-          studentData.name,
-          studentData.email,
-          studentData.personalPNumber,
-          campus
-        )
-    );
-
-    await StudentDAO.createStudents(students);
-
-    res.send("File uploaded");
   }
 
   /**
-   * Generate sample excel file
+   * Generate sample excel file with random students for testing purposes
    * @param req the request
    * @param res the response
    */
-
   public static async generateSampleFile(
     req: Request,
     res: Response

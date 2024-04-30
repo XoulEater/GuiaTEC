@@ -1,9 +1,9 @@
-// Student Controller that handles the requests related to students
-// uses the studentDAO to perform the operations
-
 import { Request, Response } from "express";
 import StudentDAO from "../DAOs/student";
 import Student from "../model/Student";
+
+// Student Controller that handles the requests related to students
+// uses the studentDAO to perform the operations
 
 /**
  * Class that handles the requests related to students
@@ -18,9 +18,12 @@ export class StudentController {
     req: Request,
     res: Response
   ): Promise<void> {
-    // TODO: Add Try Catch
-    const students = await StudentDAO.getAllStudents();
-    res.json(students);
+    try {
+      const students = await StudentDAO.getAllStudents();
+      res.status(200).json(students);
+    } catch (error) {
+      res.status(500).json({ error: "Error getting students" });
+    }
   }
 
   /**
@@ -32,11 +35,13 @@ export class StudentController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const campus = req.params.campus;
-
-    // TODO: Add Try Catch
-    const students = await StudentDAO.getStudentsByCampus(campus);
-    res.json(students);
+    try {
+      const campus = req.params.campus;
+      const students = await StudentDAO.getStudentsByCampus(campus);
+      res.status(200).json(students);
+    } catch (error) {
+      res.status(500).json({ error: "Error getting students" });
+    }
   }
 
   /**
@@ -48,11 +53,13 @@ export class StudentController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const carnet = req.params.code;
-
-    // TODO: Add Try Catch
-    await StudentDAO.deleteStudent(carnet);
-    res.json({ message: "Student deleted" });
+    try {
+      const carnet = req.params.code;
+      await StudentDAO.deleteStudent(carnet);
+      res.status(200).json({ message: "Student deleted" });
+    } catch (error) {
+      res.status(500).json({ error: "Error deleting student" });
+    }
   }
 
   /**
@@ -64,11 +71,13 @@ export class StudentController {
     req: Request,
     res: Response
   ): Promise<void> {
-    const carnet = req.params.code;
-    const student: Student = req.body;
-
-    // TODO: Add Try Catch
-    await StudentDAO.updateStudent(carnet, student);
-    res.json({ message: "Student updated" });
+    try {
+      const carnet = req.params.code;
+      const student: Student = req.body;
+      await StudentDAO.updateStudent(carnet, student);
+      res.status(200).json({ message: "Student updated" });
+    } catch (error) {
+      res.status(500).json({ error: "Error updating student" });
+    }
   }
 }

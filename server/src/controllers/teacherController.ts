@@ -1,112 +1,99 @@
-// Teacher Controller that handles the requests related to teachers
-// uses the TeacherDAO to perform the operations
-
 import { Request, Response } from "express";
 import TeacherDAO from "../DAOs/teacher";
 import Teacher from "../model/Teacher";
 import TeacherDTO from "DTOs/teacher";
 
-/**
- * Class that handles the requests related to teachers
- */
 export class TeacherController {
-  /**
-   * Get all the teachers
-   * @param req the request
-   * @param res the response
-   */
   public static async getAllTeachers(
     req: Request,
     res: Response
   ): Promise<void> {
-    const teachers = await TeacherDAO.getAllTeachers();
-    res.json(teachers);
+    try {
+      const teachers = await TeacherDAO.getAllTeachers();
+      res.status(200).json(teachers);
+    } catch (error) {
+      res.status(500).json({ message: "Error getting teachers" });
+    }
   }
 
-  /**
-   * Get all the teachers from a campus
-   * @param req the request
-   * @param res the response
-   */
   public static async getTeachersByCampus(
     req: Request,
     res: Response
   ): Promise<void> {
-    const campus = req.params.campus;
-    const teachers = await TeacherDAO.getTeachersByCampus(campus);
-    res.json(teachers);
+    try {
+      const campus = req.params.campus;
+      const teachers = await TeacherDAO.getTeachersByCampus(campus);
+      res.status(200).json(teachers);
+    } catch (error) {
+      res.status(500).json({ message: "Error getting teachers" });
+    }
   }
-  /**
-   * Get a teacher by its code
-   * @param req the request
-   * @param res the response
-   */
+
   public static async getTeacherByCode(
     req: Request,
     res: Response
   ): Promise<void> {
-    const code = req.params.code;
-    const teacher = await TeacherDAO.getTeacherByCode(code);
-    res.json(teacher);
+    try {
+      const code = req.params.code;
+      const teacher = await TeacherDAO.getTeacherByCode(code);
+      res.status(200).json(teacher);
+    } catch (error) {
+      res.status(500).json({ message: "Error getting teacher" });
+    }
   }
 
-  /**
-   * Create a new teacher
-   * @param req the request
-   * @param res the response
-   */
   public static async createTeacher(
     req: Request,
     res: Response
   ): Promise<void> {
-    const teacherData: TeacherDTO = req.body;
-    const teacher = new Teacher(teacherData);
-    // Generate the code of the teacher (e.g. AL-01)
-    const campus = teacher.getCampus();
-    const teachers = await TeacherDAO.getTeachersByCampus(campus);
-    const lastTeacher = teachers[teachers.length - 1];
-    const lastCode = lastTeacher ? lastTeacher.getId() : `${campus}-00`;
-    const lastNumber = parseInt(lastCode.split("-")[1]);
-    const newNumber = lastNumber + 1;
-    const code = `${campus}-${newNumber.toString().padStart(2, "0")}`;
-
-    teacher.setId(code);
-
     try {
+      const teacherData: TeacherDTO = req.body;
+      const teacher = new Teacher(teacherData);
+      const campus = teacher.getCampus();
+      try {
+        const teachers = await TeacherDAO.getTeachersByCampus(campus);
+        const lastTeacher = teachers[teachers.length - 1];
+        const lastCode = lastTeacher ? lastTeacher.getId() : `${campus}-00`;
+        const lastNumber = parseInt(lastCode.split("-")[1]);
+        const newNumber = lastNumber + 1;
+        const code = `${campus}-${newNumber.toString().padStart(2, "0")}`;
+        teacher.setId(code);
+      } catch (error) {
+        res.status(500).json({ message: "Error generating teacher code" });
+        return;
+      }
       await TeacherDAO.createTeacher(teacher);
-      res.json({ message: "Teacher created" });
+      res.status(200).json({ message: "Teacher created" });
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      res.status(400).json({ message: "Error creating teacher" });
     }
   }
 
-  /**
-   * Update a teacher
-   * @param req the request
-   * @param res the response
-   */
   public static async updateTeacher(
     req: Request,
     res: Response
   ): Promise<void> {
-    const code = req.params.code;
-    const teacherData: TeacherDTO = req.body;
-    const teacher = new Teacher(teacherData);
-    await TeacherDAO.updateTeacher(code, teacher);
-    res.json({ message: "Teacher updated" });
+    try {
+      const code = req.params.code;
+      const teacherData: TeacherDTO = req.body;
+      const teacher = new Teacher(teacherData);
+      await TeacherDAO.updateTeacher(code, teacher);
+      res.status(200).json({ message: "Teacher updated" });
+    } catch (error) {
+      res.status(400).json({ message: "Error updating teacher" });
+    }
   }
 
-  /**
-   * Delete a teacher
-   * @param req the request
-   * @param res the response
-   */
   public static async deleteTeacher(
     req: Request,
     res: Response
   ): Promise<void> {
-    const code = req.params.code;
-    await TeacherDAO.deleteTeacher(code);
-    res.json({ message: "Teacher deleted" });
+    try {
+      const code = req.params.code;
+      await TeacherDAO.deleteTeacher(code);
+      res.status(200).json({ message: "Teacher deleted" });
+    } catch (error) {
+      res.status(400).json({ message: "Error deleting teacher" });
+    }
   }
 }
