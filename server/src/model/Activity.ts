@@ -57,7 +57,6 @@ export default class Activity {
       this.status = NameOrDTO.status;
       this.link = NameOrDTO.link;
       this.attachmentFile = NameOrDTO.attachmentFile;
-      console.log("Bandera");
       // TODO: this.forum = NameOrDTO.forum;
     }
   }
