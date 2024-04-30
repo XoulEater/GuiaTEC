@@ -44,7 +44,8 @@ export default class Activity {
       this.attachmentFile = attachmentFile;
       this.forum = forum;
     } else {
-      this.id = NameOrDTO._id.toString();
+      //this.id = NameOrDTO._id.toString();
+      this.id = "120";
       this.name = NameOrDTO.name;
       this.week = NameOrDTO.week;
       this.date = NameOrDTO.date;
@@ -56,6 +57,7 @@ export default class Activity {
       this.status = NameOrDTO.status;
       this.link = NameOrDTO.link;
       this.attachmentFile = NameOrDTO.attachmentFile;
+      console.log("Bandera");
       // TODO: this.forum = NameOrDTO.forum;
     }
   }

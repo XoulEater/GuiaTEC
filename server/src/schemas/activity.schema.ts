@@ -78,15 +78,16 @@ export default activitySchema;
 
 // {
 //   "name" : "Test Activity",
-//   "description": "This is a test activity",
-//   "startDate": new Date(),
-//   "publishDate" : new Date(),
-//   "notificationInterval": 1,
-//   "type" : "Test",
+//   "week": 2,
+//   "date": "2024-04-29T12:00:00.000Z",
+//   "prevDays" : 3,
+//   "reminderInterval": 1,
 //   "responsibles": ["John Doe", "Jane Smith"],
-//   "attachement": "test.pdf",
+//   "type" : "Test",
 //   "modality": "Online",
-//   "link": "https://example.com",
 //   "status": "Active",
+//   "link": "https://example.com",
+//   "attachmentFile": "test.pdf",
 //   "forum": "https://example.com/forum"
-// };
+// }
+

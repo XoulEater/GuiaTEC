@@ -19,7 +19,7 @@ export default class Teacher extends User {
     photo?: string
   ) {
     if (typeof IDorDTO === "string") {
-      super(name, email, password, photo, campus, "teacher", isLeader, IDorDTO);
+      super(name, email, password, campus, "teacher", isLeader, photo, IDorDTO);
       this.officePNumber = officePNumber;
       this.personalPNumber = personalPNumber;
     } else {
@@ -27,10 +27,10 @@ export default class Teacher extends User {
         IDorDTO.name,
         IDorDTO.email,
         IDorDTO.password,
-        IDorDTO.photo,
         IDorDTO.campus,
         "teacher",
         IDorDTO.isLeader,
+        IDorDTO.photo,
         IDorDTO.id
       );
       this.officePNumber = IDorDTO.officePNumber;

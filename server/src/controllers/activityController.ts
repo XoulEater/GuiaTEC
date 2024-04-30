@@ -19,7 +19,6 @@ export class ActivityController {
   ): Promise<void> {
     const workplanId = req.params.wid;
     const workplan = await WorkplanDAO.getWorkplanById(workplanId);
-
     res.json(workplan.getActivities());
   }
 
@@ -39,7 +38,6 @@ export class ActivityController {
     const activity = workplan
       .getActivities()
       .find((activity) => activity.getID() === activityId);
-
     res.json(activity);
   }
 
@@ -57,7 +55,26 @@ export class ActivityController {
     const activity = new Activity(activityDTO);
     const workplan = await WorkplanDAO.getWorkplanById(workplanId);
     workplan.addActivity(activity);
+    console.log(workplanId);
+    console.log(workplan);
     await WorkplanDAO.updateWorkplan(workplanId, workplan);
+    
     res.json("Activity created");
   }
+
+  public static async updateActivity(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    const activityDTO: ActivityDTO = req.body;
+    const workplanId = req.params.wid;
+    const activityIndex = req.params.aid;
+    const activity = new Activity(activityDTO);
+    const workplan = await WorkplanDAO.getWorkplanById(workplanId);
+    workplan.updateActivity(activityIndex, activity);
+    await WorkplanDAO.updateWorkplan(workplanId, workplan);
+
+    res.json("Activity updated");
+  }
+
 }

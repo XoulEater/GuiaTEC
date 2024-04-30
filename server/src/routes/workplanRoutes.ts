@@ -15,6 +15,6 @@ router.delete("/:id", WorkplanController.deleteWorkplan);
 router.get("/:wid/activities", ActivityController.getAllActivities);
 router.get("/:wid/activities/:aid", ActivityController.getActivityById);
 router.post("/:wid/activities", ActivityController.createActivity);
-//router.put("/:wid/activity/:aid", ActivityController.updateActivity);
+router.put("/:wid/activity/:aid", ActivityController.updateActivity);
 
 export default router;
