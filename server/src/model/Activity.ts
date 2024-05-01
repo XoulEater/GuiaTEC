@@ -1,4 +1,5 @@
 import ActivityDTO from "DTOs/activity";
+import Forum from "./Forum";
 
 export default class Activity {
   private id: string;
@@ -13,7 +14,7 @@ export default class Activity {
   private status: string;
   private link?: string;
   private attachmentFile?: string;
-  private forum?: string[];
+  private forum?: Forum;
 
   // Constructor
   constructor(
@@ -28,7 +29,7 @@ export default class Activity {
     status?: string,
     link?: string,
     attachmentFile?: string,
-    forum?: string[]
+    forum?: Forum
   ) {
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
@@ -57,7 +58,7 @@ export default class Activity {
       this.status = NameOrDTO.status;
       this.link = NameOrDTO.link;
       this.attachmentFile = NameOrDTO.attachmentFile;
-      // TODO: this.forum = NameOrDTO.forum;
+      //this.forum = NameOrDTO.forum;
     }
   }
 

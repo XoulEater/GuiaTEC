@@ -1,14 +1,5 @@
-interface MessageDTO {
-  id?: string; // unique identifier of the message
-  user: string; // user that sent the message
-  date: Date; // date of the message
-  content: string; // content of the message
-}
+import ForumDTO from "DTOs/forum";
 
-interface ForumDTO {
-  id?: string; // unique identifier of the forum
-  messages: Array<MessageDTO>; // list of messages of the forum
-}
 
 interface ActivityDTO {
   _id?: string; // unique identifier of the activity
@@ -27,3 +18,4 @@ interface ActivityDTO {
 }
 
 export default ActivityDTO;
+
