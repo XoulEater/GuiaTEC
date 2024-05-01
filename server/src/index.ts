@@ -12,6 +12,7 @@ import teamRoutes from "./routes/teamRoutes";
 import workplanRoutes from "./routes/workplanRoutes";
 import activitiesRoutes from "./routes/activityRoute";
 import studentRoutes from "./routes/studentRoutes";
+import authRoutes from "./routes/authRoutes"
 
 dotenv.config();
 
@@ -34,6 +35,7 @@ app.use("/api/teams", teamRoutes);
 app.use("/api/workplans", workplanRoutes);
 app.use("/api/activities", activitiesRoutes);
 app.use("/api/students", studentRoutes);
+app.use("/api/auth", authRoutes);
 
 // default get route
 app.get("/", (req, res) => {
