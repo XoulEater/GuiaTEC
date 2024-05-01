@@ -1,14 +1,16 @@
-import type { UserDTO } from "../lib/data.ts";
+import type { User } from "@/lib/types.ts";
 
 const RegisterTeacher = () => {
-  const user = localStorage.getItem("user");
-  const userDTO = JSON.parse(user as string) as UserDTO;
+  const userData = localStorage.getItem("user");
+  const user = JSON.parse(userData as string) as User;
+
+  const showRegisterButton = user.userType === "assistant";
 
   const handleRegister = () => {
     window.open("/register", "_blank");
   };
 
-  if (userDTO.userType !== "assistant") {
+  if (!showRegisterButton) {
     return null;
   }
   return (

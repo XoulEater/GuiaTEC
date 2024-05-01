@@ -1,51 +1,58 @@
-import { useEffect, useState } from "react";
 import type { Teacher, User } from "@/lib/types.ts";
-import * as teachersService from "@/services/teacherService.ts";
+
+import { Campus } from "@/lib/types.ts";
+import { useEffect, useState } from "react";
 import * as teamService from "@/services/teamService.ts";
 
-const TeachersTable = () => {
+const MembersTable = () => {
   const userData = localStorage.getItem("user");
   const user = JSON.parse(userData as string) as User;
+  const isMainAssistant = user.userType === "assistant" && user.campus === "CA";
   const isAssistant = user.userType === "assistant";
 
   const showDeleteButton = isAssistant;
-  const showIncludeButton = isAssistant;
+  const showLeaderButton = isMainAssistant;
 
+  const [currentLeader, setCurrentLeader] = useState<string | null>(null);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [teamTeachers, setTeamTeachers] = useState<Teacher[]>([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
+  const [isValidTeam, setIsValidTeam] = useState(true);
+
+  // a team is valid if it has at least one member of each campus of the enum
+  function checkValidTeam() {
+    const campuses = Object.values(Campus);
+
+    setIsValidTeam(
+      campuses.every((campus) =>
+        teachers.some((teacher) => teacher.campus === campus)
+      )
+    );
+  }
 
   const loadTeachers = async () => {
-    const res = await teachersService.getAllTeachers();
+    const res = await teamService.getAllMembers();
     const formattedTeachers = res.map((teacher) => {
+      if (teacher.isLeader) {
+        setCurrentLeader(teacher.id);
+      }
       return {
         ...teacher,
         photo:
           teacher.photo ||
-          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png", // Default image
+          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
       };
     });
     setTeachers(formattedTeachers);
   };
 
-  const loadMembers = async () => {
-    const res = await teamService.getAllMembers();
-    const formattedTeachers = res.map((teacher) => {
-      return {
-        ...teacher,
-        photo:
-          teacher.photo ||
-          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png", // Default image
-      };
-    });
-    setTeamTeachers(formattedTeachers);
-  };
-
   useEffect(() => {
     loadTeachers();
-    loadMembers();
   }, []);
+
+  useEffect(() => {
+    checkValidTeam();
+  }, [teachers]);
 
   // handle delete
   function handleDelete(teacher: Teacher) {
@@ -56,42 +63,46 @@ const TeachersTable = () => {
   function handleConfirmDelete() {
     if (selectedTeacher) {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
+      teamService.removeMember(selectedTeacher.id);
     }
+    checkValidTeam();
     setConfirmDelete(false);
-    // TODO: Implement delete teacher from database?
   }
 
-  function handleIncludeTeacher(teacher: Teacher) {
-    setTeamTeachers((prevTeachers) => [...prevTeachers, teacher]);
-    teamService.addMember(teacher.id);
+  async function handleLeaderChange(teacher: Teacher) {
+    // set leader to false for all teachers
+    await teachers.forEach((t) =>
+      t === teacher
+        ? teamService.setCoordinator(t.id, true)
+        : teamService.setCoordinator(t.id, false)
+    );
+    setCurrentLeader(teacher.id);
   }
 
   return (
     <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">
-      <header className="grid items-center w-full h-16 grid-cols-8 grid-rows-1 px-2 bg-zinc-200">
-        <span className="text-lg col-span-1 font-semibold">Codigo</span>
-        <span className="text-lg col-span-1 font-semibold">Imagen</span>
+      <header className="grid items-center w-full h-16 grid-cols-6 px-2 bg-zinc-200">
+        <span className="text-lg font-semibold">Codigo</span>
+        <span className="text-lg font-semibold">Imagen</span>
         <span className="col-span-2 text-lg font-semibold">Nombre</span>
-        <span className="col-span-2 text-lg font-semibold">Teléfono</span>
         <span className="col-span-2 text-lg font-semibold">Acciones</span>
       </header>
       {teachers.map((teacher: Teacher, index) => {
         const rowColorClass = index % 2 === 0 ? "bg-white" : "bg-zinc-200";
-
         return (
           <div
             key={index}
-            className={`grid grid-cols-8 h-16 w-full items-center ${rowColorClass} px-2`}
+            className={`grid grid-cols-6 h-16 w-full items-center ${rowColorClass} px-2`}
           >
             <span>{teacher.id}</span>
             <img
-              className="object-cover object-center h-12 rounded-full aspect-square border-2 border-white/50 shadow-sm"
+              className="object-cover object-center h-12 rounded-full aspect-square"
               src={teacher.photo}
               alt={teacher.name}
             />
             <span className="col-span-2 ">{teacher.name}</span>
-            <span className="col-span-2 ">{teacher.personalPNumber}</span>
             <div className="flex items-center col-span-2 gap-4">
+              {/* Button to view teacher details */}
               <a href={`teacher/${teacher.id}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -133,36 +144,43 @@ const TeachersTable = () => {
                   </svg>
                 </button>
               )}
-
-              {!teamTeachers.find(
-                (teamTeacher) => teamTeacher.id === teacher.id
-              ) &&
-                showIncludeButton && (
-                  <button onClick={() => handleIncludeTeacher(teacher)}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="transition-all duration-300 ease-out  text-lime-600 hover:brightness-125 hover:scale-110"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      strokeWidth="2"
-                      stroke="currentColor"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-                      <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
-                      <path d="M19 22v-6" />
-                      <path d="M22 19l-3 -3l-3 3" />
-                    </svg>
-                  </button>
-                )}
+              {showLeaderButton && (
+                /* Button to change leader */
+                <button onClick={() => handleLeaderChange(teacher)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`${
+                      teacher.id === currentLeader
+                        ? "text-amber-500 hover:brightness-125"
+                        : "text-zinc-400 hover:brightness-90"
+                    } hover:scale-110 transition-all  duration-300 ease-out`}
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    fill="none"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
         );
       })}
+      {/* Alert invalid team */}
+      {!isValidTeam && (
+        <div className="flex items-center justify-center w-full h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-b-md hover:brightness-125 group">
+          <span className="transition-transform duration-300 ease-in-out group-hover:scale-110">
+            Equipo incompleto
+          </span>
+        </div>
+      )}
+
       {confirmDelete && (
         <div
           className={
@@ -196,4 +214,4 @@ const TeachersTable = () => {
   );
 };
 
-export default TeachersTable;
+export default MembersTable;

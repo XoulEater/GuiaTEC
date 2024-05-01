@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/LoginLayout.astro";
 import Input from "../components/Input.tsx";
-import SubmitButton from "../components/SubmitButton.astro";
 ---
 
 <Layout title="Bienvenido !" subtitle="Ingrese sus datos">
@@ -14,7 +13,7 @@ import SubmitButton from "../components/SubmitButton.astro";
         placeHolderLG="Ingrese su correo"
         placeHolderSM="Correo"
         logo="/email.svg"
-        client:only
+        client:only="react"
       />
       <Input
         id="password"
@@ -23,7 +22,7 @@ import SubmitButton from "../components/SubmitButton.astro";
         placeHolderLG="Ingrese su contraseña"
         placeHolderSM="Contraseña"
         logo="/password.svg"
-        client:only
+        client:only="react"
       />
 
       <div class="flex justify-between w-full">
@@ -36,7 +35,20 @@ import SubmitButton from "../components/SubmitButton.astro";
         >
       </div>
 
-      <SubmitButton text="Ingresar" />
+      <a
+        id="submit-button"
+        class="flex items-center justify-center w-full py-1 text-lg text-white transition duration-300 ease-in-out rounded-lg bg-primary-dark hover:bg-primary-light group"
+      >
+        <label
+          class="transition duration-300 ease-in-out group-hover:transform group-hover:scale-110"
+          >Ingresar</label
+        >
+        <img
+          src="/arrow-right.svg"
+          alt="arrow-right"
+          class="ml-2 transition duration-300 ease-in-out group-hover:transform group-hover:translate-x-1 group-hover:scale-110"
+        />
+      </a>
     </form>
   </div>
   <h2 class="mt-6">
@@ -49,23 +61,23 @@ import SubmitButton from "../components/SubmitButton.astro";
 </Layout>
 <script>
   // FIXME: This is a temporary solution to avoid using a backend
-  import { assistants, teachers } from "../lib/data.ts";
 
-  const users = [...assistants, ...teachers];
   const button = document.getElementById("submit-button");
   if (button) {
     button.addEventListener("click", () => {
       const email = document.getElementById("email") as HTMLInputElement;
       const password = document.getElementById("password") as HTMLInputElement;
-      const user = users.find(
-        (u) => u.email === email.value && u.password === password.value
-      );
-      if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
-        window.location.href = "/team";
-      } else {
-        alert("Usuario o contraseña incorrectos");
-      }
+
+      const user = {
+        email: email.value,
+        password: password.value,
+        userType: "assistant",
+        campus: "CA",
+        isLeader: true,
+      };
+
+      localStorage.setItem("user", JSON.stringify(user));
+      window.location.href = "/team";
     });
   }
 </script>

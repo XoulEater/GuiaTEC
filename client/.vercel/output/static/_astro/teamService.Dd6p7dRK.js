@@ -1,1 +1,0 @@
-const t="http://localhost:1234/api";async function a(){return(await fetch(`${t}/teams/members`)).json()}async function m(e){await fetch(`${t}/teams/members/${e}`,{method:"POST"})}async function n(e){await fetch(`${t}/teams/members/${e}`,{method:"DELETE"})}async function o(e,s){await fetch(`${t}/teams/members/${e}/${s}`,{method:"PUT"})}export{m as a,a as g,n as r,o as s};

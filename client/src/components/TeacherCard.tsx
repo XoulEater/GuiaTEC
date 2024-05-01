@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
-import type { TeacherDTO, UserDTO } from "../lib/data";
-import * as teachersService from "../API/teachersService";
+import type { Teacher, User } from "@/lib/types.ts";
+import * as teachersService from "@/services/teacherService";
 
 interface Props {
   teacherID: string;
 }
 
 const TeacherCard: React.FC<Props> = ({ teacherID }) => {
-  const user = localStorage.getItem("user");
-  const userDTO = JSON.parse(user as string) as UserDTO;
-  const [teacher, setTeacher] = useState<TeacherDTO | null>(null);
+  const userData = localStorage.getItem("user");
+  const user = JSON.parse(userData as string) as User;
+  const [teacher, setTeacher] = useState<Teacher | null>(null);
+
+  const canEdit = user.userType === "assistant" || teacher?.id === user.id;
 
   async function loadTeacher() {
     const res = await teachersService.getTeacherByCode(teacherID);
@@ -26,9 +28,6 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
     loadTeacher();
   }, []);
 
-  const canEdit =
-    userDTO.userType === "assistant" || teacher?.id === userDTO.id;
-
   const [editing, setEditing] = useState(false);
 
   // handle editing
@@ -36,10 +35,18 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
     setEditing(!editing);
     if (editing) {
       if (teacher) {
-        teacher.email = (document.getElementById("email") as HTMLInputElement).value;
-        teacher.name = (document.getElementById("name") as HTMLInputElement).value;
-        teacher.officePNumber = (document.getElementById("officePNumber") as HTMLInputElement).value;
-        teacher.personalPNumber = (document.getElementById("personalPNumber") as HTMLInputElement).value;
+        teacher.email = (
+          document.getElementById("email") as HTMLInputElement
+        ).value;
+        teacher.name = (
+          document.getElementById("name") as HTMLInputElement
+        ).value;
+        teacher.officePNumber = (
+          document.getElementById("officePNumber") as HTMLInputElement
+        ).value;
+        teacher.personalPNumber = (
+          document.getElementById("personalPNumber") as HTMLInputElement
+        ).value;
         await teachersService.updateTeacher(teacher);
       }
     }
@@ -66,7 +73,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
       <img
         className="rounded-full h-[210px] aspect-square object-cover object-center border-2 border-white "
         src={teacher?.photo}
-        alt={teacher?.name} 
+        alt={teacher?.name}
       />
       <aside className=" w-[90%] lgn:w-[60%] gap-5 flex flex-col items-center lgn:items-start ">
         <header className="flex flex-col items-center w-full gap-5 pb-3 border-b-2 border-zinc-400 lgn:flex-row lgn:justify-between lgn:items-top ">

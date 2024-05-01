@@ -1,14 +1,15 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import type { UserDTO } from "../lib/data";
-import { NavBarTheme } from "../lib/themes";
+import type { User } from "@/lib/types";
+import { NavBarTheme } from "@/lib/themes";
 
 interface Props {
   currentRoute: "equipo" | "estudiantes" | "profesores";
 }
 
 const Header: React.FC<Props> = ({ currentRoute }) => {
-  const user = localStorage.getItem("user");
-  const userDTO = JSON.parse(user as string) as UserDTO;
+  const userData = localStorage.getItem("user");
+  const user = JSON.parse(userData as string) as User;
+  const showRegister = user.userType == "assistant";
 
   function handleLogout() {
     console.log("Logging out...");
@@ -32,18 +33,17 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
         <Dropdown
           arrowIcon={false}
           inline
-          label={<Avatar alt="User settings" img={userDTO.photo} rounded />}
+          label={<Avatar alt="User settings" img={user.photo} rounded />}
         >
           <Dropdown.Header>
-            <span className="block text-sm">{userDTO.name}</span>
+            <span className="block text-sm">{user.name}</span>
             <span className="block text-sm font-medium truncate">
-              {userDTO.email}
+              {user.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item
-            className={userDTO.userType == "assistant" ? "grid" : "hidden"}
+            className={showRegister ? "grid" : "hidden"}
             href="/register"
-            target="_blank"
           >
             Registrar profesor
           </Dropdown.Item>

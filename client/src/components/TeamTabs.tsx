@@ -1,8 +1,8 @@
 import { Tabs } from "flowbite-react";
 
-import MembersTable from "./MembersTable";
-import { TabTheme } from "../lib/themes";
-import WorkplansTable from "./WorkplansTable";
+import MembersTable from "@/components/TeamTabs/MembersTable";
+import { TabTheme } from "@/lib/themes";
+import WorkplansTable from "@/components/TeamTabs/WorkplansTable";
 
 const TeamTabs = () => {
   return (

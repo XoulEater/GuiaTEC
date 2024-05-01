@@ -1,27 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  type WorkPlanDTO,
-  type ActivityDTO,
+  type WorkPlan,
+  type Activity,
   ActivityStatus,
-  type UserDTO,
-  teachers,
-} from "../lib/data";
-import ActivitesAccordion from "./ActivitiesAccordion";
+  type User,
+} from "@/lib/types";
+import ActivitesAccordion from "@/components/ActivitiesAccordion";
+import * as workplanService from "@/services/workplanService";
 
 interface WorkPlanProps {
-  workplanDTO?: WorkPlanDTO;
+  id: string;
 }
 
-const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
-  const user = localStorage.getItem("user");
-  const userDTO = JSON.parse(user as string) as UserDTO;
-  const workplan = workplanDTO;
-  let isLeader = false;
+const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
+  const userData = localStorage.getItem("user");
+  const user = JSON.parse(userData as string) as User;
+  const isLeader = user.isLeader;
+  const isTeacher = user.userType === "teacher";
 
-  const activities = workplan?.activities;
+  const showCreateActivityButton = isLeader;
+  const showEditActivityButtons = isLeader;
+  const showComments = isTeacher;
+
+  const [workplan, setWorkplan] = useState<WorkPlan | null>(null);
+  const [activities, setActivities] = useState<Activity[] | null>(null);
+  const [openAccordions, setOpenAccordions] = useState<number[]>([]);
+  const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
+    null
+  );
+  const [activityStatus, setActivityStatus] = useState<ActivityStatus | null>(
+    null
+  );
+
+  const loadWorkplan = async () => {
+    const res = await workplanService.getWorkplanById(id);
+    setWorkplan(res);
+    setActivities(res.activities);
+  };
+
+  useEffect(() => {
+    loadWorkplan();
+  }, []);
+
   // clasify activities by week
   const activitiesByWeek: {
-    [week: number]: ActivityDTO[];
+    [week: number]: Activity[];
   } = {};
   activities?.forEach((activity) => {
     if (activitiesByWeek[activity.week]) {
@@ -30,19 +53,6 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
       activitiesByWeek[activity.week] = [activity];
     }
   });
-  const [openAccordions, setOpenAccordions] = useState<number[]>([]);
-  const [selectedActivity, setSelectedActivity] = useState<ActivityDTO | null>(
-    null
-  );
-  const [activityStatus, setActivityStatus] = useState<ActivityStatus | null>(
-    null
-  );
-
-  if (userDTO.userType === "teacher") {
-    isLeader =
-      teachers.find((t) => t.isLeader && t.email === userDTO.email) !==
-      undefined;
-  }
 
   function handleAccordionToggle(week: number) {
     if (openAccordions.includes(week)) {
@@ -56,17 +66,24 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
     if (selectedActivity) {
       setActivityStatus(status);
       selectedActivity.status = status;
-      // TODO: update activity
+      // TODO: workplanService.updateActivity(id, selectedActivity);
     }
   }
   function handleEditActivity() {
     // redirect to edit activity page
-    window.location.href = "/activity/edit-" + selectedActivity?.id;
+    window.location.href = id + "-edit-" + selectedActivity?.id;
   }
 
   function handleNewActivity() {
     // redirect to new activity page
-    window.location.href = "/new-activity";
+    window.location.href = id + "-new-activity";
+  }
+
+  function handleDeletePlan() {
+    workplanService.deleteWorkplan(id);
+    if (typeof window !== "undefined") {
+      window.history.back();
+    }
   }
 
   return (
@@ -76,8 +93,8 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
           <h1 className="text-3xl font-bold">{workplan?.name}</h1>
           <p className="text-lg">{workplan?.description}</p>
         </div>
-        <aside>
-          {isLeader && (
+        <aside className="flex gap-2">
+          {showCreateActivityButton && (
             <button
               onClick={handleNewActivity}
               className="flex items-center justify-center h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark w-52 hover:bg-primary-light group"
@@ -103,6 +120,33 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                 <path d="M19 16v6" />
               </svg>
               Nueva Actividad
+            </button>
+          )}
+          {showCreateActivityButton && (
+            <button
+              onClick={handleDeletePlan}
+              className="flex items-center justify-center h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark w-52 hover:bg-primary-light group"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="icon icon-tabler icon-tabler-calendar-plus"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="#ffffff"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 7l16 0" />
+                <path d="M10 11l0 6" />
+                <path d="M14 11l0 6" />
+                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+              </svg>
+              Eliminar Plan
             </button>
           )}
         </aside>
@@ -131,7 +175,7 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                   </span>
                 </div>
                 <p className="-mt-2 text-xl text-gray-600">
-                  {selectedActivity.date.toDateString()}
+                  {selectedActivity.date.toString().split("T")[0]}
                 </p>
               </header>
 
@@ -139,9 +183,9 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                 <div>
                   <p className="text-xl font-bold ">Responsables:</p>
                   <ul>
-                    {selectedActivity.responsibles.map((teacher) => (
-                      <li key={teacher.name} className="text-lg ">
-                        - {teacher.name}
+                    {selectedActivity.responsibles.map((responsible) => (
+                      <li key={responsible} className="text-lg">
+                        {responsible}
                       </li>
                     ))}
                   </ul>
@@ -180,7 +224,7 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
                   </a>
                 )}
               </section>
-              {isLeader && (
+              {showEditActivityButtons && (
                 <footer className="flex justify-center gap-3">
                   {selectedActivity.status === "Planeada" && (
                     <button
@@ -354,4 +398,4 @@ const WorkPlan: React.FC<WorkPlanProps> = ({ workplanDTO }) => {
   );
 };
 
-export default WorkPlan;
+export default WorkPlanDisplay;

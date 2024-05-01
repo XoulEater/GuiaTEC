@@ -3,19 +3,46 @@ import {
   ActivityStatus,
   ActivityType,
   Modalities,
-  teachers,
-  type ActivityDTO,
-  type TeacherDTO,
-} from "../lib/data";
+  type Activity,
+  type Teacher,
+} from "@/lib/types";
+import * as teacherService from "@/services/teacherService";
+import * as activityService from "@/services/activityService";
 
 interface ActivityFormProps {
-  activity?: ActivityDTO; // Add an optional activity prop
+  activityId?: string; // optional activity prop
+  workplanId: string;
 }
 
-const ActivityForm: React.FC<ActivityFormProps> = ({ activity }) => {
+const ActivityForm: React.FC<ActivityFormProps> = ({
+  activityId,
+  workplanId,
+}) => {
+  
   // Implement your component logic here
   const [isVirtual, setIsVirtual] = React.useState(false);
   const [colaborators, setColaborators] = React.useState<string[]>([]);
+  const [teachers, setTeachers] = React.useState<Teacher[]>([]);
+  const [activity, setActivity] = React.useState<Activity | null>(null);
+
+  const loadActivity = async () => {
+    if (!activityId) return;
+    const activity = await activityService.getActivityById(
+      workplanId,
+      activityId
+    );
+    setActivity(activity);
+  };
+
+  const loadTeachers = async () => {
+    const teachers = await teacherService.getAllTeachers();
+    setTeachers(teachers);
+  };
+
+  useEffect(() => {
+    loadActivity();
+    loadTeachers();
+  }, []);
 
   useEffect(() => {
     if (activity) {
@@ -39,7 +66,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ activity }) => {
         prevDaysInput.value = (activity.prevDays ?? "").toString();
         prevDaysInput.disabled = true;
       }
-
       // Set the reminderInterval of the activity
       const reminderIntervalInput = document.getElementById(
         "activityReminderInterval"
@@ -65,7 +91,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ activity }) => {
       modalityInput.value = activity.modality;
 
       // Set the responsibles of the activity
-      setColaborators(activity.responsibles.map((t) => t.name));
+      setColaborators(activity.responsibles);
 
       // Set the isVirtual state
       setIsVirtual(activity.modality === Modalities.VIRTUAL);
@@ -109,22 +135,20 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ activity }) => {
     const form = event.currentTarget;
     const data = new FormData(form);
     const name = data.get("activityName") as string;
-    name: data.get("activityName") as string;
     const week = parseInt(data.get("activityWeek") as string);
     const date = new Date(data.get("activityDate") as string);
     const prevDays = parseInt(data.get("activityPrevDays") as string);
     const reminderInterval = parseInt(
       data.get("activityReminderInterval") as string
     );
-    const responsibles = colaborators.map((name) => {
-      const teacher = teachers.find((t) => t.name === name);
-      return teacher as TeacherDTO;
-    });
+    console.log(colaborators);
+    const responsibles = colaborators;
     const type = data.get("activityType") as ActivityType;
     const modality = data.get("activityModality") as Modalities;
     const status = ActivityStatus.PLANEADA;
     const link = data.get("activityLink") as string;
     const attachmentFile = data.get("activityAttachment") as string;
+
     // Create the activity object
     if (activity) {
       // Call the function to update the activity
@@ -159,16 +183,18 @@ const ActivityForm: React.FC<ActivityFormProps> = ({ activity }) => {
       });
     }
     if (window.confirm("Actividad creada exitosamente")) {
-      window.history.back();
     }
   }
-  function createActivity(activity: ActivityDTO) {
-    // TODO: Send the activity to the backend to be saved
-    // TODO: Validate the answer from the backend
-    // if the activity was saved successfully, redirect to the work plan page
+  async function createActivity(activity: Activity) {
+    // Call the function to create the activity
+    console.log(workplanId, activity);
+    await activityService.createActivity(workplanId, activity);
+    console.log("Activity created");
+    // Redirect to the previous page
   }
-  function updateActivity(activity: ActivityDTO) {
-    // TODO: Send the activity to the backend to be updated
+  function updateActivity(activity: Activity) {
+    // Call the function to update the activity
+    // TODO: activityService.updateActivity(workplanId, activity);
   }
 
   return (

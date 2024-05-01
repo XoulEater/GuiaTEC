@@ -77,8 +77,8 @@ const activitySchema: Schema = new Schema({
 export default activitySchema;
 
 // {
-//   "name" : "Test Activity",
-//   "week": 2,
+//   "name" : "Test Activity Tres",
+//   "week": 12,
 //   "date": "2024-04-29T12:00:00.000Z",
 //   "prevDays" : 3,
 //   "reminderInterval": 1,

@@ -1,25 +1,26 @@
-import type { StudentDTO, UserDTO } from "../lib/data.ts";
-import * as studentsService from "../API/studentsService.ts";
-import * as excelService from "../API/excelService.ts";
+import type { Student, User } from "@/lib/types.ts";
+import * as studentsService from "@/services/studentsService.ts";
+import * as excelService from "@/services/excelService.ts";
 import { useEffect, useState } from "react";
 
 const StudentTable = () => {
-  const user = localStorage.getItem("user");
-  const userDTO = JSON.parse(user as string) as UserDTO;
-  const userCampus = userDTO.campus;
+  const userData = localStorage.getItem("user");
+  const user = JSON.parse(userData as string) as User;
+  const userCampus = user.campus;
+
+  const showUploadButton = user.userType === "assistant";
 
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState<StudentDTO | null>(
-    null
-  );
-  const [editStudent, setEditStudent] = useState<StudentDTO | null>(null);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [editStudent, setEditStudent] = useState<Student | null>(null);
   const [confirmDownload, setConfirmDownload] = useState(false);
-  const [listStudents, setStudents] = useState<StudentDTO[]>([]);
-
+  const [listStudents, setStudents] = useState<Student[]>([]);
   const [sort, setSort] = useState<"carnet" | "name" | "campus">("carnet");
 
+  // Load students from the database
   const loadStudents = async () => {
     const res = await studentsService.getAllStudents();
+    const sortedStudents = res.sort((a, b) => a.campus.localeCompare(b.campus));
     setStudents(res);
   };
 
@@ -28,7 +29,7 @@ const StudentTable = () => {
   }, []);
 
   // handle delete student
-  function handleDelete(student: StudentDTO) {
+  function handleDelete(student: Student) {
     setSelectedStudent(student);
     setConfirmDelete(true);
   }
@@ -43,7 +44,7 @@ const StudentTable = () => {
   }
 
   // handle edit student
-  function handleEdit(student: StudentDTO) {
+  function handleEdit(student: Student) {
     setEditStudent(student);
   }
 
@@ -62,8 +63,10 @@ const StudentTable = () => {
     });
     setStudents(updatedStudents);
     setEditStudent(null);
-    studentsService.updateStudent(editStudent as StudentDTO);
+    studentsService.updateStudent(editStudent as Student);
   }
+
+  // handle sort students by carnet, name or campus
   function handleSort() {
     const newSort =
       sort == "carnet" ? "name" : sort == "name" ? "campus" : "carnet";
@@ -82,6 +85,7 @@ const StudentTable = () => {
     setStudents(sortedStudents);
   }
 
+  // handle download students from a campus or all students
   function handleDownload(option: "all" | "current") {
     if (option === "all") {
       setConfirmDownload(true);
@@ -93,6 +97,7 @@ const StudentTable = () => {
     setConfirmDownload(false);
   }
 
+  // handle upload students from an excel file
   function handleUpload() {
     const input = document.createElement("input");
     input.type = "file";
@@ -133,7 +138,7 @@ const StudentTable = () => {
         </button>
 
         <aside className="flex gap-3">
-          {userDTO.userType === "assistant" && (
+          {showUploadButton && (
             <button
               id="upload-excel"
               onClick={handleUpload}
@@ -198,7 +203,7 @@ const StudentTable = () => {
             <span className="text-lg font-semibold ">Teléfono</span>
             <span className="text-lg font-semibold ">Acciones</span>
           </header>
-          {listStudents.map((student: StudentDTO, index) => {
+          {listStudents.map((student: Student, index) => {
             const rowColorClass = index % 2 === 0 ? "bg-white" : "bg-zinc-200";
 
             return (

@@ -1,5 +1,5 @@
 ---
-import Header from "../components/NavBar.tsx";
+import Header from "@/components/NavBar.tsx";
 
 interface Props {
   title: string;
@@ -20,7 +20,7 @@ const { title, currentRoute } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <Header client:only currentRoute={currentRoute} />
+    <Header client:only="react" currentRoute={currentRoute} />
     <slot />
   </body>
 </html>

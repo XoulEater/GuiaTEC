@@ -46,7 +46,7 @@ export default class Activity {
       this.forum = forum;
     } else {
       //this.id = NameOrDTO._id.toString();
-      this.id = "120";
+      this.id = NameOrDTO._id;
       this.name = NameOrDTO.name;
       this.week = NameOrDTO.week;
       this.date = NameOrDTO.date;

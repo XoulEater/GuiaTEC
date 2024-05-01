@@ -1,8 +1,7 @@
 ---
-import Layout from "../layouts/RegisterLayout.astro";
-import Input from "../components/Input.tsx";
-import SubmitButton from "../components/SubmitButton.astro";
-import { Campus } from "../lib/data.ts";
+import Layout from "@/layouts/RegisterLayout.astro";
+import Input from "@/components/Input.tsx";
+import { Campus } from "@/lib/types.ts";
 ---
 
 <Layout title="Nuevo Profesor" subtitle="Ingrese sus datos">
@@ -15,7 +14,7 @@ import { Campus } from "../lib/data.ts";
         placeHolderLG="Ingrese su nombre"
         placeHolderSM="Nombre"
         logo="/user.svg"
-        client:only
+        client:only="react"
       />
 
       <Input
@@ -25,7 +24,7 @@ import { Campus } from "../lib/data.ts";
         placeHolderLG="Ingrese su teléfono celular"
         placeHolderSM="Teléfono celular"
         logo="/cellphone.svg"
-        client:only
+        client:only="react"
       />
 
       <Input
@@ -35,7 +34,7 @@ import { Campus } from "../lib/data.ts";
         placeHolderLG="Ingrese su teléfono de oficina"
         placeHolderSM="Teléfono de oficina"
         logo="/phone.svg"
-        client:only
+        client:only="react"
       />
       <Input
         id="Correo"
@@ -44,7 +43,7 @@ import { Campus } from "../lib/data.ts";
         placeHolderLG="Ingrese su correo"
         placeHolderSM="Correo"
         logo="/email.svg"
-        client:only
+        client:only="react"
       />
       <div class="flex justify-between gap-2">
         <Input
@@ -54,7 +53,7 @@ import { Campus } from "../lib/data.ts";
           placeHolderLG="Ingrese su contraseña"
           placeHolderSM="Contraseña"
           logo="/password.svg"
-          client:only
+          client:only="react"
         />
         <div class="flex flex-col w-full">
           <div class="relative flex flex-row items-center">
@@ -75,20 +74,32 @@ import { Campus } from "../lib/data.ts";
           </div>
         </div>
       </div>
-      <SubmitButton text="Enviar" />
-      {/* TODO: Pantalla de registro exitoso */}
+      <a
+        id="submit-button"
+        class="flex items-center justify-center w-full py-1 text-lg text-white transition duration-300 ease-in-out rounded-lg bg-primary-dark hover:bg-primary-light group"
+      >
+        <label
+          class="transition duration-300 ease-in-out group-hover:transform group-hover:scale-110"
+          >Enviar</label
+        >
+        <img
+          src="/arrow-right.svg"
+          alt="arrow-right"
+          class="ml-2 transition duration-300 ease-in-out group-hover:transform group-hover:translate-x-1 group-hover:scale-110"
+        />
+      </a>
     </form>
   </div>
 </Layout>
 <script>
-  import * as teachersService from "../API/teachersService.ts";
-  import type { TeacherDTO } from "../lib/data";
-  import { Campus } from "../lib/data.ts";
+  import * as teachersService from "@/services/teacherService.ts";
+  import type { Teacher } from "@/lib/types.ts";
+  import { Campus } from "@/lib/types.ts";
   // redirect function
   const button = document.getElementById("submit-button");
   if (button) {
     button.addEventListener("click", async () => {
-      const newTeacher: TeacherDTO = {
+      const newTeacher: Teacher = {
         name: (document.getElementById("Nombre") as HTMLInputElement).value,
         personalPNumber: (
           document.getElementById("Teléfono celular") as HTMLInputElement

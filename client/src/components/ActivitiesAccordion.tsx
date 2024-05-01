@@ -1,13 +1,13 @@
-import type { ActivityDTO, ActivityStatus } from "../lib/data";
+import type { Activity, ActivityStatus } from "@/lib/types.ts";
 
 function ActivitesAccordion(
-  activitiesByWeek: { [week: number]: ActivityDTO[] },
+  activitiesByWeek: { [week: number]: Activity[] },
   handleAccordionToggle: (week: number) => void,
   openAccordions: number[],
-  setSelectedActivity: React.Dispatch<React.SetStateAction<ActivityDTO | null>>,
+  setSelectedActivity: React.Dispatch<React.SetStateAction<Activity | null>>,
   setActivityStatus: React.Dispatch<React.SetStateAction<ActivityStatus | null>>
 ) {
-  function handleChangeSelected(activity: ActivityDTO) {
+  function handleChangeSelected(activity: Activity) {
     setSelectedActivity(activity);
     setActivityStatus(activity.status);
   }
@@ -76,7 +76,7 @@ function ActivitesAccordion(
                       }
                     </header>
                     <footer className="flex justify-between">
-                      <p>{activity.date.toLocaleDateString("en-GB")}</p>
+                      <p>{activity.date.toString().split("T")[0]}</p>
                       <p>{activity.status}</p>
                     </footer>
                   </li>
