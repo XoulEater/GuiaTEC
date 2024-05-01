@@ -68,8 +68,10 @@ export default class Workplan {
     return this.id;
   }
 
-  updateActivity(activityId : string, activity: Activity): void {
-    const index = parseInt(activityId);
+  updateActivity(activityID : string, activity: Activity): void {
+    const index = this.activities.findIndex((activity) => activity.getID().toString() === activityID);    console.log(activityID);
+    console.log(index);
+    console.log (this.activities);
     this.activities[index] = activity;
   }
 }
