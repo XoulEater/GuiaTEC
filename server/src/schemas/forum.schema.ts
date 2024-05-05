@@ -5,8 +5,8 @@ import messageSchema from "./message.schema";
 const forumSchema: Schema = new Schema({
     messages: {
         // List of messages
-        type:[messageSchema],
+        type: [messageSchema],
     },
 });
 
-export default mongoose.model("Forum", forumSchema);
+export default forumSchema;

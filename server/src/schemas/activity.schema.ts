@@ -77,6 +77,7 @@ const activitySchema: Schema = new Schema({
 // Create and export the Teacher model
 export default activitySchema;
 
+
 // {
 //   "name" : "Test Activity Tres",
 //   "week": 12,
