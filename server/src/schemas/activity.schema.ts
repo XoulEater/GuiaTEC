@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import forumSchema from "./forum.schema";
 
 const activitySchema: Schema = new Schema({
   name: {
@@ -69,7 +70,7 @@ const activitySchema: Schema = new Schema({
 
   forum: {
     // Forum of the activity
-    type: String,
+    type: forumSchema,
     required: true,
   },
 });

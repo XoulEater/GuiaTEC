@@ -111,4 +111,24 @@ export default class TeacherDAO {
     }).exec();
     return teachers.map((teacher) => new Teacher(teacher.toObject()));
   }
+
+  public static async changePassword(pCode: string, newPassword: string) {
+      try{
+    // Buscar al profesor por su código
+        const teacher = await TeacherSchema.findOne({ id: pCode });
+
+        if (!teacher) {
+            throw new Error('Profesor no encontrado');
+        }
+
+        // Actualizar la contraseña
+        teacher.password = newPassword;
+        await teacher.save();
+
+        return true; // Indicar que la contraseña se cambió correctamente
+    } catch (error) {
+        console.error('Error al cambiar la contraseña del profesor:', error);
+        return false; // Indicar que ocurrió un error al cambiar la contraseña
+  }
+  }
 }

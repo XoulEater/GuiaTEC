@@ -84,5 +84,13 @@ export default class Activity {
     return this.id;
   }
 
+  getForum(): Forum{
+    return this.forum;
+  }
+
+  setForum(forum: Forum): void{
+    this.forum = forum;
+  }
+
   // Getter and Setter
 }

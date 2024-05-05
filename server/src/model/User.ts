@@ -58,6 +58,10 @@ class User {
     return this.campus;
   }
 
+  public getUserType(): "teacher" | "assistant" {
+    return this.userType;
+  }
+
   // Setters
   public setId(id: string): void {
     this.id = id;
