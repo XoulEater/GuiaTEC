@@ -1,8 +1,4 @@
-import express from "express";
-import http from "http";
-import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
-import compression from "compression";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
@@ -12,7 +8,7 @@ import teamRoutes from "./routes/teamRoutes";
 import workplanRoutes from "./routes/workplanRoutes";
 import activitiesRoutes from "./routes/activityRoute";
 import studentRoutes from "./routes/studentRoutes";
-import authRoutes from "./routes/authRoutes"
+import authRoutes from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -22,9 +18,6 @@ app.use(express.json());
 
 // Default middlewares
 app.use(cors());
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(compression());
 
 app.use(express.static("public"));
 
@@ -37,26 +30,31 @@ app.use("/api/activities", activitiesRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/auth", authRoutes);
 
-// default get route
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
-app.listen(1234, () => {
-  console.log("Server is running on port 1234");
-});
-
 // Connect to MongoDB
 
 mongoose.Promise = Promise;
 // TODO: Add the connection string to the .env file
 mongoose.connect(process.env.MONGO_CONNECTION_STRING);
-mongoose.connection.on("error", (err) => {
+mongoose.connection.on("error", (err: Error) => {
   console.error(err);
   process.exit();
 });
 mongoose.connection.once("open", () => {
   console.log("Conexión exitosa a la base de datos.");
+});
+
+const port = process.env.PORT || 1234;
+
+app.get("/", (_req: Request, res: Response) => {
+  return res.send("Express Typescript on Vercel");
+});
+
+app.get("/ping", (_req: Request, res: Response) => {
+  return res.send("pong 🏓");
+});
+
+app.listen(port, () => {
+  return console.log(`Server is listening on ${port}`);
 });
 
 export default app;

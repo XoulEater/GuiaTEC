@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import ActivityDAO from "../DAOs/activity";
 import Activity from "../model/Activity";
 import ActivityDTO from "../DTOs/activity";
 import WorkplanDAO from "../DAOs/workplan";

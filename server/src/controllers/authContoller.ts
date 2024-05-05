@@ -1,7 +1,7 @@
 import AssistantDAO from "../DAOs/assistant"; // Asegúrate de usar la ruta correcta
 import TeacherDAO from "../DAOs/teacher";
 import { Request, Response } from "express";
-import User from "model/User";
+import User from "../model/User";
 import Email from "./sendEmail";
 export class AuthController {
   public static async login(req: Request, res: Response) {

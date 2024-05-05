@@ -1,4 +1,4 @@
-import TeacherDTO from "DTOs/teacher";
+import TeacherDTO from "../DTOs/teacher";
 import Campus from "./campusENUM";
 import User from "./User";
 

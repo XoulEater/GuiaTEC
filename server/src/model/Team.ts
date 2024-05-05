@@ -1,4 +1,4 @@
-import TeamDTO from "DTOs/team";
+import TeamDTO from "../DTOs/team";
 import Teacher from "./Teacher";
 import WorkPlan from "./Workplan";
 // TODO: delete this file

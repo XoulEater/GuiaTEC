@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import TeacherDAO from "../DAOs/teacher";
-import WorkplanDAO from "../DAOs/workplan";
 
 export class TeamController {
   public static async getAllMembers(

@@ -1,4 +1,4 @@
-import ActivityDTO from "DTOs/activity";
+import ActivityDTO from "../DTOs/activity";
 import Forum from "./Forum";
 
 export default class Activity {

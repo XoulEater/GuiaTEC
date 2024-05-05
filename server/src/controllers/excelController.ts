@@ -7,7 +7,7 @@ import Student from "../model/Student";
 import CampusENUM from "../model/campusENUM";
 // excel import
 import * as xlsx from "xlsx";
-import StudentDTO from "DTOs/student";
+import StudentDTO from "../DTOs/student";
 
 /**
  * Class that handles the requests related to excel files

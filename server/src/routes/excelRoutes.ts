@@ -2,7 +2,8 @@ import express from "express";
 import { ExcelController } from "../controllers/excelController";
 import multer from "multer";
 
-const upload = multer({ dest: "uploads/" }); // This will save files in an 'uploads' directory in your project root.
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
