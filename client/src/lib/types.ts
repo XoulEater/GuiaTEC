@@ -67,6 +67,7 @@ export interface Activity {
   status: ActivityStatus; // status of the activity
   link?: string; // link of the activity if it is virtual
   attachmentFile?: string; // attachment file of the activity
+  forum: Forum; // forum of the activity
 }
 
 export interface WorkPlan {
@@ -74,4 +75,17 @@ export interface WorkPlan {
   name: string; // name of the work plan
   description: string; // description of the work plan
   activities: Activity[]; // list of activities in the work plan
+}
+
+export interface Forum {
+  id?: string; // unique identifier of the forum
+  messages: Array<Message>; // list of messages of the forum
+}
+
+export interface Message {
+  id?: string; // unique identifier of the message
+  user: string; // user that sent the message
+  date: Date; // date of the message
+  content: string; // content of the message
+  replies: Array<Message> // replies list of the message
 }
