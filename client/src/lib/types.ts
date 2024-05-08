@@ -58,8 +58,7 @@ export interface Activity {
   name: string; // name of the activity
   week: number; // week of the activity in the work plan
   date: Date; // date of the activity
-  publicationDate?: Date; // date of publication of the activity
-  prevDays?: number; // days before the activity to send the reminder
+  prevDays: number; // days before the activity to send the reminder
   reminderInterval: number; // interval of the reminder of the activity
   responsibles: string[]; // list of teachers responsible for the activity
   type: ActivityType; // type of the activity

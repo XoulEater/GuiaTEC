@@ -42,7 +42,7 @@ export default class WorkplanDAO {
   public static async updateWorkplan(_id: string, pWorkplan: Workplan) {
     await WorkplanSchema.findOneAndUpdate({ _id: _id }, pWorkplan, {
       new: true,
-    })
+    });
   }
 
   /**
@@ -55,5 +55,4 @@ export default class WorkplanDAO {
       _id: _id,
     });
   }
-
 }

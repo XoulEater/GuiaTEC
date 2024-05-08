@@ -18,7 +18,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   activityId,
   workplanId,
 }) => {
-  
   // Implement your component logic here
   const [isVirtual, setIsVirtual] = React.useState(false);
   const [colaborators, setColaborators] = React.useState<string[]>([]);
@@ -46,6 +45,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
 
   useEffect(() => {
     if (activity) {
+      console.log(activity);
       // Set the date of the activity
       const date = new Date(activity.date);
       const dateInput = document.getElementById(
@@ -59,11 +59,11 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       weekInput.value = activity.week.toString();
 
       // Set the prevDays of the activity, if published disable the input
+      const prevDaysInput = document.getElementById(
+        "activityPrevDays"
+      ) as HTMLInputElement;
+      prevDaysInput.value = activity.prevDays.toString();
       if (activity.status === ActivityStatus.PUBLICADA) {
-        const prevDaysInput = document.getElementById(
-          "activityPrevDays"
-        ) as HTMLInputElement;
-        prevDaysInput.value = (activity.prevDays ?? "").toString();
         prevDaysInput.disabled = true;
       }
       // Set the reminderInterval of the activity
@@ -141,7 +141,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     const reminderInterval = parseInt(
       data.get("activityReminderInterval") as string
     );
-    console.log(colaborators);
     const responsibles = colaborators;
     const type = data.get("activityType") as ActivityType;
     const modality = data.get("activityModality") as Modalities;
@@ -194,7 +193,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   }
   function updateActivity(activity: Activity) {
     // Call the function to update the activity
-    // TODO: activityService.updateActivity(workplanId, activity);
+    activityService.updateActivity(workplanId, activity);
   }
 
   return (

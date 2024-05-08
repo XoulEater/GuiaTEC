@@ -1,6 +1,5 @@
 import ForumDTO from "DTOs/forum";
 
-
 interface ActivityDTO {
   _id?: string; // unique identifier of the activity
   name: string; // name of the activity
@@ -8,7 +7,7 @@ interface ActivityDTO {
   date: Date; // date of the activity
   prevDays: number; // number of days before the activity starts to be published
   reminderInterval: number; // interval in days between reminders
-  responsibles: Array<string>; // responsibles of the activity
+  responsibles: string[]; // list of responsibles for the activity
   type: string; // type of the activity
   modality: string; // modality of the activity
   status: string; // status of the activity
@@ -18,4 +17,3 @@ interface ActivityDTO {
 }
 
 export default ActivityDTO;
-

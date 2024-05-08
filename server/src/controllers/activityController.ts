@@ -59,6 +59,8 @@ export class ActivityController {
       }
 
       // Get the activity
+      console.log(workplan.getActivities());
+      console.log(activityId);
       const activity = workplan
         .getActivities()
         .find((activity) => activity.getID() === activityId);
@@ -149,6 +151,7 @@ export class ActivityController {
 
       // Update the workplan
       workplan.updateActivity(activityID, activity);
+      console.log(workplan);
       try {
         await WorkplanDAO.updateWorkplan(workplanId, workplan);
       } catch (error) {

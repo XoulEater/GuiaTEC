@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import {
   type WorkPlan,
   type Activity,
@@ -7,6 +7,7 @@ import {
 } from "@/lib/types";
 import ActivitesAccordion from "@/components/ActivitiesAccordion";
 import * as workplanService from "@/services/workplanService";
+import * as activityService from "@/services/activityService";
 
 interface WorkPlanProps {
   id: string;
@@ -66,7 +67,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     if (selectedActivity) {
       setActivityStatus(status);
       selectedActivity.status = status;
-      // TODO: workplanService.updateActivity(id, selectedActivity);
+      activityService.updateActivity(id, selectedActivity);
     }
   }
   function handleEditActivity() {
@@ -83,6 +84,13 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     workplanService.deleteWorkplan(id);
     if (typeof window !== "undefined") {
       window.history.back();
+    }
+  }
+
+  function handleDownloadAttachment() {
+    if (selectedActivity && selectedActivity.attachmentFile) {
+      console.log("Downloading attachment");
+      window.open(selectedActivity.attachmentFile, "_blank");
     }
   }
 
@@ -190,7 +198,10 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                     ))}
                   </ul>
                 </div>
-                <button className="flex gap-4 px-3 my-2 text-lg text-gray-400 border-2 rounded-md shadow-sm place-items-center border-black/10">
+                <button
+                  onClick={handleDownloadAttachment}
+                  className="flex gap-4 px-3 my-2 text-lg text-gray-400 border-2 rounded-md shadow-sm place-items-center border-black/10"
+                >
                   Archivo <br /> adjunto
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -217,7 +228,8 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                 <p className="text-lg ">{selectedActivity.modality}</p>
                 {selectedActivity.modality === "Virtual" && (
                   <a
-                    href={selectedActivity.link}
+                    href={`https://${selectedActivity.link}`}
+                    target="_blank"
                     className="text-lg text-primary-light hover:underline"
                   >
                     Enlace
