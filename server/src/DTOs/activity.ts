@@ -1,4 +1,4 @@
-import ForumDTO from "DTOs/forum";
+import ForumDTO from "./forum";
 
 interface ActivityDTO {
   _id?: string; // unique identifier of the activity

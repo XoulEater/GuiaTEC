@@ -8,6 +8,7 @@ import {
 import ActivitesAccordion from "@/components/ActivitiesAccordion";
 import * as workplanService from "@/services/workplanService";
 import * as activityService from "@/services/activityService";
+import Forum from "./Forum";
 
 interface WorkPlanProps {
   id: string;
@@ -21,7 +22,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
 
   const showCreateActivityButton = isLeader;
   const showEditActivityButtons = isLeader;
-  const showComments = isTeacher;
+  const showComments = isTeacher || true;
 
   const [workplan, setWorkplan] = useState<WorkPlan | null>(null);
   const [activities, setActivities] = useState<Activity[] | null>(null);
@@ -171,7 +172,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
         {/* Activity Details */}
         <aside className="my-6 w-8/12 h-[560px] rounded-lg overflow-y-scroll no-scrollbar shadow-md ">
           {selectedActivity && (
-            <div className="flex flex-col h-full gap-2 p-4 bg-white rounded-lg">
+            <div className="flex flex-col h-full gap-2 p-4 rounded-lg">
               <header>
                 <div className="flex justify-between">
                   <h2 className="text-2xl font-bold">
@@ -401,6 +402,10 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                     </button>
                   )}
                 </footer>
+              )}
+              {showComments && (
+                // Forum component
+                <Forum />
               )}
             </div>
           )}

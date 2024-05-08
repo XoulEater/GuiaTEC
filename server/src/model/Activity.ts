@@ -1,4 +1,4 @@
-import ActivityDTO from "DTOs/activity";
+import ActivityDTO from "../DTOs/activity";
 import Forum from "./Forum";
 
 export default class Activity {
@@ -86,6 +86,14 @@ export default class Activity {
 
   getID(): string {
     return this.id;
+  }
+
+  getForum(): Forum{
+    return this.forum;
+  }
+
+  setForum(forum: Forum): void{
+    this.forum = forum;
   }
 
   // Getter and Setter

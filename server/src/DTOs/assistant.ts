@@ -8,6 +8,7 @@ interface AssistantDTO {
   email: string; // email of the Assistant
   password: string; // password of the Assistant
   campus: Campus; // campus of the Assistant
+  userType: "assistant"; // type of the user
 }
 
 export default AssistantDTO;

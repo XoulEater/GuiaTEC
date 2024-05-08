@@ -1,4 +1,4 @@
-import ActivityDTO from "../DTOs/activity";
+import ActivityDTO from "./activity";
 
 interface WorkplanDTO {
   _id: string;

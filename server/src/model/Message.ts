@@ -5,7 +5,7 @@ export default class Message{
   private content: string; // content of the message
   private replies: Array<Message> // replies list of the message
 
-  private constructor(
+  public constructor(
     user: string,
     date: Date,
     content: string,
@@ -15,9 +15,14 @@ export default class Message{
     this.date = date,
     this.content = content,
     this.replies = []
+    this.id = id;
   }
 
   //Getters
+  public getId(): string {
+    return this.id;
+  }
+
   public getUser(): string {
     return this.user;
   }
@@ -54,4 +59,4 @@ export default class Message{
   public addReply(reply: Message): void{
     this.replies.push(reply)
   }
-  }
+}

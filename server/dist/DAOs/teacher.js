@@ -1,0 +1,128 @@
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+// Teacher DAO that communicates with the database
+const teacher_schema_1 = __importDefault(require("../schemas/teacher.schema"));
+const Teacher_1 = __importDefault(require("../model/Teacher"));
+/**
+ * Class that communicates with the database to perform CRUD operations
+ */
+class TeacherDAO {
+    /**
+     * Get all the teachers from the database
+     * @returns a list with all the teachers
+     */
+    static getAllTeachers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const teachers = yield teacher_schema_1.default.find().exec();
+            return teachers.map((teacher) => new Teacher_1.default(teacher.toObject()));
+        });
+    }
+    /**
+     * Get all the members from the database
+     * @returns a list with all the members
+     */
+    static getAllMembers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const membersData = yield teacher_schema_1.default.find({ isMember: true }).exec();
+            return membersData.map((member) => new Teacher_1.default(member.toObject()));
+        });
+    }
+    /**
+     * Add a teacher as a member
+     * @param pCode code of the teacher
+     */
+    static addMember(pCode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, { isMember: true }, { new: true }).exec();
+        });
+    }
+    /**
+     * Remove a teacher as a member
+     * @param pCode code of the teacher
+     */
+    static removeMember(pCode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, { isMember: false, isLeader: false }, { new: true }).exec();
+        });
+    }
+    /**
+     * Set a teacher as a coordinator
+     * @param pCode code of the teacher
+     * @param pCoordinator true if the teacher is a coordinator, false otherwise
+     */
+    static setCoordinator(pCode, pLeader) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, { isLeader: pLeader }, { new: true }).exec();
+        });
+    }
+    /**
+     * Get a teacher by its code
+     * @param pCode code of the teacher
+     * @returns the teacher with the given code
+     */
+    static getTeacherByCode(pCode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const teacher = yield teacher_schema_1.default.findOne({ id: pCode }).exec();
+            return teacher ? new Teacher_1.default(teacher.toObject()) : null;
+        });
+    }
+    /**
+     * Create a new teacher in the database
+     * @param teacher the teacher to be created
+     */
+    static createTeacher(teacher) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield teacher_schema_1.default.create(teacher);
+        });
+    }
+    /**
+     * Update a teacher in the database
+     * @param pCode code of the teacher
+     * @param teacher the teacher with the new information
+     */
+    static updateTeacher(pCode, teacher) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, teacher, {
+                new: true,
+            }).exec();
+        });
+    }
+    /**
+     * Delete a teacher from the database
+     * @param pCode code of the teacher
+     */
+    static deleteTeacher(pCode) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield teacher_schema_1.default.findOneAndDelete({
+                id: pCode,
+            }).exec();
+        });
+    }
+    /**
+     * Get a all the teachers from a campus
+     * @param campus campus of the teachers
+     * @returns a list with all the teachers from the campus
+     */
+    static getTeachersByCampus(campus) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const teachers = yield teacher_schema_1.default.find({
+                id: { $regex: `^${campus}-` },
+            }).exec();
+            return teachers.map((teacher) => new Teacher_1.default(teacher.toObject()));
+        });
+    }
+}
+exports.default = TeacherDAO;
+//# sourceMappingURL=teacher.js.map

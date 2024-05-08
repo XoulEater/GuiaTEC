@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import TeacherDAO from "../DAOs/teacher";
 import Teacher from "../model/Teacher";
-import TeacherDTO from "DTOs/teacher";
+import TeacherDTO from "../DTOs/teacher";
 
 export class TeacherController {
   public static async getAllTeachers(

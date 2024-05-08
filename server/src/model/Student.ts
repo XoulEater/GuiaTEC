@@ -1,4 +1,4 @@
-import StudentDTO from "DTOs/student";
+import StudentDTO from "../DTOs/student";
 import CampusENUM from "./campusENUM";
 
 export default class Student {
