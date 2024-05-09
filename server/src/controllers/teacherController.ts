@@ -77,6 +77,7 @@ export class TeacherController {
       const code = req.params.code;
       const teacherData: TeacherDTO = req.body;
       const teacher = new Teacher(teacherData);
+
       await TeacherDAO.updateTeacher(code, teacher);
       res.status(200).json({ message: "Teacher updated" });
     } catch (error) {

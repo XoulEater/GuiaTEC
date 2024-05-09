@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
 // Define the schema for the Teacher collection
-const teacherSchema: Schema = new Schema({
+export const teacherSchema: Schema = new Schema({
   id: {
     // Code of the teacher (e.g. AL-01), includes the campus code
     type: String,
@@ -57,6 +57,7 @@ const teacherSchema: Schema = new Schema({
     required: true,
   },
 });
+
 // Create and export the Teacher model
 export default mongoose.model("Teacher", teacherSchema);
 

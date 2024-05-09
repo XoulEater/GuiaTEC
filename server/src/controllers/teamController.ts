@@ -20,6 +20,8 @@ export class TeamController {
       const code = req.params.code;
       await TeacherDAO.addMember(code);
       res.status(200).json({ message: "Member added" });
+
+      // log addMember
       await logTeam.create({
         agenteCambio: "Teacher",
         sujetoReceptor: code,
