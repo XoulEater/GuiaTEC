@@ -58,7 +58,7 @@ const TeachersTable = () => {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
     }
     setConfirmDelete(false);
-    // TODO: Implement delete teacher from database?
+    // TODO: Implement delete teacher from database
   }
 
   function handleIncludeTeacher(teacher: Teacher) {

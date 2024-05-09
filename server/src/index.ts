@@ -35,7 +35,6 @@ app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes);
 // Connect to MongoDB
 
 mongoose.Promise = Promise;
-// TODO: Add the connection string to the .env file
 mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 mongoose.connection.on("error", (err: Error) => {
   console.error(err);
