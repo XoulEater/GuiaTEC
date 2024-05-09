@@ -62,7 +62,7 @@ export class ActivityController {
       console.log(activityId);
       const activity = workplan
         .getActivities()
-        .find((activity) => activity.getID() === activityId);
+        .find((activity) => activity.getID() === Number(activityId));
       if (!activity) {
         res.status(404).json({ error: "Activity not found" });
         return;
@@ -95,6 +95,8 @@ export class ActivityController {
         res.status(500).json({ error: "Error instantiating activity" });
         return;
       }
+
+      activity.setID(Math.floor(Math.random() * 1000000));
 
       // Get the workplan
       let workplan;

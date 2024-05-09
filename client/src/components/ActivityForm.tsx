@@ -186,9 +186,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   }
   async function createActivity(activity: Activity) {
     // Call the function to create the activity
-    console.log(workplanId, activity);
     await activityService.createActivity(workplanId, activity);
-    console.log("Activity created");
+
     // Redirect to the previous page
   }
   function updateActivity(activity: Activity) {

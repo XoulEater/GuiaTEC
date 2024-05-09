@@ -1,8 +1,9 @@
 import ActivityDTO from "../DTOs/activity";
 import Forum from "./Forum";
+import Message from "./Message";
 
 export default class Activity {
-  private id: string;
+  private id: number;
   private name: string;
   private week: number;
   private date: Date;
@@ -45,12 +46,7 @@ export default class Activity {
       this.attachmentFile = attachmentFile;
       this.forum = forum;
     } else {
-      //this.id = NameOrDTO._id.toString();
-      try {
-        this.id = NameOrDTO._id.toString();
-      } catch (error) {
-        this.id = NameOrDTO._id;
-      }
+      this.id = NameOrDTO.id;
       this.name = NameOrDTO.name;
       this.week = NameOrDTO.week;
       this.date = NameOrDTO.date;
@@ -62,7 +58,14 @@ export default class Activity {
       this.status = NameOrDTO.status;
       this.link = NameOrDTO.link;
       this.attachmentFile = NameOrDTO.attachmentFile;
-      //this.forum = NameOrDTO.forum;
+      if (NameOrDTO.forum) {
+        const messages = NameOrDTO.forum.messages.map(
+          (messageDTO) => new Message(messageDTO)
+        );
+        this.forum = new Forum(messages);
+      } else {
+        this.forum = new Forum();
+      }
     }
   }
 
@@ -84,17 +87,20 @@ export default class Activity {
     this.week = week;
   }
 
-  getID(): string {
-    return this.id;
-  }
-
-  getForum(): Forum{
+  getForum(): Forum {
     return this.forum;
   }
 
-  setForum(forum: Forum): void{
+  setForum(forum: Forum): void {
     this.forum = forum;
   }
 
+  getID(): number {
+    return this.id;
+  }
+
+  setID(id: number): void {
+    this.id = id;
+  }
   // Getter and Setter
 }

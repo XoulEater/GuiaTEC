@@ -8,6 +8,8 @@ import teamRoutes from "./routes/teamRoutes";
 import workplanRoutes from "./routes/workplanRoutes";
 import studentRoutes from "./routes/studentRoutes";
 import authRoutes from "./routes/authRoutes";
+import activityRoutes from "./routes/activityRoutes";
+import forumRoutes from "./routes/forumRoutes";
 
 dotenv.config();
 
@@ -24,9 +26,11 @@ app.use(express.static("public"));
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/excel", excelRoutes);
 app.use("/api/teams", teamRoutes);
-app.use("/api/workplans", workplanRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/workplans", workplanRoutes);
+app.use("/api/workplans/:wid/activities", activityRoutes);
+app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes);
 
 // Connect to MongoDB
 

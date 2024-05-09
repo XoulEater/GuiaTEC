@@ -35,16 +35,12 @@ export class WorkplanController {
     req: Request,
     res: Response
   ): Promise<void> {
-    try {
-      const id = req.params.id;
-      const workplan = await WorkplanDAO.getWorkplanById(id);
-      if (workplan) {
-        res.status(200).json(workplan);
-      } else {
-        res.status(404).json({ error: "Workplan not found" });
-      }
-    } catch (error) {
-      res.status(500).json({ error: "Failed to get workplan" });
+    const id = req.params.id;
+    const workplan = await WorkplanDAO.getWorkplanById(id);
+    if (workplan) {
+      res.status(200).json(workplan);
+    } else {
+      res.status(404).json({ error: "Workplan not found" });
     }
   }
 

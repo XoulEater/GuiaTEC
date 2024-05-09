@@ -2,6 +2,11 @@ import mongoose, { Schema } from "mongoose";
 import forumSchema from "./forum.schema";
 
 const activitySchema: Schema = new Schema({
+  id: {
+    // Unique identifier of the activity
+    type: Number,
+    required: true,
+  },
   name: {
     // Name of the activity
     type: String,
@@ -77,7 +82,6 @@ const activitySchema: Schema = new Schema({
 // Create and export the Teacher model
 export default activitySchema;
 
-
 // {
 //   "name" : "Test Activity Tres",
 //   "week": 12,
@@ -92,4 +96,3 @@ export default activitySchema;
 //   "attachmentFile": "test.pdf",
 //   "forum": "https://example.com/forum"
 // }
-

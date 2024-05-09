@@ -1,7 +1,7 @@
 import ForumDTO from "./forum";
 
 interface ActivityDTO {
-  _id?: string; // unique identifier of the activity
+  id?: number; // unique identifier of the activity
   name: string; // name of the activity
   week: number; // week of the activity
   date: Date; // date of the activity

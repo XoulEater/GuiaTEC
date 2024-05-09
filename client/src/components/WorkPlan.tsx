@@ -1,14 +1,15 @@
-import React, { act, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   type WorkPlan,
   type Activity,
   ActivityStatus,
   type User,
+  type Message,
 } from "@/lib/types";
 import ActivitesAccordion from "@/components/ActivitiesAccordion";
 import * as workplanService from "@/services/workplanService";
 import * as activityService from "@/services/activityService";
-import Forum from "./Forum";
+import * as messageService from "@/services/forumService";
 
 interface WorkPlanProps {
   id: string;
@@ -33,6 +34,10 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
   const [activityStatus, setActivityStatus] = useState<ActivityStatus | null>(
     null
   );
+  const [messages, setMessages] = useState<Message[]>(
+    selectedActivity?.forum?.messages || []
+  );
+  const [replingTo, setReplyingTo] = useState<Message | null>(null);
 
   const loadWorkplan = async () => {
     const res = await workplanService.getWorkplanById(id);
@@ -92,6 +97,63 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     if (selectedActivity && selectedActivity.attachmentFile) {
       console.log("Downloading attachment");
       window.open(selectedActivity.attachmentFile, "_blank");
+    }
+  }
+
+  const addMessage = async () => {
+    if (selectedActivity) {
+      const aid = selectedActivity.id || "";
+      // get the message from the input
+      const body = document.querySelector<HTMLInputElement>(
+        'input[name="message"]'
+      )?.value;
+      // clear the input
+      document.querySelector<HTMLInputElement>('input[name="message"]')!.value =
+        "";
+
+      // create the message
+      if (!body) {
+        // show error
+        window.alert("El mensaje no puede estar vacío");
+        return;
+      }
+      const newMessage: Message = {
+        user: user.name,
+        date: new Date(),
+        content: body,
+        replies: [],
+      };
+      console.log(newMessage);
+      if (replingTo && replingTo.id) {
+        await messageService.replyMessage(id, aid, replingTo.id, newMessage);
+
+        // update the message in the state
+        const updatedMessages = messages.map((message) => {
+          if (message.id === replingTo.id) {
+            return {
+              ...message,
+              replies: [...message.replies, newMessage],
+            };
+          }
+          return message;
+        });
+        setMessages(updatedMessages);
+      } else {
+        console.log("adding message", newMessage, id, aid);
+        const message = await messageService.addMessage(id, aid, newMessage);
+
+        if (message) {
+          setMessages([...messages, message]);
+        }
+      }
+    }
+  };
+
+  async function handleSetReplyingTo(message: Message) {
+    if (replingTo === message) {
+      setReplyingTo(null);
+    } else {
+      setReplyingTo(message);
     }
   }
 
@@ -167,7 +229,8 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
           handleAccordionToggle,
           openAccordions,
           setSelectedActivity,
-          setActivityStatus
+          setActivityStatus,
+          setMessages
         )}
         {/* Activity Details */}
         <aside className="my-6 w-8/12 h-[560px] rounded-lg overflow-y-scroll no-scrollbar shadow-md ">
@@ -404,8 +467,128 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                 </footer>
               )}
               {showComments && (
-                // Forum component
-                <Forum />
+                <div className=" w-full ">
+                  <div className="flex relative">
+                    <input
+                      name="message"
+                      className=" w-full border-gray-400  rounded-lg pr-24"
+                      type="text"
+                      placeholder={
+                        replingTo
+                          ? `Responder a ${replingTo.user}: ${replingTo.content}`
+                          : "Añade un comentario"
+                      }
+                    />
+
+                    <button
+                      onClick={addMessage}
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded-e-md absolute right-0 h-full grid place-content-center"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-send-2"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#ffffff"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4.698 4.034l16.302 7.966l-16.302 7.966a.503 .503 0 0 1 -.546 -.124a.555 .555 0 0 1 -.12 -.568l2.468 -7.274l-2.468 -7.274a.555 .555 0 0 1 .12 -.568a.503 .503 0 0 1 .546 -.124z" />
+                        <path d="M6.5 12h14.5" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className=" mr-4 flex gap-2 flex-col">
+                    {
+                      // map comments
+                      messages.map((message) => (
+                        <article
+                          key={message.id}
+                          className="comment mx-2 flex w-full  p-2 flex-col gap-2"
+                        >
+                          <div className=" flex gap-4 ">
+                            <img
+                              className="object-cover object-center h-12 rounded-full aspect-square border-2 border-white/50 shadow-sm"
+                              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                            />
+
+                            <aside className=" flex flex-col w-full">
+                              <header className="flex justify-between border-b-2 border-gray-300">
+                                <section className="flex gap-6">
+                                  <h2 className=" font-bold">{message.user}</h2>
+                                  <h3>
+                                    {message.date.toString().split("GMT")[0]}
+                                  </h3>
+                                </section>
+
+                                <button
+                                  onClick={() => handleSetReplyingTo(message)}
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className={`icon icon-tabler icon-tabler-send-2 ${
+                                      replingTo === message
+                                        ? "text-blue-500"
+                                        : "text-gray-500 "
+                                    }`}
+                                    width="32"
+                                    height="32"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth="1.5"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  >
+                                    <path
+                                      stroke="none"
+                                      d="M0 0h24v24H0z"
+                                      fill="none"
+                                    />
+                                    <path d="M9 14l-4 -4l4 -4" />
+                                    <path d="M5 10h11a4 4 0 1 1 0 8h-1" />
+                                  </svg>
+                                </button>
+                              </header>
+                              <p>{message.content}</p>
+                            </aside>
+                          </div>
+                          <footer className=" gap-2">
+                            {message.replies.map((reply) => (
+                              <article
+                                key={reply.date.toString()}
+                                className="comment mx-2 flex w-full gap-4 p-2"
+                              >
+                                <img
+                                  className="object-cover object-center h-12 rounded-full aspect-square border-2 border-white/50 shadow-sm"
+                                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"
+                                />
+                                <aside className=" flex flex-col w-full">
+                                  <header className="flex justify-between border-b-2 border-gray-300">
+                                    <section className="flex gap-6">
+                                      <h2 className=" font-bold">
+                                        {reply.user}
+                                      </h2>
+                                      <h3>
+                                        {reply.date.toString().split("GMT")[0]}
+                                      </h3>
+                                    </section>
+                                  </header>
+                                  <p>{reply.content}</p>
+                                </aside>
+                              </article>
+                            ))}
+                          </footer>
+                        </article>
+                      ))
+                    }
+                  </div>
+                </div>
               )}
             </div>
           )}

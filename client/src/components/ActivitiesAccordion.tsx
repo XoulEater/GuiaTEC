@@ -1,15 +1,21 @@
-import type { Activity, ActivityStatus } from "@/lib/types.ts";
+import type { Activity, ActivityStatus, Message } from "@/lib/types.ts";
 
 function ActivitesAccordion(
   activitiesByWeek: { [week: number]: Activity[] },
   handleAccordionToggle: (week: number) => void,
   openAccordions: number[],
   setSelectedActivity: React.Dispatch<React.SetStateAction<Activity | null>>,
-  setActivityStatus: React.Dispatch<React.SetStateAction<ActivityStatus | null>>
+  setActivityStatus: React.Dispatch<
+    React.SetStateAction<ActivityStatus | null>
+  >,
+  setMessages: React.Dispatch<React.SetStateAction<Message[] | []>>
 ) {
   function handleChangeSelected(activity: Activity) {
     setSelectedActivity(activity);
     setActivityStatus(activity.status);
+    if (activity.forum) {
+      setMessages(activity.forum.messages);
+    }
   }
 
   return (
