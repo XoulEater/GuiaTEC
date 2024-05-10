@@ -43,7 +43,6 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     const res = await workplanService.getWorkplanById(id);
     setWorkplan(res);
     setActivities(res.activities);
-    console.log("Workplan loaded", res);
   };
 
   useEffect(() => {
@@ -75,7 +74,6 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
       setActivityStatus(status);
       selectedActivity.status = status;
       activityService.updateActivity(id, selectedActivity);
-      console.log("Activity status changed to", status);
     }
   }
   function handleEditActivity() {
@@ -97,7 +95,6 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
 
   function handleDownloadAttachment() {
     if (selectedActivity && selectedActivity.attachmentFile) {
-      console.log("Downloading attachment");
       window.open(selectedActivity.attachmentFile, "_blank");
     }
   }
@@ -125,7 +122,6 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
         content: body,
         replies: [],
       };
-      console.log(newMessage);
       if (replingTo && replingTo.id) {
         await messageService.replyMessage(id, aid, replingTo.id, newMessage);
 
@@ -141,7 +137,6 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
         });
         setMessages(updatedMessages);
       } else {
-        console.log("adding message", newMessage, id, aid);
         const message = await messageService.addMessage(id, aid, newMessage);
 
         if (message) {

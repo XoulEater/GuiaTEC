@@ -45,7 +45,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
 
   useEffect(() => {
     if (activity) {
-      console.log(activity);
       // Set the date of the activity
       const date = new Date(activity.date);
       const dateInput = document.getElementById(

@@ -17,12 +17,10 @@ const ForumDisplay: React.FC<Props> = ({
   const [activity, setActivity] = useState(selectedActivity);
 
   const loadMessages = async () => {
-    console.log(activity);
     setMessages(activity?.forum?.messages || []);
   };
 
   useEffect(() => {
-    console.log(selectedActivity);
     setActivity(selectedActivity);
     loadMessages();
   }, [selectedActivity]);

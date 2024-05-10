@@ -17,7 +17,6 @@ const TeamDisplay: React.FC = () => {
   async function handleNewPlan() {
     // create a new plan and redirect to it
     const id = await workplanService.createWorkplan();
-    console.log(id);
     window.location.href = `/workplan/${id}`;
   }
 

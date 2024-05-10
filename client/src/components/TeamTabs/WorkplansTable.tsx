@@ -8,7 +8,6 @@ const WorkplansTable = () => {
   const loadWorkPlans = async () => {
     const res = await workplanService.getAllWorkplans();
     setWorkPlans(res);
-    console.log(res);
   };
 
   useEffect(() => {

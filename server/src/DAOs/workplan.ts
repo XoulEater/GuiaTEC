@@ -30,7 +30,7 @@ export default class WorkplanDAO {
    */
   public static async getWorkplanById(_id: string): Promise<Workplan> {
     const workplanData = await WorkplanSchema.findOne({ _id: _id }).exec();
-    console.log(workplanData);
+    workplanData;
     return workplanData ? new Workplan(workplanData.toObject()) : null;
   }
 

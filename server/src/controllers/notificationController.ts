@@ -4,7 +4,6 @@
 import { Request, Response } from "express";
 import NotificationDAO from "../DAOs/notification";
 import WorkplanDAO from "../DAOs/workplan";
-import Activity from "../model/Activity";
 
 require("dotenv").config();
 
@@ -19,22 +18,15 @@ export class NotificationController {
     const today = new Date(process.env.TODAY);
 
     // if the notification date is not today
+    console.log(notificationDate.getDate(), today.getDate());
     if (notificationDate.getDate() != today.getDate()) {
       const workPlans = await WorkplanDAO.getAllWorkplans();
 
       // for each workplan, verify the activities
       for (let workPlan of workPlans) {
-        for (let activity of workPlan.getActivities()) {
-          if (
-            activity.getStatus() != "Notificada" ||
-            activity.getStatus() != "Publicada"
-          ) {
-            activity.verifyNotify(today);
-          } else if (activity.getStatus() == "Planeada") {
-            activity.verifyPublish(today);
-          }
-        }
-
+        workPlan.getActivities().forEach((activity) => {
+          activity.verify(today);
+        });
         // update the workplan in the database
         await WorkplanDAO.updateWorkplan(workPlan.getID(), workPlan);
       }

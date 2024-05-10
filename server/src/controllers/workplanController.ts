@@ -37,7 +37,7 @@ export class WorkplanController {
   ): Promise<void> {
     const id = req.params.id;
     const workplan = await WorkplanDAO.getWorkplanById(id);
-    console.log(workplan);
+    workplan;
     if (workplan) {
       res.status(200).json(workplan);
     } else {

@@ -116,7 +116,6 @@ import { Campus } from "@/lib/types.ts";
         userType: "teacher",
       };
       await teachersService.createTeacher(newTeacher).then((response) => {
-        console.log(response.status);
         if (response.status === 200) {
           window.location.href = "/register-success";
         } else {

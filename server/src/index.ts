@@ -12,7 +12,6 @@ import activityRoutes from "./routes/activityRoutes";
 import forumRoutes from "./routes/forumRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 
-
 dotenv.config();
 
 const app = express();

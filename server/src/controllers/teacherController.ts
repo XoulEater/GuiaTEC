@@ -79,9 +79,7 @@ export class TeacherController {
       const user = req.body.user;
       const teacher = new Teacher(teacherData);
 
-      console.log(teacher, user);
       await TeacherDAO.updateTeacher(code, teacher, user);
-
 
       res.status(200).json({ message: "Teacher updated" });
     } catch (error) {

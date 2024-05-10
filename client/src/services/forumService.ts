@@ -43,7 +43,6 @@ export async function replyMessage(
   mid: string,
   reply: Message
 ) {
-  console.log("replying the comment");
   await fetch(`${API_URL}/workplans/${wid}/activities/${aid}/forum/${mid}`, {
     method: "POST",
     headers: {
@@ -51,5 +50,4 @@ export async function replyMessage(
     },
     body: JSON.stringify(reply),
   });
-  console.log("replying the comment done");
 }

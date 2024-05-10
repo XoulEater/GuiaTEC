@@ -12,7 +12,6 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
   const showRegister = user.userType == "assistant";
 
   function handleLogout() {
-    console.log("Logging out...");
     localStorage.removeItem("user");
     window.location.href = "/";
   }

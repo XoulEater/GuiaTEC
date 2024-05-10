@@ -1,6 +1,7 @@
 import ActivityDTO from "../DTOs/activity";
 import Forum from "./Forum";
 import Message from "./Message";
+import Email from "../controllers/sendEmail";
 
 export default class Activity {
   private id: number;
@@ -129,6 +130,15 @@ export default class Activity {
     return publishDate;
   }
 
+  verify(today: Date): void {
+    if (this.status == "Notificada" || this.status == "Publicada") {
+      this.verifyNotify(today);
+    }
+    if (this.status == "Planeada") {
+      this.verifyPublish(today);
+    }
+  }
+
   verifyPublish(today: Date): void {
     // get the date to publish
     const publishDate = this.getPublishDate();
@@ -136,7 +146,7 @@ export default class Activity {
     // if today is the day to publish
     if (today.getDate() == publishDate.getDate()) {
       this.setStatus("Publicada");
-      console.log("Published: " + this.name);
+      "Published: " + this.name;
     }
   }
 
@@ -153,11 +163,22 @@ export default class Activity {
       // if today is the day to notify
       if (publishDate.getDate() == today.getDate()) {
         this.setStatus("Notificada");
-        console.log("Notified: " + this.name);
+        "Notified: " + this.name;
+        this.notify();
+
         break;
       }
       // add the interval to the counter
       cont += this.reminderInterval;
     }
+  }
+
+  notify(): void {
+    const email = new Email();
+    email.sendMail(
+      "ncqueescribir@gmail.com", // TODO: temporal email
+      "Actividad: " + this.name,
+      "Recuerde que tiene una actividad programada para " + this.date
+    );
   }
 }

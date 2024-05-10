@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import TeacherDAO from "../DAOs/teacher";
 
-
 export class TeamController {
   public static async getAllMembers(
     req: Request,
@@ -18,7 +17,7 @@ export class TeamController {
   public static async addMember(req: Request, res: Response): Promise<void> {
     try {
       const code = req.params.code;
-      const logTeamInfo = req.body
+      const logTeamInfo = req.body;
       await TeacherDAO.addMember(code);
       res.status(200).json({ message: "Member added" });
 
@@ -31,12 +30,11 @@ export class TeamController {
   public static async removeMember(req: Request, res: Response): Promise<void> {
     try {
       const code = req.params.code;
-      const logTeamInfo = req.body
+      const logTeamInfo = req.body;
       await TeacherDAO.removeMember(code);
       res.status(200).json({ message: "Member removed" });
 
       res.status(200).json({ message: "Team log created" });
-
     } catch (error) {
       res.status(500).json({ error: "Error removing member" });
     }
@@ -49,7 +47,6 @@ export class TeamController {
     try {
       const code = req.params.code;
       const isLeader = req.params.bool === "true" ? true : false;
-      console.log(code, isLeader);
       await TeacherDAO.setCoordinator(code, isLeader);
       res.status(200).json({ message: "Coordinator updated" });
     } catch (error) {

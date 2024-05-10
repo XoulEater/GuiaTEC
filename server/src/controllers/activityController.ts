@@ -58,8 +58,6 @@ export class ActivityController {
       }
 
       // Get the activity
-      console.log(workplan.getActivities());
-      console.log(activityId);
       const activity = workplan
         .getActivities()
         .find((activity) => activity.getID() === Number(activityId));
@@ -128,6 +126,7 @@ export class ActivityController {
     res: Response
   ): Promise<void> {
     try {
+      // TODO: Add the logic notifing the responsibles of the activity
       const activityDTO: ActivityDTO = req.body;
       const workplanId = req.params.wid;
       const activityID = req.params.aid;

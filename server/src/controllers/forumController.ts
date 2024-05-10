@@ -28,7 +28,6 @@ export class ForumController {
     }
 
     // Get the activity
-    console.log(workplan.getActivities(), activityId);
     const activity = workplan
       .getActivities()
       .find((activity) => activity.getID() === Number(activityId));
@@ -74,7 +73,6 @@ export class ForumController {
     let workplan;
 
     workplan = await WorkplanDAO.getWorkplanById(workplanId);
-    console.log(workplan.getActivities()[0].getForum().getMessages());
 
     // Get the activity
     const activity = workplan
@@ -96,7 +94,6 @@ export class ForumController {
 
     // Update Workplan
     await WorkplanDAO.updateWorkplan(workplanId, workplan);
-    console.log(workplan.getActivities()[0].getForum().getMessages());
 
     res.status(200).json({ message: "Reply added" });
   }
