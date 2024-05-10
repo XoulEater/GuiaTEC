@@ -43,6 +43,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     const res = await workplanService.getWorkplanById(id);
     setWorkplan(res);
     setActivities(res.activities);
+    console.log("Workplan loaded", res);
   };
 
   useEffect(() => {
@@ -74,6 +75,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
       setActivityStatus(status);
       selectedActivity.status = status;
       activityService.updateActivity(id, selectedActivity);
+      console.log("Activity status changed to", status);
     }
   }
   function handleEditActivity() {
