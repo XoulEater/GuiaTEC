@@ -9,7 +9,6 @@ import Activity from "../model/Activity";
 require("dotenv").config();
 
 export class NotificationController {
-
   public static async verifyNotification(
     req: Request,
     res: Response
@@ -36,7 +35,10 @@ export class NotificationController {
         if (activity.getStatus() == "Planeada") {
           toPublish.push(activity);
         }
-        if (activity.getStatus() == "Publicada" || activity.getStatus() == "Notificada") {
+        if (
+          activity.getStatus() == "Publicada" ||
+          activity.getStatus() == "Notificada"
+        ) {
           toNotify.push(activity);
         }
       }
@@ -49,9 +51,7 @@ export class NotificationController {
     res.status(200).json({ message: "Notification verified" });
   }
 
-  public publish(
-    activities: Activity[]
-  ) {
+  static publish(activities: Activity[]) {
     const today = new Date(process.env.TODAY);
     for (const activity of activities) {
       const startDate = activity.getDate();
@@ -66,13 +66,9 @@ export class NotificationController {
       }
       console.log("Bandera 2");
     }
-
   }
 
-  public notify(
-    activities: Activity[]
-  ) {
-
+  static notify(activities: Activity[]) {
     const today = new Date(process.env.TODAY);
     for (const activity of activities) {
       const startDate = activity.getDate();
@@ -96,8 +92,8 @@ export class NotificationController {
   }
 
   /**
- * Get all the notifications
- * @param req the request
- * @param res the response
- */
+   * Get all the notifications
+   * @param req the request
+   * @param res the response
+   */
 }
