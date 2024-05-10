@@ -102,5 +102,25 @@ export default class Activity {
   setID(id: number): void {
     this.id = id;
   }
+
+  getStatus(): string {
+    return this.status;
+  }
+
+  setStatus(status: string): void {
+    this.status = status;
+  }
+
+  getPrevDays(): number {
+    return this.prevDays;
+  }
+
+  getDate(): Date {
+    return this.date;
+  }
+
+  getReminderInterval(): number {
+    return this.reminderInterval;
+  }
   // Getter and Setter
 }
