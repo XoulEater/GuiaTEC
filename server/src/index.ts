@@ -10,6 +10,8 @@ import studentRoutes from "./routes/studentRoutes";
 import authRoutes from "./routes/authRoutes";
 import activityRoutes from "./routes/activityRoutes";
 import forumRoutes from "./routes/forumRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
+
 
 dotenv.config();
 
@@ -31,6 +33,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/workplans", workplanRoutes);
 app.use("/api/workplans/:wid/activities", activityRoutes);
 app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 // Connect to MongoDB
 

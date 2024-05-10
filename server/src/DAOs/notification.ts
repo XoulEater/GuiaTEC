@@ -8,6 +8,9 @@ export default class NotificationDAO {
    */
   public static async getLastNotification(): Promise<Date> {
     const notificationData = await notificationSchema.findOne().sort({ _id: -1 }).limit(1).exec();
+    if (!notificationData) {
+      return new Date();
+    }
     let date: Date = notificationData.date as Date;
     return date;
   }

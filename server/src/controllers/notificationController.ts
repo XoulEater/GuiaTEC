@@ -6,52 +6,52 @@ import NotificationDAO from "../DAOs/notification";
 import WorkplanDAO from "../DAOs/workplan";
 import Activity from "../model/Activity";
 
-
 require("dotenv").config();
-
 
 export class NotificationController {
 
   public static async verifyNotification(
+    req: Request,
+    res: Response
   ): Promise<void> {
-    try {
-      const notificationDate: Date = await NotificationDAO.getLastNotification();
-      // I need to compare if notificationDate and today are the same day
-      const today = new Date(process.env.TODAY);
-      if (notificationDate.getDate() != today.getDate()) {
-        const workPlans = await WorkplanDAO.getAllWorkplans();
+    const notificationDate: Date = await NotificationDAO.getLastNotification();
+    console.log("Fecha de notificación", notificationDate);
+    // I need to compare if notificationDate and today are the same day
+    const today = new Date(process.env.TODAY);
+    if (notificationDate.getDate() != today.getDate()) {
+      const workPlans = await WorkplanDAO.getAllWorkplans();
 
-        const allActivities: Activity[] = [];
+      const allActivities: Activity[] = [];
 
-        for (const workPlan of workPlans) {
-          allActivities.push(...workPlan.getActivities());
-        }
-
-        const toNotify: Activity[] = [];
-        const toPublish: Activity[] = [];
-
-        for (const activity of allActivities) {
-          if (activity.getStatus() == "Planeada") {
-            toPublish.push(activity);
-          }
-          if (activity.getStatus() == "Publicada" || activity.getStatus() == "Notificada") {
-            toNotify.push(activity);
-          }
-        }
-        // Notify
-        this.notify(toNotify);
-
-        // Publish
-        this.publish(toPublish);
+      for (const workPlan of workPlans) {
+        allActivities.push(...workPlan.getActivities());
       }
+
+      console.log("Actividades", allActivities);
+
+      const toNotify: Activity[] = [];
+      const toPublish: Activity[] = [];
+
+      for (const activity of allActivities) {
+        if (activity.getStatus() == "Planeada") {
+          toPublish.push(activity);
+        }
+        if (activity.getStatus() == "Publicada" || activity.getStatus() == "Notificada") {
+          toNotify.push(activity);
+        }
+      }
+      // Notify
+      this.notify(toNotify);
+
+      // Publish
+      this.publish(toPublish);
     }
-    catch (error) {
-    }
+    res.status(200).json({ message: "Notification verified" });
   }
 
-  public static async notify(
+  public publish(
     activities: Activity[]
-  ): Promise<void> {
+  ) {
     const today = new Date(process.env.TODAY);
     for (const activity of activities) {
       const startDate = activity.getDate();
@@ -64,14 +64,14 @@ export class NotificationController {
         // Send notification
         console.log("Actividad publicada", activity.getName());
       }
-
+      console.log("Bandera 2");
     }
 
   }
 
-  public static async publish(
+  public notify(
     activities: Activity[]
-  ): Promise<void> {
+  ) {
 
     const today = new Date(process.env.TODAY);
     for (const activity of activities) {
@@ -91,6 +91,7 @@ export class NotificationController {
         }
         cont += interval;
       }
+      console.log("Bandera 4");
     }
   }
 
@@ -99,15 +100,4 @@ export class NotificationController {
  * @param req the request
  * @param res the response
  */
-  public static async getLastNotification(
-    req: Request,
-    res: Response
-  ): Promise<void> {
-    try {
-      const notification = await NotificationDAO.getLastNotification();
-      res.status(200).json(notification);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to get notification" });
-    }
-  }
 }
