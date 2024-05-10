@@ -26,8 +26,6 @@ export class NotificationController {
         allActivities.push(...workPlan.getActivities());
       }
 
-      console.log("Actividades", allActivities);
-
       const toNotify: Activity[] = [];
       const toPublish: Activity[] = [];
 
@@ -43,10 +41,10 @@ export class NotificationController {
         }
       }
       // Notify
-      this.notify(toNotify);
+      NotificationController.notify(toNotify);
 
       // Publish
-      this.publish(toPublish);
+      NotificationController.publish(toPublish);
     }
     res.status(200).json({ message: "Notification verified" });
   }
@@ -59,12 +57,11 @@ export class NotificationController {
 
       const publishDate = new Date();
       publishDate.setDate(startDate.getDate() - prevDays);
-
+      console.log(publishDate, today, activity.getName());
       if (today == publishDate) {
         // Send notification
         console.log("Actividad publicada", activity.getName());
       }
-      console.log("Bandera 2");
     }
   }
 
@@ -79,15 +76,14 @@ export class NotificationController {
       publishDate.setDate(startDate.getDate() - prevDays);
 
       let cont = interval;
-      while (publishDate < startDate) {
+      while (publishDate < startDate && publishDate < today) {
         publishDate.setDate(publishDate.getDate() + interval);
+        console.log(publishDate, today, activity.getName());
         if (publishDate == today) {
-          // Send notification
           console.log("Actividad notificada", activity.getName());
         }
         cont += interval;
       }
-      console.log("Bandera 4");
     }
   }
 
