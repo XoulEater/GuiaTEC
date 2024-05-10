@@ -14,7 +14,8 @@ export class NotificationController {
     res: Response
   ): Promise<void> {
     const notificationDate: Date = await NotificationDAO.getLastNotification();
-    console.log("Fecha de notificación", notificationDate);
+
+
     // I need to compare if notificationDate and today are the same day
     const today = new Date(process.env.TODAY);
     if (notificationDate.getDate() != today.getDate()) {
@@ -57,10 +58,11 @@ export class NotificationController {
 
       const publishDate = new Date();
       publishDate.setDate(startDate.getDate() - prevDays);
-      console.log(publishDate, today, activity.getName());
-      if (today == publishDate) {
+      //console.log(publishDate.getDate(), today.getDate(), activity.getName());
+      if (today.getDate() == publishDate.getDate()) {
         // Send notification
         console.log("Actividad publicada", activity.getName());
+        activity.setStatus("Publicada");
       }
     }
   }
@@ -76,20 +78,18 @@ export class NotificationController {
       publishDate.setDate(startDate.getDate() - prevDays);
 
       let cont = interval;
-      while (publishDate < startDate && publishDate < today) {
+      while (publishDate <= startDate && publishDate <= today) {
         publishDate.setDate(publishDate.getDate() + interval);
-        console.log(publishDate, today, activity.getName());
-        if (publishDate == today) {
+        console.log(publishDate.getDate(), today.getDate(), activity.getName());
+        if (publishDate.getDate() == today.getDate()) {
           console.log("Actividad notificada", activity.getName());
+          activity.setStatus("Notificada");
         }
         cont += interval;
       }
     }
   }
 
-  /**
-   * Get all the notifications
-   * @param req the request
-   * @param res the response
-   */
+
+
 }
