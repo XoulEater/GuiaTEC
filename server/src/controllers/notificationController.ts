@@ -15,81 +15,33 @@ export class NotificationController {
   ): Promise<void> {
     const notificationDate: Date = await NotificationDAO.getLastNotification();
 
-
-    // I need to compare if notificationDate and today are the same day
+    // get the current date, using the date set in the .env file for testing
     const today = new Date(process.env.TODAY);
+
+    // if the notification date is not today
     if (notificationDate.getDate() != today.getDate()) {
       const workPlans = await WorkplanDAO.getAllWorkplans();
 
-      const allActivities: Activity[] = [];
+      // for each workplan, verify the activities
+      for (let workPlan of workPlans) {
+        for (let activity of workPlan.getActivities()) {
+          if (
+            activity.getStatus() != "Notificada" ||
+            activity.getStatus() != "Publicada"
+          ) {
+            activity.verifyNotify(today);
+          } else if (activity.getStatus() == "Planeada") {
+            activity.verifyPublish(today);
+          }
+        }
 
-      for (const workPlan of workPlans) {
-        allActivities.push(...workPlan.getActivities());
+        // update the workplan in the database
+        await WorkplanDAO.updateWorkplan(workPlan.getID(), workPlan);
       }
 
-      const toNotify: Activity[] = [];
-      const toPublish: Activity[] = [];
-
-      for (const activity of allActivities) {
-        if (activity.getStatus() == "Planeada") {
-          toPublish.push(activity);
-        }
-        if (
-          activity.getStatus() == "Publicada" ||
-          activity.getStatus() == "Notificada"
-        ) {
-          toNotify.push(activity);
-        }
-      }
-      // Notify
-      NotificationController.notify(toNotify);
-
-      // Publish
-      NotificationController.publish(toPublish);
+      // record the notification in the database to avoid multiple notifications👌
+      await NotificationDAO.addNotification(today);
     }
     res.status(200).json({ message: "Notification verified" });
   }
-
-  static publish(activities: Activity[]) {
-    const today = new Date(process.env.TODAY);
-    for (const activity of activities) {
-      const startDate = activity.getDate();
-      const prevDays = activity.getPrevDays();
-
-      const publishDate = new Date();
-      publishDate.setDate(startDate.getDate() - prevDays);
-      //console.log(publishDate.getDate(), today.getDate(), activity.getName());
-      if (today.getDate() == publishDate.getDate()) {
-        // Send notification
-        console.log("Actividad publicada", activity.getName());
-        activity.setStatus("Publicada");
-      }
-    }
-  }
-
-  static notify(activities: Activity[]) {
-    const today = new Date(process.env.TODAY);
-    for (const activity of activities) {
-      const startDate = activity.getDate();
-      const prevDays = activity.getPrevDays();
-      const interval = activity.getReminderInterval();
-
-      const publishDate = new Date();
-      publishDate.setDate(startDate.getDate() - prevDays);
-
-      let cont = interval;
-      while (publishDate <= startDate && publishDate <= today) {
-        publishDate.setDate(publishDate.getDate() + interval);
-        console.log(publishDate.getDate(), today.getDate(), activity.getName());
-        if (publishDate.getDate() == today.getDate()) {
-          console.log("Actividad notificada", activity.getName());
-          activity.setStatus("Notificada");
-        }
-        cont += interval;
-      }
-    }
-  }
-
-
-
 }

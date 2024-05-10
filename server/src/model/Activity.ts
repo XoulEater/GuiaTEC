@@ -122,5 +122,42 @@ export default class Activity {
   getReminderInterval(): number {
     return this.reminderInterval;
   }
-  // Getter and Setter
+
+  getPublishDate(): Date {
+    const publishDate = new Date();
+    publishDate.setDate(this.date.getDate() - this.prevDays);
+    return publishDate;
+  }
+
+  verifyPublish(today: Date): void {
+    // get the date to publish
+    const publishDate = this.getPublishDate();
+
+    // if today is the day to publish
+    if (today.getDate() == publishDate.getDate()) {
+      this.setStatus("Publicada");
+      console.log("Published: " + this.name);
+    }
+  }
+
+  verifyNotify(today: Date): void {
+    // get the date to publish
+    const publishDate = this.getPublishDate();
+
+    // interval to notify
+    let cont = this.reminderInterval;
+    while (publishDate <= this.date && publishDate <= today) {
+      // add the interval to the publish date
+      publishDate.setDate(publishDate.getDate() + this.reminderInterval);
+
+      // if today is the day to notify
+      if (publishDate.getDate() == today.getDate()) {
+        this.setStatus("Notificada");
+        console.log("Notified: " + this.name);
+        break;
+      }
+      // add the interval to the counter
+      cont += this.reminderInterval;
+    }
+  }
 }
