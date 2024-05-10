@@ -7,7 +7,6 @@ const logTeam: Schema = new Schema({
     type: String,
     required: true,
   },
-  // TODO: Add after and before the change
   antes: {
     type: teacherSchema,
     required: false,

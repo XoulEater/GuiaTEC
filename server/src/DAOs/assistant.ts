@@ -36,6 +36,4 @@ export default class AssistantDAO {
       new: true,
     }).exec();
   }
-
-  
 }

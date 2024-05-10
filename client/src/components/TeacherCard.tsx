@@ -47,7 +47,7 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
         teacher.personalPNumber = (
           document.getElementById("personalPNumber") as HTMLInputElement
         ).value;
-        await teachersService.updateTeacher(teacher);
+        await teachersService.updateTeacher(teacher, user.name);
       }
     }
   }
