@@ -131,7 +131,6 @@ export class ActivityController {
       const activityDTO: ActivityDTO = req.body;
       const workplanId = req.params.wid;
       const activityID = req.params.aid;
-
       // Create the activity
       let activity;
       try {
@@ -152,7 +151,6 @@ export class ActivityController {
 
       // Update the workplan
       workplan.updateActivity(activityID, activity);
-      console.log(workplan);
       try {
         await WorkplanDAO.updateWorkplan(workplanId, workplan);
       } catch (error) {

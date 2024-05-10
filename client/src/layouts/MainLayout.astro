@@ -28,6 +28,7 @@ const { title, currentRoute } = Astro.props;
   if (!localStorage.getItem("user")) {
     window.location.href = "/";
   }
+  // TODO: Añadir fetch para notificar al servidor que el usuario ha visitado la página
 </script>
 <style is:global>
   html {
