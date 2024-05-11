@@ -31,7 +31,8 @@ export default class Teacher extends User {
         "teacher",
         IDorDTO.isLeader,
         IDorDTO.photo,
-        IDorDTO.id
+        IDorDTO.id,
+        IDorDTO._id.toString()
       );
       this.officePNumber = IDorDTO.officePNumber;
       this.personalPNumber = IDorDTO.personalPNumber;

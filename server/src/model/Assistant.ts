@@ -22,7 +22,8 @@ export default class Assistant extends User {
         "assistant",
         false,
         "",
-        IDorDTO.id
+        IDorDTO.id,
+        IDorDTO._id.toString()
       );
     }
   }

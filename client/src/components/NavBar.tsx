@@ -10,6 +10,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
   const userData = localStorage.getItem("user");
   const user = JSON.parse(userData as string) as User;
   const showRegister = user.userType == "assistant";
+  const showProfile = user.userType == "teacher";
 
   function handleLogout() {
     localStorage.removeItem("user");
@@ -36,6 +37,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
         >
           <Dropdown.Header>
             <span className="block text-sm">{user.name}</span>
+            <span className="block text-sm">Sede: {user.campus}</span>
             <span className="block text-sm font-medium truncate">
               {user.email}
             </span>
@@ -45,6 +47,12 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
             href="/register"
           >
             Registrar profesor
+          </Dropdown.Item>
+          <Dropdown.Item
+            className={showProfile ? "grid" : "hidden"}
+            href={`/teacher/${user.id}`}
+          >
+            Perfil
           </Dropdown.Item>
           <Dropdown.Divider />
           <Dropdown.Item onClick={handleLogout}>Salir</Dropdown.Item>

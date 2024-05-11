@@ -86,20 +86,33 @@ export default class TeacherDAO {
    * @param pCode code of the teacher
    * @param teacher the teacher with the new information
    */
-  public static async updateTeacher(pCode: string, teacher: Teacher, agenteCambio: string) {
-    const beforeTeacher = (await TeacherSchema.findOne({ id: pCode }).exec());
+  public static async updateTeacher(
+    pCode: string,
+    teacher: Teacher,
+    agenteCambio: string
+  ) {
+    const beforeTeacher = await TeacherSchema.findOne({ id: pCode }).exec();
     const beforeDTO: TeacherDTO = beforeTeacher.toObject();
 
     // Log the action no se como pasarle el objeto del profesor
 
-
-    const afterTeacher = await TeacherSchema.findOneAndUpdate({ id: pCode }, teacher, {
-      new: true,
-    }).exec();
+    const afterTeacher = await TeacherSchema.findOneAndUpdate(
+      { id: pCode },
+      teacher,
+      {
+        new: true,
+      }
+    ).exec();
 
     const afterDTO: TeacherDTO = afterTeacher.toObject();
 
-    await LogTeamDAO.createLogTeam(agenteCambio, beforeDTO, afterDTO, 'update', new Date());
+    await LogTeamDAO.createLogTeam(
+      agenteCambio,
+      beforeDTO,
+      afterDTO,
+      "update",
+      new Date()
+    );
   }
 
   /**
@@ -130,16 +143,15 @@ export default class TeacherDAO {
       const teacher = await TeacherSchema.findOne({ id: pCode });
 
       if (!teacher) {
-        throw new Error('Profesor no encontrado');
+        throw new Error("Profesor no encontrado");
       }
-
       // Actualizar la contraseña
       teacher.password = newPassword;
       await teacher.save();
 
       return true; // Indicar que la contraseña se cambió correctamente
     } catch (error) {
-      console.error('Error al cambiar la contraseña del profesor:', error);
+      console.error("Error al cambiar la contraseña del profesor:", error);
       return false; // Indicar que ocurrió un error al cambiar la contraseña
     }
   }
