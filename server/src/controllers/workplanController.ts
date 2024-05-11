@@ -55,13 +55,25 @@ export class WorkplanController {
     res: Response
   ): Promise<void> {
     try {
-      // FIXME: Generate a workplan
+
+      const {descripcion} = req.body;
+      let date: Date = new Date();  
+      let year = date.getFullYear();
+      let month = date.getMonth();
+      let semester = 0;
+      if (month >= 1 && month <= 6){ 
+        let semester = 1;
+      }
+      else{
+        let semester = 2;
+      }
+
       const workplan = new Workplan(
-        "Plan de Trabajo",
-        "Descripcion",
+        "Plan de Trabajo "+ semester + " "+ year,
+        descripcion,
         [],
-        2024,
-        1
+        year,
+        semester
       );
 
       const newWorkplan = await WorkplanDAO.createWorkplan(workplan);
