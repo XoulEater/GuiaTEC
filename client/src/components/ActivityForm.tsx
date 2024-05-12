@@ -145,7 +145,11 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     const modality = data.get("activityModality") as Modalities;
     const status = ActivityStatus.PLANEADA;
     const link = data.get("activityLink") as string;
-    const attachmentFile = data.get("activityAttachment") as string;
+    const File = data.get("activityAttachment") as File;
+
+    // TODO: Implement the file upload
+
+    const attachmentFile = ""; // FIXME: put the file url here
 
     // Create the activity object
     if (activity) {
@@ -181,6 +185,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       });
     }
     if (window.confirm("Actividad creada exitosamente")) {
+      // Redirect to the previous page
+      window.history.back();
     }
   }
   async function createActivity(activity: Activity) {

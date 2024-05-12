@@ -113,7 +113,6 @@ export class ExcelController {
       );
       // Create the students
       await StudentDAO.createStudents(students);
-
       res.status(200).send("Students created");
       return;
     } catch (error) {
