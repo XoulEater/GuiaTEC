@@ -8,6 +8,7 @@ import {
 } from "@/lib/types";
 import * as teacherService from "@/services/teacherService";
 import * as activityService from "@/services/activityService";
+import * as uploadFilesService from "@/services/uploadFilesService";
 
 interface ActivityFormProps {
   activityId?: string; // optional activity prop
@@ -129,7 +130,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       setColaborators([...colaborators, colaborator]);
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -149,8 +150,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
 
     // TODO: Implement the file upload
 
-    const attachmentFile = ""; // FIXME: put the file url here
-
+    const attachmentFile = await uploadFilesService.uploadFile(File); // FIXME: put the file url here
+    console.log("Se guardo el URL: ", attachmentFile);
     // Create the activity object
     if (activity) {
       // Call the function to update the activity

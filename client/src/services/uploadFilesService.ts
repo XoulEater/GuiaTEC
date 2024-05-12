@@ -6,12 +6,14 @@ import { API_URL } from "@/lib/api.ts";
  */
 export async function uploadFile(
     file: File,
-    ): Promise<void> {
+    ): Promise<string> {
     const formData = new FormData();
     formData.append("file", file);
 
-    await fetch(`${API_URL}/files`, {
+    const res = await fetch(`${API_URL}/files`, {
         method: "POST",
         body: formData,
     });
+    const URL = await res.json();
+    return URL.downloadURL;
 }
