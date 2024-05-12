@@ -4,7 +4,7 @@ class Forum {
     // Constructor
     constructor(messages // list of messages of the forum
     ) {
-        messages = [];
+        messages ? (this.messages = messages) : (this.messages = []);
     }
     getMessages() {
         return this.messages;

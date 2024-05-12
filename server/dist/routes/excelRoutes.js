@@ -6,9 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const excelController_1 = require("../controllers/excelController");
 const multer_1 = __importDefault(require("multer"));
-const storage = multer_1.default.memoryStorage();
-const upload = (0, multer_1.default)({ storage: storage });
 const router = express_1.default.Router();
+const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage() });
 // Excel routes
 router.get("/download/:campus", excelController_1.ExcelController.downloadStudents);
 router.get("/download/", excelController_1.ExcelController.downloadAllStudents);

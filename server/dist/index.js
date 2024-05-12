@@ -11,9 +11,14 @@ const teacherRoutes_1 = __importDefault(require("./routes/teacherRoutes"));
 const excelRoutes_1 = __importDefault(require("./routes/excelRoutes"));
 const teamRoutes_1 = __importDefault(require("./routes/teamRoutes"));
 const workplanRoutes_1 = __importDefault(require("./routes/workplanRoutes"));
-const activityRoute_1 = __importDefault(require("./routes/activityRoute"));
 const studentRoutes_1 = __importDefault(require("./routes/studentRoutes"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
+const activityRoutes_1 = __importDefault(require("./routes/activityRoutes"));
+const forumRoutes_1 = __importDefault(require("./routes/forumRoutes"));
+const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
+const filesRoutes_1 = __importDefault(require("./routes/filesRoutes"));
+const app_1 = require("firebase/app");
+const firebase_config_1 = __importDefault(require("../src/config/firebase.config"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -24,13 +29,17 @@ app.use(express_1.default.static("public"));
 app.use("/api/teachers", teacherRoutes_1.default);
 app.use("/api/excel", excelRoutes_1.default);
 app.use("/api/teams", teamRoutes_1.default);
-app.use("/api/workplans", workplanRoutes_1.default);
-app.use("/api/activities", activityRoute_1.default);
 app.use("/api/students", studentRoutes_1.default);
 app.use("/api/auth", authRoutes_1.default);
+app.use("/api/workplans", workplanRoutes_1.default);
+app.use("/api/workplans/:wid/activities", activityRoutes_1.default);
+app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes_1.default);
+app.use("/api/notifications", notificationRoutes_1.default);
+app.use("/api/files", filesRoutes_1.default);
+//Initialize a firebase application
+(0, app_1.initializeApp)(firebase_config_1.default.firebaseConfig);
 // Connect to MongoDB
 mongoose_1.default.Promise = Promise;
-// TODO: Add the connection string to the .env file
 mongoose_1.default.connect(process.env.MONGO_CONNECTION_STRING);
 mongoose_1.default.connection.on("error", (err) => {
     console.error(err);

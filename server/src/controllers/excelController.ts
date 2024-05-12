@@ -87,42 +87,38 @@ export class ExcelController {
   ): Promise<void> {
     try {
       // Get the file
-      const campus = req.headers.campus as CampusENUM;
+      const campus = req.body.campus as CampusENUM;
+      console.log(campus);
       const file = req.file;
       if (!file) {
-        res.status(400).send("No file uploaded");
+        res.status(404).send("No file uploaded");
         return;
       }
 
-      let students: Student[];
-      try {
-        // Read the excel file
-        const wb = xlsx.readFile(file.path);
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const studentsData = xlsx.utils.sheet_to_json(ws) as StudentDTO[];
-        // Create the students
-        const students = studentsData.map(
-          (studentData) =>
-            new Student(
-              studentData.carnet,
-              studentData.name,
-              studentData.email,
-              studentData.personalPNumber,
-              campus
-            )
-        );
-      } catch (error) {
-        res.status(500).send("Error reading file");
-      }
-      try {
-        // Create the students
-        await StudentDAO.createStudents(students);
-        res.status(200).send("Students created");
-      } catch (error) {
-        res.status(500).send("Error creating students");
-      }
+      // Read the excel file
+      const wb = xlsx.read(file.buffer, { type: "buffer" });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const studentsData: StudentDTO[] = xlsx.utils.sheet_to_json(ws);
+
+      // Create the students
+      const students = studentsData.map(
+        (studentData) =>
+          new Student(
+            studentData.carnet,
+            studentData.name,
+            studentData.email,
+            studentData.personalPNumber,
+            campus
+          )
+      );
+      // Create the students
+      await StudentDAO.createStudents(students);
+
+      res.status(200).send("Students created");
+      return;
     } catch (error) {
       res.status(500).send("Error uploading file");
+      return;
     }
   }
 

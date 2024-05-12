@@ -11,7 +11,7 @@ class Assistant extends User_1.default {
             super(name, email, password, campus, "assistant", false, "", IDorDTO);
         }
         else {
-            super(IDorDTO.name, IDorDTO.email, IDorDTO.password, IDorDTO.campus, "assistant", false, "", IDorDTO.id);
+            super(IDorDTO.name, IDorDTO.email, IDorDTO.password, IDorDTO.campus, "assistant", false, "", IDorDTO.id, IDorDTO._id.toString());
         }
     }
 }

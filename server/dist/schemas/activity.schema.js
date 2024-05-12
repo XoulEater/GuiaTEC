@@ -1,7 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
+const forum_schema_1 = __importDefault(require("./forum.schema"));
 const activitySchema = new mongoose_1.Schema({
+    id: {
+        // Unique identifier of the activity
+        type: Number,
+        required: true,
+    },
     name: {
         // Name of the activity
         type: String,
@@ -59,7 +68,7 @@ const activitySchema = new mongoose_1.Schema({
     },
     forum: {
         // Forum of the activity
-        type: String,
+        type: forum_schema_1.default,
         required: true,
     },
 });

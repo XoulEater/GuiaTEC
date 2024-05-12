@@ -30,8 +30,10 @@ class TeamController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const code = req.params.code;
+                const logTeamInfo = req.body;
                 yield teacher_1.default.addMember(code);
                 res.status(200).json({ message: "Member added" });
+                res.status(200).json({ message: "Team log created" });
             }
             catch (error) {
                 res.status(500).json({ error: "Error adding member" });
@@ -42,8 +44,10 @@ class TeamController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const code = req.params.code;
+                const logTeamInfo = req.body;
                 yield teacher_1.default.removeMember(code);
                 res.status(200).json({ message: "Member removed" });
+                res.status(200).json({ message: "Team log created" });
             }
             catch (error) {
                 res.status(500).json({ error: "Error removing member" });
@@ -55,7 +59,6 @@ class TeamController {
             try {
                 const code = req.params.code;
                 const isLeader = req.params.bool === "true" ? true : false;
-                console.log(code, isLeader);
                 yield teacher_1.default.setCoordinator(code, isLeader);
                 res.status(200).json({ message: "Coordinator updated" });
             }

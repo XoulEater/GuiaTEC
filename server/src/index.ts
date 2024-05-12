@@ -11,9 +11,9 @@ import authRoutes from "./routes/authRoutes";
 import activityRoutes from "./routes/activityRoutes";
 import forumRoutes from "./routes/forumRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
-import uploadFilesRoutes from "./routes/uploadFilesRoutes";
+import filesRoutes from "./routes/filesRoutes";
 import { initializeApp } from "firebase/app";
-import config from "../src/config/firebase.config"
+import config from "../src/config/firebase.config";
 
 dotenv.config();
 
@@ -36,7 +36,7 @@ app.use("/api/workplans", workplanRoutes);
 app.use("/api/workplans/:wid/activities", activityRoutes);
 app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes);
 app.use("/api/notifications", notificationRoutes);
-app.use("/api/files",uploadFilesRoutes);
+app.use("/api/files", filesRoutes);
 
 //Initialize a firebase application
 

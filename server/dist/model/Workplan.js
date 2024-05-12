@@ -50,9 +50,6 @@ class Workplan {
     }
     updateActivity(activityID, activity) {
         const index = this.activities.findIndex((activity) => activity.getID().toString() === activityID);
-        console.log(activityID);
-        console.log(index);
-        console.log(this.activities);
         this.activities[index] = activity;
     }
 }
