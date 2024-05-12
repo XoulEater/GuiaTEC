@@ -39,6 +39,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/files",uploadFilesRoutes);
 
 //Initialize a firebase application
+
 initializeApp(config.firebaseConfig);
 
 // Connect to MongoDB

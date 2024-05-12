@@ -4,14 +4,13 @@ import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/
 /**
  * Class that handles the requests related to uploading files and images to cloud service
  */
-
 export class uploadFilesController{
     /**
    * Upload a File or image
    * @param req the request
    * @param res the response
    */
-    public static async upload(
+    public static async uploadFile(
         req: Request,
         res: Response
     ){
@@ -24,6 +23,7 @@ export class uploadFilesController{
                 return dateTime;
             }
             const dateTime = giveCurrentDateTime();
+
             // Initialize Cloud Storage and get a reference to the service
             const storage = getStorage();
     
