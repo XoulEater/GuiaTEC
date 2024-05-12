@@ -11,7 +11,7 @@ const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage()
 // Excel routes
 router.get("/download/:campus", excelController_1.ExcelController.downloadStudents);
 router.get("/download/", excelController_1.ExcelController.downloadAllStudents);
-router.post("/upload/:campus", upload.single("file"), excelController_1.ExcelController.uploadStudents);
+router.post("/upload", upload.single("file"), excelController_1.ExcelController.uploadStudents);
 router.get("/sample/", excelController_1.ExcelController.generateSampleFile);
 exports.default = router;
 //# sourceMappingURL=excelRoutes.js.map

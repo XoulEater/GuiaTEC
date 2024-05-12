@@ -109,7 +109,7 @@ class ExcelController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Get the file
-                const campus = req.params.campus;
+                const campus = req.body.campus;
                 console.log(campus);
                 const file = req.file;
                 if (!file) {
