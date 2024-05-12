@@ -109,35 +109,27 @@ class ExcelController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Get the file
-                const campus = req.headers.campus;
+                const campus = req.params.campus;
+                console.log(campus);
                 const file = req.file;
                 if (!file) {
-                    res.status(400).send("No file uploaded");
+                    res.status(404).send("No file uploaded");
                     return;
                 }
-                let students;
-                try {
-                    // Read the excel file
-                    const wb = xlsx.readFile(file.path);
-                    const ws = wb.Sheets[wb.SheetNames[0]];
-                    const studentsData = xlsx.utils.sheet_to_json(ws);
-                    // Create the students
-                    const students = studentsData.map((studentData) => new Student_1.default(studentData.carnet, studentData.name, studentData.email, studentData.personalPNumber, campus));
-                }
-                catch (error) {
-                    res.status(500).send("Error reading file");
-                }
-                try {
-                    // Create the students
-                    yield student_1.default.createStudents(students);
-                    res.status(200).send("Students created");
-                }
-                catch (error) {
-                    res.status(500).send("Error creating students");
-                }
+                // Read the excel file
+                const wb = xlsx.read(file.buffer, { type: "buffer" });
+                const ws = wb.Sheets[wb.SheetNames[0]];
+                const studentsData = xlsx.utils.sheet_to_json(ws);
+                // Create the students
+                const students = studentsData.map((studentData) => new Student_1.default(studentData.carnet, studentData.name, studentData.email, studentData.personalPNumber, campus));
+                // Create the students
+                yield student_1.default.createStudents(students);
+                res.status(200).send("Students created");
+                return;
             }
             catch (error) {
                 res.status(500).send("Error uploading file");
+                return;
             }
         });
     }
