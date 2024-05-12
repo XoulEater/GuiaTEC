@@ -1,5 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const Forum_1 = __importDefault(require("./Forum"));
+const Message_1 = __importDefault(require("./Message"));
+const sendEmail_1 = __importDefault(require("../controllers/sendEmail"));
 class Activity {
     // Constructor
     constructor(NameOrDTO, week, date, prevDays, reminderInterval, responsibles, type, modality, status, link, attachmentFile, forum) {
@@ -18,8 +24,7 @@ class Activity {
             this.forum = forum;
         }
         else {
-            //this.id = NameOrDTO._id.toString();
-            this.id = NameOrDTO._id;
+            this.id = NameOrDTO.id;
             this.name = NameOrDTO.name;
             this.week = NameOrDTO.week;
             this.date = NameOrDTO.date;
@@ -31,7 +36,13 @@ class Activity {
             this.status = NameOrDTO.status;
             this.link = NameOrDTO.link;
             this.attachmentFile = NameOrDTO.attachmentFile;
-            //this.forum = NameOrDTO.forum;
+            if (NameOrDTO.forum) {
+                const messages = NameOrDTO.forum.messages.map((messageDTO) => new Message_1.default(messageDTO));
+                this.forum = new Forum_1.default(messages);
+            }
+            else {
+                this.forum = new Forum_1.default();
+            }
         }
     }
     // Getter and Setter for name
@@ -48,8 +59,78 @@ class Activity {
     setWeek(week) {
         this.week = week;
     }
+    getForum() {
+        return this.forum;
+    }
+    setForum(forum) {
+        this.forum = forum;
+    }
     getID() {
         return this.id;
+    }
+    setID(id) {
+        this.id = id;
+    }
+    getStatus() {
+        return this.status;
+    }
+    setStatus(status) {
+        this.status = status;
+    }
+    getPrevDays() {
+        return this.prevDays;
+    }
+    getDate() {
+        return this.date;
+    }
+    getReminderInterval() {
+        return this.reminderInterval;
+    }
+    getPublishDate() {
+        const publishDate = new Date();
+        publishDate.setDate(this.date.getDate() - this.prevDays);
+        return publishDate;
+    }
+    verify(today) {
+        if (this.status == "Notificada" || this.status == "Publicada") {
+            this.verifyNotify(today);
+        }
+        if (this.status == "Planeada") {
+            this.verifyPublish(today);
+        }
+    }
+    verifyPublish(today) {
+        // get the date to publish
+        const publishDate = this.getPublishDate();
+        // if today is the day to publish
+        if (today.getDate() == publishDate.getDate()) {
+            this.setStatus("Publicada");
+            "Published: " + this.name;
+        }
+    }
+    verifyNotify(today) {
+        // get the date to publish
+        const publishDate = this.getPublishDate();
+        // interval to notify
+        let cont = this.reminderInterval;
+        while (publishDate <= this.date && publishDate <= today) {
+            // add the interval to the publish date
+            publishDate.setDate(publishDate.getDate() + this.reminderInterval);
+            // if today is the day to notify
+            if (publishDate.getDate() == today.getDate()) {
+                this.setStatus("Notificada");
+                "Notified: " + this.name;
+                this.notify();
+                break;
+            }
+            // add the interval to the counter
+            cont += this.reminderInterval;
+        }
+    }
+    notify() {
+        const email = new sendEmail_1.default();
+        email.sendMail("ncqueescribir@gmail.com", // TODO: temporal email
+        "Actividad: " + this.name, "Recuerde que tiene una actividad programada para " + this.date);
     }
 }
 exports.default = Activity;

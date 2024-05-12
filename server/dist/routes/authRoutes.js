@@ -7,10 +7,13 @@ const express_1 = __importDefault(require("express"));
 const authContoller_1 = require("../controllers/authContoller");
 const router = express_1.default.Router();
 // Auth routes
-router.get("/test", authContoller_1.AuthController.test);
+//Login
+router.post("/login", authContoller_1.AuthController.login); // req: email, password
 // reset password
-// router.post("/resetPassword", AuthController.resetPassword); // req: email,
-// router.get("/validateToken", AuthController.validateToken); // req: userID
-// router.post("/changePassword", AuthController.changePassword); // req: email, new password
+router.post("/resetPassword", authContoller_1.AuthController.resetPassword); // req: email
+// validate token
+router.post("/validateToken", authContoller_1.AuthController.validateToken); // req: email, token
+// change password
+router.post("/changePassword", authContoller_1.AuthController.changePassword); // req: email, new password
 exports.default = router;
 //# sourceMappingURL=authRoutes.js.map

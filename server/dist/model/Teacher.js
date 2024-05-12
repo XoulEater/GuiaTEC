@@ -13,7 +13,7 @@ class Teacher extends User_1.default {
             this.personalPNumber = personalPNumber;
         }
         else {
-            super(IDorDTO.name, IDorDTO.email, IDorDTO.password, IDorDTO.campus, "teacher", IDorDTO.isLeader, IDorDTO.photo, IDorDTO.id);
+            super(IDorDTO.name, IDorDTO.email, IDorDTO.password, IDorDTO.campus, "teacher", IDorDTO.isLeader, IDorDTO.photo, IDorDTO.id, IDorDTO._id.toString());
             this.officePNumber = IDorDTO.officePNumber;
             this.personalPNumber = IDorDTO.personalPNumber;
         }

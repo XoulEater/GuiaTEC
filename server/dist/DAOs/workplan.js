@@ -46,6 +46,7 @@ class WorkplanDAO {
     static getWorkplanById(_id) {
         return __awaiter(this, void 0, void 0, function* () {
             const workplanData = yield workplan_schema_1.default.findOne({ _id: _id }).exec();
+            workplanData;
             return workplanData ? new Workplan_1.default(workplanData.toObject()) : null;
         });
     }

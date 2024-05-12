@@ -82,9 +82,10 @@ class TeacherController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const code = req.params.code;
-                const teacherData = req.body;
+                const teacherData = req.body.teacher;
+                const user = req.body.user;
                 const teacher = new Teacher_1.default(teacherData);
-                yield teacher_1.default.updateTeacher(code, teacher);
+                yield teacher_1.default.updateTeacher(code, teacher, user);
                 res.status(200).json({ message: "Teacher updated" });
             }
             catch (error) {

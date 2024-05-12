@@ -24,33 +24,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-// TODO: delete this file
-const teamSchema = new mongoose_1.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
+const notification = new mongoose_1.Schema({
+    date: {
+        type: Date,
         required: true,
     },
 });
-// Create and export the Teacher model
-exports.default = mongoose_1.default.model("Team", teamSchema);
-// {
-//   "id" : "T1",
-//   "name" : "Team 1",
-//   "description" : "This is the first team",
-//   "workPlans" : ["WP1", "WP2"],
-//   "members" : [{
-//   "name" : "Teacher 1",
-//   "email" : "hola@gmail.com  ",
-//   "password" : "12345",
-//   "photo" : "https://images.pexels.com",
-//   "officePNumber" : "123456",
-//   "personalPNumber" : "123456",
-//   "isLeader" : false,
-//   "campus" : "AL"
-// }]
-// }
-//# sourceMappingURL=team.schema.js.map
+exports.default = mongoose_1.default.model("Notification", notification);
+//# sourceMappingURL=notification.schema.js.map

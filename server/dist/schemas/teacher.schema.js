@@ -23,9 +23,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.teacherSchema = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 // Define the schema for the Teacher collection
-const teacherSchema = new mongoose_1.Schema({
+exports.teacherSchema = new mongoose_1.Schema({
     id: {
         // Code of the teacher (e.g. AL-01), includes the campus code
         type: String,
@@ -82,7 +83,7 @@ const teacherSchema = new mongoose_1.Schema({
     },
 });
 // Create and export the Teacher model
-exports.default = mongoose_1.default.model("Teacher", teacherSchema);
+exports.default = mongoose_1.default.model("Teacher", exports.teacherSchema);
 // json for testing api
 // {
 //   "name": "Alejandro",
