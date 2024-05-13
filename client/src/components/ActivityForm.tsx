@@ -136,25 +136,32 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     const data = new FormData(form);
     const name = data.get("activityName") as string;
     let week = parseInt(data.get("activityWeek") as string);
-    if (week < 0) {
-      week = 1;
-    }
-    if (week > 16) {
-      week = 16;
+    if (week < 0 || week > 16) {
+      window.alert("La semana debe ser un número entre 1 y 16");
+      return;
     }
 
     const date = new Date(data.get("activityDate") as string);
     let prevDays = parseInt(data.get("activityPrevDays") as string);
     if (prevDays < 0) {
-      prevDays = 0;
+      window.alert("Los días previos para publicar no pueden ser negativos");
+      return;
     }
 
     let reminderInterval = parseInt(
       data.get("activityReminderInterval") as string
     );
 
-    if (reminderInterval < 0) {
-      reminderInterval = 0;
+    if (reminderInterval <= 0) {
+      window.alert("El intervalo de recordatorio no puede ser negativo o cero");
+      return;
+    }
+
+    if (reminderInterval > prevDays) {
+      window.alert(
+        "El intervalo de recordatorio no puede ser mayor a los días previos para publicar"
+      );
+      return;
     }
     const responsibles = colaborators;
     const type = data.get("activityType") as ActivityType;
