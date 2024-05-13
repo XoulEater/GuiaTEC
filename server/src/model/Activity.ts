@@ -3,6 +3,7 @@ import Forum from "./Forum";
 import Message from "./Message";
 import Email from "../controllers/sendEmail";
 
+
 export default class Activity {
   private id: number;
   private name: string;
@@ -33,6 +34,7 @@ export default class Activity {
     attachmentFile?: string,
     forum?: Forum
   ) {
+
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
       this.week = week;
@@ -46,6 +48,7 @@ export default class Activity {
       this.link = link;
       this.attachmentFile = attachmentFile;
       this.forum = forum;
+
     } else {
       this.id = NameOrDTO.id;
       this.name = NameOrDTO.name;
@@ -69,6 +72,8 @@ export default class Activity {
       }
     }
   }
+
+
 
   // Getter and Setter for name
   getName(): string {
@@ -190,7 +195,7 @@ export default class Activity {
   }
 
   notify(): void {
-    const email = new Email();
+    const email = Email.getInstance();
     email.sendMail(
       "ncqueescribir@gmail.com", // TODO: temporal email
       "Actividad: " + this.name,

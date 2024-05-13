@@ -17,6 +17,7 @@ export class AuthController {
   //Login
   public static async login(req: Request, res: Response) {
     try {
+
       const email = req.body.email;
       const password = req.body.password;
       console.log(email);
@@ -58,7 +59,7 @@ export class AuthController {
         return res.status(500).json({ message: "User Not Found" });
       }
       // Send email with token
-      const emailSent = new Email();
+      const emailSent = Email.getInstance();
       const userToken = userFound.getDbId();
       await emailSent.sendMail(
         userFound.getEmail(),
