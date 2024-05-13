@@ -135,12 +135,27 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     const form = event.currentTarget;
     const data = new FormData(form);
     const name = data.get("activityName") as string;
-    const week = parseInt(data.get("activityWeek") as string);
+    let week = parseInt(data.get("activityWeek") as string);
+    if (week < 0) {
+      week = 1;
+    }
+    if (week > 16) {
+      week = 16;
+    }
+
     const date = new Date(data.get("activityDate") as string);
-    const prevDays = parseInt(data.get("activityPrevDays") as string);
-    const reminderInterval = parseInt(
+    let prevDays = parseInt(data.get("activityPrevDays") as string);
+    if (prevDays < 0) {
+      prevDays = 0;
+    }
+
+    let reminderInterval = parseInt(
       data.get("activityReminderInterval") as string
     );
+
+    if (reminderInterval < 0) {
+      reminderInterval = 0;
+    }
     const responsibles = colaborators;
     const type = data.get("activityType") as ActivityType;
     const modality = data.get("activityModality") as Modalities;

@@ -131,45 +131,61 @@ export default class Activity {
   }
 
   verify(today: Date): void {
-    if (this.status == "Notificada" || this.status == "Publicada") {
-      this.verifyNotify(today);
-    }
-    if (this.status == "Planeada") {
-      this.verifyPublish(today);
+    try {
+      if (this.status == "Notificada" || this.status == "Publicada") {
+        this.verifyNotify(today);
+      }
+      if (this.status == "Planeada") {
+        this.verifyPublish(today);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
   verifyPublish(today: Date): void {
-    // get the date to publish
-    const publishDate = this.getPublishDate();
+    try {
+      // get the date to publish
+      const publishDate = this.getPublishDate();
 
-    // if today is the day to publish
-    if (today.getDate() == publishDate.getDate()) {
-      this.setStatus("Publicada");
-      "Published: " + this.name;
+      // if today is the day to publish
+      if (today.getDate() == publishDate.getDate()) {
+        this.setStatus("Publicada");
+        "Published: " + this.name;
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
   verifyNotify(today: Date): void {
-    // get the date to publish
-    const publishDate = this.getPublishDate();
+    try {
+      // get the date to publish
+      const publishDate = this.getPublishDate();
 
-    // interval to notify
-    let cont = this.reminderInterval;
-    while (publishDate <= this.date && publishDate <= today) {
-      // add the interval to the publish date
-      publishDate.setDate(publishDate.getDate() + this.reminderInterval);
+      // interval to notify
+      let cont = this.reminderInterval;
+      while (publishDate <= this.date && publishDate <= today) {
+        // add the interval to the publish date
+        publishDate.setDate(publishDate.getDate() + this.reminderInterval);
 
-      // if today is the day to notify
-      if (publishDate.getDate() == today.getDate()) {
-        this.setStatus("Notificada");
-        "Notified: " + this.name;
-        this.notify();
+        if (this.reminderInterval === 0) {
+          continue;
+        }
 
-        break;
+        // if today is the day to notify
+        if (publishDate.getDate() == today.getDate()) {
+          this.setStatus("Notificada");
+          "Notified: " + this.name;
+          this.notify();
+
+          break;
+        }
+        // add the interval to the counter
+        cont += this.reminderInterval;
       }
-      // add the interval to the counter
-      cont += this.reminderInterval;
+    } catch (error) {
+      console.error(error);
     }
   }
 
