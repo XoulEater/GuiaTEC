@@ -23,6 +23,12 @@ export default class Teacher extends User {
       this.officePNumber = officePNumber;
       this.personalPNumber = personalPNumber;
     } else {
+      let dbId: string;
+      try {
+        dbId = IDorDTO._id.toString();
+      } catch {
+        dbId = IDorDTO._id;
+      }
       super(
         IDorDTO.name,
         IDorDTO.email,
@@ -32,7 +38,7 @@ export default class Teacher extends User {
         IDorDTO.isLeader,
         IDorDTO.photo,
         IDorDTO.id,
-        IDorDTO._id.toString()
+        dbId
       );
       this.officePNumber = IDorDTO.officePNumber;
       this.personalPNumber = IDorDTO.personalPNumber;

@@ -6,7 +6,6 @@ import * as workplanService from "../services/workplanService";
 const TeamDisplay: React.FC = () => {
   const userData = localStorage.getItem("user");
   const user = JSON.parse(userData as string) as User;
-  const isAssistant = user.userType === "assistant";
   const showNewPlanButton = user.isLeader;
   const showAddMemberButton = user.userType === "assistant";
 
@@ -22,7 +21,7 @@ const TeamDisplay: React.FC = () => {
 
   return (
     <div>
-      <article className="flex justify-between mx-20 my-6">
+      <article className="flex justify-between mx-10 sm:mx-20 my-6 flex-col sm:flex-row gap-3">
         <div>
           <h1 className="text-3xl font-semibold">Equipo</h1>
           <h2 className="text-xl">Informacion del equipo</h2>

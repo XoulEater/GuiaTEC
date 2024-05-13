@@ -10,6 +10,6 @@ const router = express_1.default.Router();
 // Setting up multer as a middleware to grab photo uploads
 const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage() });
 // Upload Route
-router.post("/", upload.single("file"), uploadFilesController_1.uploadFilesController.upload);
+router.post("/", upload.single("file"), uploadFilesController_1.uploadFilesController.uploadFile);
 exports.default = router;
 //# sourceMappingURL=filesRoutes.js.map

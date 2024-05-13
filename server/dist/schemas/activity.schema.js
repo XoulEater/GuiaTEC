@@ -46,7 +46,7 @@ const activitySchema = new mongoose_1.Schema({
         type: [String],
         required: true,
     },
-    attachementFile: {
+    attachmentFile: {
         // Attachements of the activity
         type: String,
         required: true,

@@ -13,7 +13,14 @@ class Teacher extends User_1.default {
             this.personalPNumber = personalPNumber;
         }
         else {
-            super(IDorDTO.name, IDorDTO.email, IDorDTO.password, IDorDTO.campus, "teacher", IDorDTO.isLeader, IDorDTO.photo, IDorDTO.id, IDorDTO._id.toString());
+            let dbId;
+            try {
+                dbId = IDorDTO._id.toString();
+            }
+            catch (_a) {
+                dbId = IDorDTO._id;
+            }
+            super(IDorDTO.name, IDorDTO.email, IDorDTO.password, IDorDTO.campus, "teacher", IDorDTO.isLeader, IDorDTO.photo, IDorDTO.id, dbId);
             this.officePNumber = IDorDTO.officePNumber;
             this.personalPNumber = IDorDTO.personalPNumber;
         }
