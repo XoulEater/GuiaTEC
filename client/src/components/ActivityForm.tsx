@@ -165,7 +165,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
 
     let attachmentFile = "";
     // Implement the file upload
-    if (File) {
+    if (File.name) {
       attachmentFile = await uploadFilesService.uploadFile(File);
       console.log("Se guardo el URL: ", attachmentFile);
     }
@@ -210,13 +210,12 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   }
   async function createActivity(activity: Activity) {
     // Call the function to create the activity
-    await activityService.createActivity(workplanId, activity);
-
+    //await activityService.createActivity(workplanId, activity);
     // Redirect to the previous page
   }
   function updateActivity(activity: Activity) {
     // Call the function to update the activity
-    activityService.updateActivity(workplanId, activity);
+    //activityService.updateActivity(workplanId, activity);
   }
 
   return (

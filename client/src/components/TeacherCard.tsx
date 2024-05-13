@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import type { Teacher, User } from "@/lib/types.ts";
 import * as teachersService from "@/services/teacherService";
+import * as uploadFilesService from "@/services/uploadFilesService";
 
 interface Props {
   teacherID: string;
@@ -68,9 +69,35 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
     }
   }
 
+  function handleNewPhoto() {
+    if (editing) {
+      // Open file picker
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*";
+      input.onchange = async () => {
+        if (input.files && input.files[0]) {
+          const file = input.files[0];
+          const reader = new FileReader();
+          reader.onload = async () => {
+            if (teacher) {
+              const photoURL = await uploadFilesService.uploadFile(file);
+              teacher.photo = photoURL;
+              await teachersService.updateTeacher(teacher, user.name);
+              loadTeacher();
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      input.click();
+    }
+  }
+
   return (
     <article className=" overflow-y-scroll  lgn:overflow-hidden h-screen lgn:h-[80%] w-[90%] lgn:w-[75%] bg-slate-200 rounded-3xl p-5 flex flex-col lgn:flex-row   lgn:place-content-center items-center align-top gap-5 shadow-lg">
       <img
+        onClick={handleNewPhoto}
         className="rounded-full h-[210px] aspect-square object-cover object-center border-2 border-white "
         src={teacher?.photo}
         alt={teacher?.name}

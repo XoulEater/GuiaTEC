@@ -19,9 +19,9 @@ function ActivitesAccordion(
   }
 
   return (
-    <section className=" my-6 w-5/12 h-[560px]  rounded-lg overflow-y-scroll no-scrollbar shadow-md ">
+    <section className=" my-6 w-5/12 h-[560px]  rounded-lg overflow-y-scroll no-scrollbar shadow-md  bg-primary-dark">
       {/* Accordion by week */}
-      <div className="px-6 py-2  bg-primary-dark">
+      <div className="px-6 py-2 h-max bg-primary-dark">
         {Object.keys(activitiesByWeek).map((week) => (
           <div key={week} className="">
             <div

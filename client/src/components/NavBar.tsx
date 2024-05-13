@@ -11,6 +11,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
   const user = JSON.parse(userData as string) as User;
   const showRegister = user.userType == "assistant";
   const showProfile = user.userType == "teacher";
+  console.log(user.photo);
 
   function handleLogout() {
     localStorage.removeItem("user");
