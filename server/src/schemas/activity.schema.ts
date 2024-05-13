@@ -49,7 +49,7 @@ const activitySchema: Schema = new Schema({
     required: true,
   },
 
-  attachementFile: {
+  attachmentFile: {
     // Attachements of the activity
     type: String,
     required: true,

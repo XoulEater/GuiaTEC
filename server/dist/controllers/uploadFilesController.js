@@ -16,18 +16,26 @@ const storage_1 = require("firebase/storage");
  */
 class uploadFilesController {
     /**
-   * Upload a File or image
-   * @param req the request
-   * @param res the response
-   */
-    static upload(req, res) {
+     * Upload a File or image
+     * @param req the request
+     * @param res the response
+     */
+    static uploadFile(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const giveCurrentDateTime = () => {
                     const today = new Date();
-                    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                    const dateTime = date + ' ' + time;
+                    const date = today.getFullYear() +
+                        "-" +
+                        (today.getMonth() + 1) +
+                        "-" +
+                        today.getDate();
+                    const time = today.getHours() +
+                        ":" +
+                        today.getMinutes() +
+                        ":" +
+                        today.getSeconds();
+                    const dateTime = date + " " + time;
                     return dateTime;
                 };
                 const dateTime = giveCurrentDateTime();
@@ -43,12 +51,12 @@ class uploadFilesController {
                 //by using uploadBytesResumable we can control the progress of uploading like pause, resume, cancel
                 // Grab the public url
                 const downloadURL = yield (0, storage_1.getDownloadURL)(snapshot.ref);
-                console.log('File successfully uploaded.');
+                console.log("File successfully uploaded.");
                 return res.send({
-                    message: 'file uploaded to firebase storage',
+                    message: "file uploaded to firebase storage",
                     name: req.file.originalname,
                     type: req.file.mimetype,
-                    downloadURL: downloadURL
+                    downloadURL: downloadURL,
                 });
             }
             catch (error) {

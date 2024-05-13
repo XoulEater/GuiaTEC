@@ -261,7 +261,11 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                 </div>
                 <button
                   onClick={handleDownloadAttachment}
-                  className="flex gap-4 px-3 my-2 text-lg text-gray-400 border-2 rounded-md shadow-sm place-items-center border-black/10"
+                  className={`flex gap-4 px-3 my-2 text-lg ${
+                    selectedActivity.attachmentFile != null
+                      ? " text-primary-light"
+                      : " text-gray-500"
+                  } border-2 rounded-md shadow-sm place-items-center border-black/10`}
                 >
                   Archivo <br /> adjunto
                   <svg

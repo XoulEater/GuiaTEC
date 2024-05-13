@@ -89,6 +89,7 @@ class ActivityController {
             try {
                 const activityDTO = req.body;
                 const workplanId = req.params.wid;
+                console.log(activityDTO);
                 // Create the activity
                 let activity;
                 try {

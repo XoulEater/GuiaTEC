@@ -56,14 +56,17 @@ class ExcelController {
         return __awaiter(this, void 0, void 0, function* () {
             const campus = req.params.campus;
             let students = yield student_1.default.getStudentsByCampus(campus);
-            // Create the excel file
-            // cols: carnet, fullName, email, phone
-            const wb = xlsx.utils.book_new();
-            const ws = xlsx.utils.json_to_sheet(students);
-            xlsx.utils.book_append_sheet(wb, ws, "Students");
-            const excelFileName = `students-${campus}.xlsx`;
-            xlsx.writeFile(wb, excelFileName);
-            res.download(excelFileName);
+            // Generate the Excel file
+            const workbook = xlsx.utils.book_new();
+            const worksheet = xlsx.utils.json_to_sheet(students);
+            xlsx.utils.book_append_sheet(workbook, worksheet, "Students");
+            // Write the Excel file to a buffer
+            const buffer = xlsx.write(workbook, { type: "buffer" });
+            // Set the headers
+            res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            res.setHeader("Content-Disposition", "attachment; filename=students.xlsx");
+            // Send the buffer in the response
+            res.send(buffer);
         });
     }
     /**
@@ -86,14 +89,18 @@ class ExcelController {
                     res.status(500).send("Error retrieving students");
                 }
                 // Create the excel file
-                const wb = xlsx.utils.book_new();
+                const workbook = xlsx.utils.book_new();
                 students.forEach((campusStudents, index) => {
-                    const ws = xlsx.utils.json_to_sheet(campusStudents);
-                    xlsx.utils.book_append_sheet(wb, ws, campuses[index]);
+                    const worksheet = xlsx.utils.json_to_sheet(campusStudents);
+                    xlsx.utils.book_append_sheet(workbook, worksheet, campuses[index]);
                 });
-                const excelFileName = `students-all.xlsx`;
-                xlsx.writeFile(wb, excelFileName);
-                res.download(excelFileName);
+                // Write the Excel file to a buffer
+                const buffer = xlsx.write(workbook, { type: "buffer" });
+                // Set the headers
+                res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                res.setHeader("Content-Disposition", "attachment; filename=students.xlsx");
+                // Send the buffer in the response
+                res.send(buffer);
             }
             catch (error) {
                 res.status(500).send("Error downloading excel file");
