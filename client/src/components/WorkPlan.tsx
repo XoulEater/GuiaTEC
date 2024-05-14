@@ -10,6 +10,7 @@ import ActivitesAccordion from "@/components/ActivitiesAccordion";
 import * as workplanService from "@/services/workplanService";
 import * as activityService from "@/services/activityService";
 import * as messageService from "@/services/forumService";
+import { uploadFile } from "@/services/uploadFilesService";
 
 interface WorkPlanProps {
   id: string;
@@ -97,6 +98,48 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     if (selectedActivity && selectedActivity.attachmentFile) {
       window.open(selectedActivity.attachmentFile, "_blank");
     }
+  }
+
+  function handleAddEvidence() {
+    // open file picker
+
+    if (selectedActivity) {
+      console.log("adding evidence");
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/*, video/*";
+      input.onchange = async () => {
+        if (input.files && selectedActivity) {
+          const file = input.files[0];
+
+          const url = await uploadFile(file);
+
+          if (url) {
+            selectedActivity.evidence = selectedActivity.evidence || [];
+            selectedActivity.evidence.push(url);
+            activityService.updateActivity(id, selectedActivity);
+          }
+          console.log("file uploaded");
+          console.log(selectedActivity);
+        }
+      };
+      input.click();
+    }
+  }
+
+  function handleCancelActivity() {
+    if (!selectedActivity) return;
+    selectedActivity!.status = ActivityStatus.CANCELADA;
+    // open input for reason
+    const reason = window.prompt("Motivo de cancelación");
+    if (reason) {
+      // save the reason in the observation and the date
+      selectedActivity!.observation =
+        reason + " [Cancelada el " + new Date().toDateString() + "]";
+    }
+    console.log(selectedActivity.observation);
+    activityService.updateActivity(id, selectedActivity);
+    setSelectedActivity(null);
   }
 
   const addMessage = async () => {
@@ -317,6 +360,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
               </section>
               <section>
                 <p className="text-xl font-bold">Descripción:</p>
+                <p className="text-lg">{selectedActivity.observation}</p>
                 <p className="text-lg ">{selectedActivity.modality}</p>
                 {selectedActivity.modality === "Virtual" && (
                   <a
@@ -464,9 +508,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                   )}
                   {selectedActivity.status !== "Cancelada" && (
                     <button
-                      onClick={() =>
-                        handleActivityStatusChange(ActivityStatus.CANCELADA)
-                      }
+                      onClick={handleCancelActivity}
                       className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out bg-red-800 rounded-md hover:brightness-125 group"
                     >
                       <svg
@@ -494,6 +536,35 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                   )}
                 </footer>
               )}
+              {
+                /* section for submitting evidences */
+                selectedActivity.status === "Realizada" && (
+                  <div>
+                    <button
+                      className=" bg-primary-dark text-white py-2 px-4 "
+                      onClick={handleAddEvidence}
+                    >
+                      Subir evidencia
+                    </button>
+
+                    <ul>
+                      {selectedActivity.evidence?.map((evidence) => (
+                        <li key={evidence}>
+                          -{" "}
+                          <a
+                            className=" text-primary-light underline"
+                            href={evidence}
+                            target="_blank"
+                          >
+                            evidencia{" "}
+                            {selectedActivity?.evidence?.indexOf(evidence)}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )
+              }
               {showComments && (
                 <div className=" w-full ">
                   <div className="flex relative">

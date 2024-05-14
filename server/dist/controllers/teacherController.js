@@ -85,7 +85,7 @@ class TeacherController {
             const user = req.body.user;
             const teacher = new Teacher_1.default(teacherData);
             console.log(teacher);
-            yield teacher_1.default.updateTeacher(code, teacher, user);
+            yield teacher_1.default.updateTeacher(code, teacher, user, "update");
             res.status(200).json({ message: "Teacher updated" });
         });
     }

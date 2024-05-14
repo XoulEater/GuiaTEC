@@ -27,30 +27,6 @@ export default class TeacherDAO {
   }
 
   /**
-   * Add a teacher as a member
-   * @param pCode code of the teacher
-   */
-  public static async addMember(pCode: string) {
-    await TeacherSchema.findOneAndUpdate(
-      { id: pCode },
-      { isMember: true },
-      { new: true }
-    ).exec();
-  }
-
-  /**
-   * Remove a teacher as a member
-   * @param pCode code of the teacher
-   */
-  public static async removeMember(pCode: string) {
-    await TeacherSchema.findOneAndUpdate(
-      { id: pCode },
-      { isMember: false, isLeader: false },
-      { new: true }
-    ).exec();
-  }
-
-  /**
    * Set a teacher as a coordinator
    * @param pCode code of the teacher
    * @param pCoordinator true if the teacher is a coordinator, false otherwise
@@ -89,7 +65,8 @@ export default class TeacherDAO {
   public static async updateTeacher(
     pCode: string,
     teacher: Teacher,
-    agenteCambio: string
+    agenteCambio: string,
+    operation: string
   ) {
     const beforeTeacher = await TeacherSchema.findOne({ id: pCode }).exec();
     const beforeDTO: TeacherDTO = beforeTeacher.toObject();
@@ -110,7 +87,7 @@ export default class TeacherDAO {
       agenteCambio,
       beforeDTO,
       afterDTO,
-      "update",
+      operation,
       new Date()
     );
   }

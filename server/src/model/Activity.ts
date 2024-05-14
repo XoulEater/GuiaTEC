@@ -3,7 +3,6 @@ import Forum from "./Forum";
 import Message from "./Message";
 import Email from "../controllers/sendEmail";
 
-
 export default class Activity {
   private id: number;
   private name: string;
@@ -16,8 +15,10 @@ export default class Activity {
   private modality: string;
   private status: string;
   private link?: string;
+  private evidence?: string[] = [];
   private attachmentFile?: string;
   private forum?: Forum;
+  private observation?: string;
 
   // Constructor
   constructor(
@@ -32,9 +33,9 @@ export default class Activity {
     status?: string,
     link?: string,
     attachmentFile?: string,
-    forum?: Forum
+    forum?: Forum,
+    observation?: string
   ) {
-
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
       this.week = week;
@@ -48,7 +49,7 @@ export default class Activity {
       this.link = link;
       this.attachmentFile = attachmentFile;
       this.forum = forum;
-
+      this.observation = observation;
     } else {
       this.id = NameOrDTO.id;
       this.name = NameOrDTO.name;
@@ -62,6 +63,8 @@ export default class Activity {
       this.status = NameOrDTO.status;
       this.link = NameOrDTO.link;
       this.attachmentFile = NameOrDTO.attachmentFile;
+      this.evidence = NameOrDTO.evidence;
+      this.observation = NameOrDTO.observation;
       if (NameOrDTO.forum) {
         const messages = NameOrDTO.forum.messages.map(
           (messageDTO) => new Message(messageDTO)
@@ -72,8 +75,6 @@ export default class Activity {
       }
     }
   }
-
-
 
   // Getter and Setter for name
   getName(): string {

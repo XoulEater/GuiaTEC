@@ -14,6 +14,7 @@ interface TeacherDTO {
   officePNumber: string; // office phone number of the teacher
   personalPNumber: string; // personal phone number of the teacher
   isLeader: boolean; // if the teacher is the leader of the team
+  isMember: boolean; // if the teacher is a member of the team
 }
 
 export default TeacherDTO;

@@ -63,7 +63,7 @@ const TeachersTable = () => {
 
   function handleIncludeTeacher(teacher: Teacher) {
     setTeamTeachers((prevTeachers) => [...prevTeachers, teacher]);
-    teamService.addMember(teacher.id);
+    teamService.addMember(teacher.id, user.name);
   }
 
   return (

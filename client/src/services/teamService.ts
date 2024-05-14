@@ -17,9 +17,13 @@ export async function getAllMembers(): Promise<Teacher[]> {
  * @param code the code of the teacher
  * @returns a promise with the message
  */
-export async function addMember(code: string): Promise<void> {
+export async function addMember(code: string, user: string): Promise<void> {
   await fetch(`${API_URL}/teams/members/${code}`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user }),
   });
 }
 
@@ -29,9 +33,13 @@ export async function addMember(code: string): Promise<void> {
  * @returns a promise with the message
  */
 
-export async function removeMember(code: string): Promise<void> {
+export async function removeMember(code: string, user: string): Promise<void> {
   await fetch(`${API_URL}/teams/members/${code}`, {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user }),
   });
 }
 

@@ -59,6 +59,15 @@ class User {
     getDbId() {
         return this.dbId;
     }
+    setDbId(dbId) {
+        this.dbId = dbId;
+    }
+    setIsLeader(isLeader) {
+        this.isLeader = isLeader;
+    }
+    getIsLeader() {
+        return this.isLeader;
+    }
 }
 exports.default = User;
 //# sourceMappingURL=User.js.map

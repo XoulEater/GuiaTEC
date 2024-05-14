@@ -67,6 +67,8 @@ export interface Activity {
   link?: string; // link of the activity if it is virtual
   attachmentFile?: string; // attachment file of the activity
   forum?: Forum; // forum of the activity
+  observation?: string; // observation of the activity
+  evidence?: string[]; // list of evidence of the activity (photos, videos, etc.)
 }
 
 export interface WorkPlan {

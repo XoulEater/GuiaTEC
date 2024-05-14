@@ -41,24 +41,6 @@ class TeacherDAO {
         });
     }
     /**
-     * Add a teacher as a member
-     * @param pCode code of the teacher
-     */
-    static addMember(pCode) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, { isMember: true }, { new: true }).exec();
-        });
-    }
-    /**
-     * Remove a teacher as a member
-     * @param pCode code of the teacher
-     */
-    static removeMember(pCode) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, { isMember: false, isLeader: false }, { new: true }).exec();
-        });
-    }
-    /**
      * Set a teacher as a coordinator
      * @param pCode code of the teacher
      * @param pCoordinator true if the teacher is a coordinator, false otherwise
@@ -93,7 +75,7 @@ class TeacherDAO {
      * @param pCode code of the teacher
      * @param teacher the teacher with the new information
      */
-    static updateTeacher(pCode, teacher, agenteCambio) {
+    static updateTeacher(pCode, teacher, agenteCambio, operation) {
         return __awaiter(this, void 0, void 0, function* () {
             const beforeTeacher = yield teacher_schema_1.default.findOne({ id: pCode }).exec();
             const beforeDTO = beforeTeacher.toObject();
@@ -102,7 +84,7 @@ class TeacherDAO {
                 new: true,
             }).exec();
             const afterDTO = afterTeacher.toObject();
-            yield logTeam_1.default.createLogTeam(agenteCambio, beforeDTO, afterDTO, "update", new Date());
+            yield logTeam_1.default.createLogTeam(agenteCambio, beforeDTO, afterDTO, operation, new Date());
         });
     }
     /**

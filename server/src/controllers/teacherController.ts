@@ -3,7 +3,6 @@ import TeacherDAO from "../DAOs/teacher";
 import Teacher from "../model/Teacher";
 import TeacherDTO from "../DTOs/teacher";
 
-
 export class TeacherController {
   public static async getAllTeachers(
     req: Request,
@@ -80,7 +79,7 @@ export class TeacherController {
     const teacher = new Teacher(teacherData);
     console.log(teacher);
 
-    await TeacherDAO.updateTeacher(code, teacher, user);
+    await TeacherDAO.updateTeacher(code, teacher, user, "update");
 
     res.status(200).json({ message: "Teacher updated" });
   }
@@ -97,5 +96,4 @@ export class TeacherController {
       res.status(400).json({ message: "Error deleting teacher" });
     }
   }
-
 }

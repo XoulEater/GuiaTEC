@@ -8,7 +8,8 @@ const Message_1 = __importDefault(require("./Message"));
 const sendEmail_1 = __importDefault(require("../controllers/sendEmail"));
 class Activity {
     // Constructor
-    constructor(NameOrDTO, week, date, prevDays, reminderInterval, responsibles, type, modality, status, link, attachmentFile, forum) {
+    constructor(NameOrDTO, week, date, prevDays, reminderInterval, responsibles, type, modality, status, link, attachmentFile, forum, observation) {
+        this.evidence = [];
         if (typeof NameOrDTO === "string") {
             this.name = NameOrDTO;
             this.week = week;
@@ -22,6 +23,7 @@ class Activity {
             this.link = link;
             this.attachmentFile = attachmentFile;
             this.forum = forum;
+            this.observation = observation;
         }
         else {
             this.id = NameOrDTO.id;
@@ -36,6 +38,8 @@ class Activity {
             this.status = NameOrDTO.status;
             this.link = NameOrDTO.link;
             this.attachmentFile = NameOrDTO.attachmentFile;
+            this.evidence = NameOrDTO.evidence;
+            this.observation = NameOrDTO.observation;
             if (NameOrDTO.forum) {
                 const messages = NameOrDTO.forum.messages.map((messageDTO) => new Message_1.default(messageDTO));
                 this.forum = new Forum_1.default(messages);

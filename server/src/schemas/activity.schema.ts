@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import forumSchema from "./forum.schema";
+import e from "express";
 
 const activitySchema: Schema = new Schema({
   id: {
@@ -67,6 +68,12 @@ const activitySchema: Schema = new Schema({
     required: true,
   },
 
+  evidence: {
+    // Evidence of the activity
+    type: [String],
+    required: true,
+  },
+
   status: {
     // Status of the activity
     type: String,
@@ -76,6 +83,11 @@ const activitySchema: Schema = new Schema({
   forum: {
     // Forum of the activity
     type: forumSchema,
+    required: true,
+  },
+  observation: {
+    // Observation of the activity
+    type: String,
     required: true,
   },
 });

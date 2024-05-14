@@ -12,7 +12,9 @@ const TeacherCard: React.FC<Props> = ({ teacherID }) => {
   const user = JSON.parse(userData as string) as User;
   const [teacher, setTeacher] = useState<Teacher | null>(null);
 
-  const canEdit = user.userType === "assistant" || teacher?.id === user.id;
+  const canEdit =
+    (user.userType === "assistant" && user.campus === teacher?.campus) ||
+    teacher?.id === user.id;
 
   async function loadTeacher() {
     const res = await teachersService.getTeacherByCode(teacherID);

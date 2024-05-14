@@ -61,6 +61,11 @@ const activitySchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
+    evidence: {
+        // Evidence of the activity
+        type: [String],
+        required: true,
+    },
     status: {
         // Status of the activity
         type: String,
@@ -69,6 +74,11 @@ const activitySchema = new mongoose_1.Schema({
     forum: {
         // Forum of the activity
         type: forum_schema_1.default,
+        required: true,
+    },
+    observation: {
+        // Observation of the activity
+        type: String,
         required: true,
     },
 });

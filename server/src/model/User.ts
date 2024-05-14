@@ -93,6 +93,18 @@ class User {
   public getDbId(): string {
     return this.dbId;
   }
+
+  public setDbId(dbId: string): void {
+    this.dbId = dbId;
+  }
+
+  public setIsLeader(isLeader: boolean): void {
+    this.isLeader = isLeader;
+  }
+
+  public getIsLeader(): boolean {
+    return this.isLeader;
+  }
 }
 
 export default User;

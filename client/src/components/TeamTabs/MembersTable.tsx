@@ -11,7 +11,7 @@ const MembersTable = () => {
   const isAssistant = user.userType === "assistant";
 
   const showDeleteButton = isAssistant;
-  const showLeaderButton = isMainAssistant;
+  const editLeader = isMainAssistant;
 
   const [currentLeader, setCurrentLeader] = useState<string | null>(null);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
@@ -63,7 +63,7 @@ const MembersTable = () => {
   function handleConfirmDelete() {
     if (selectedTeacher) {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
-      teamService.removeMember(selectedTeacher.id);
+      teamService.removeMember(selectedTeacher.id, user.name);
     }
     checkValidTeam();
     setConfirmDelete(false);
@@ -151,30 +151,31 @@ const MembersTable = () => {
                   </svg>
                 </button>
               )}
-              {showLeaderButton && (
-                /* Button to change leader */
-                <button onClick={() => handleLeaderChange(teacher)}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className={`${
-                      teacher.id === currentLeader
-                        ? "text-amber-500 hover:brightness-125"
-                        : "text-zinc-400 hover:brightness-90"
-                    } hover:scale-110 transition-all  duration-300 ease-out`}
-                    width="32"
-                    height="32"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="currentColor"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                    <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
-                  </svg>
-                </button>
-              )}
+
+              <button
+                onClick={() => handleLeaderChange(teacher)}
+                disabled={!editLeader}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`${
+                    teacher.id === currentLeader
+                      ? "text-amber-500 hover:brightness-125"
+                      : "text-zinc-400 hover:brightness-90"
+                  } hover:scale-110 transition-all  duration-300 ease-out`}
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z"></path>
+                </svg>
+              </button>
             </div>
           </div>
         );

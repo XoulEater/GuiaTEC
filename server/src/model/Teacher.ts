@@ -5,6 +5,7 @@ import User from "./User";
 export default class Teacher extends User {
   private officePNumber: string;
   private personalPNumber: string;
+  private isMember: boolean;
 
   // Constructor, include the posibility to use TeacherDTO instead of all the parameters
   constructor(
@@ -16,12 +17,14 @@ export default class Teacher extends User {
     officePNumber?: string,
     personalPNumber?: string,
     isLeader?: boolean,
+    isMember?: boolean,
     photo?: string
   ) {
     if (typeof IDorDTO === "string") {
       super(name, email, password, campus, "teacher", isLeader, photo, IDorDTO);
       this.officePNumber = officePNumber;
       this.personalPNumber = personalPNumber;
+      this.isMember = isMember;
     } else {
       let dbId: string;
       try {
@@ -42,6 +45,7 @@ export default class Teacher extends User {
       );
       this.officePNumber = IDorDTO.officePNumber;
       this.personalPNumber = IDorDTO.personalPNumber;
+      this.isMember = IDorDTO.isMember;
     }
   }
 
@@ -61,5 +65,13 @@ export default class Teacher extends User {
 
   setPersonalPNumber(personalPNumber: string): void {
     this.personalPNumber = personalPNumber;
+  }
+
+  setIsLeader(isLeader: boolean): void {
+    super.setIsLeader(isLeader);
+  }
+
+  setIsMember(isMember: boolean): void {
+    this.isMember = isMember;
   }
 }

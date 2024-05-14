@@ -148,7 +148,7 @@ export class ActivityController {
         res.status(500).json({ error: "Error retrieving workplan" });
         return;
       }
-
+      console.log(activity);
       // Update the workplan
       workplan.updateActivity(activityID, activity);
       try {
