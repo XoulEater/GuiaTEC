@@ -1,4 +1,5 @@
 import ForumDTO from "./forum";
+import TeacherDTO from "./teacher";
 
 interface ActivityDTO {
   id?: number; // unique identifier of the activity
@@ -7,7 +8,7 @@ interface ActivityDTO {
   date: Date; // date of the activity
   prevDays: number; // number of days before the activity starts to be published
   reminderInterval: number; // interval in days between reminders
-  responsibles: string[]; // list of responsibles for the activitu
+  responsibles: TeacherDTO[]; // list of responsibles for the activitu
   type: string; // type of the activity
   modality: string; // modality of the activity
   status: string; // status of the activity

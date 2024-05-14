@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import Activity from "../model/Activity";
 import ActivityDTO from "../DTOs/activity";
 import WorkplanDAO from "../DAOs/workplan";
+import Email from "./sendEmail";
 
 /**
  * Class that handles the requests related to activities
@@ -148,14 +149,21 @@ export class ActivityController {
         res.status(500).json({ error: "Error retrieving workplan" });
         return;
       }
-      console.log(activity);
+
       // Update the workplan
       workplan.updateActivity(activityID, activity);
+
       try {
         await WorkplanDAO.updateWorkplan(workplanId, workplan);
       } catch (error) {
         res.status(500).json({ error: "Error updating workplan" });
         return;
+      }
+
+      console.log(activity.getStatus());
+      if (activity.getStatus() === "Notificada") {
+        activity.notify();
+        console.log("Notified");
       }
 
       res.status(200).json({ message: "Activity updated successfully" });

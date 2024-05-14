@@ -21,7 +21,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
 }) => {
   // Implement your component logic here
   const [isVirtual, setIsVirtual] = React.useState(false);
-  const [colaborators, setColaborators] = React.useState<string[]>([]);
+  const [colaborators, setColaborators] = React.useState<Teacher[]>([]);
   const [teachers, setTeachers] = React.useState<Teacher[]>([]);
   const [activity, setActivity] = React.useState<Activity | null>(null);
 
@@ -124,10 +124,16 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     const responsibles = document.getElementById(
       "activityResponsibles"
     ) as HTMLSelectElement;
-    const colaborator = responsibles.value;
+    console.log(responsibles.value);
+    const colaborator = teachers.find(
+      (teacher) => teacher.id === responsibles.value
+    );
+
+    if (!colaborator) return;
     // Add the colaborator to the list if it is not already there
-    if (!colaborators.includes(colaborator))
+    if (!colaborators.includes(colaborator)) {
       setColaborators([...colaborators, colaborator]);
+    }
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -166,7 +172,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     const responsibles = colaborators;
     const type = data.get("activityType") as ActivityType;
     const modality = data.get("activityModality") as Modalities;
-    const status = ActivityStatus.PLANEADA;
+
+    const status = activity ? activity.status : ActivityStatus.PLANEADA;
     const link = data.get("activityLink") as string;
     const File = data.get("activityAttachment") as File;
 
@@ -541,8 +548,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
               required
             >
               {teachers.map((teacher) => (
-                <option key={teacher.id} value={teacher.name}>
-                  {teacher.name}
+                <option key={teacher.id} value={teacher.id}>
+                  {teacher.name + " - " + teacher.id}
                 </option>
               ))}
             </select>
@@ -560,10 +567,10 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             <ul className="w-full h-32 px-6 py-3 overflow-y-scroll bg-white border rounded-lg text-zinc-500 pl-11 border-zinc-300 no-scrollbar">
               {colaborators.map((teacher) => (
                 <li
-                  key={teacher}
+                  key={teacher.id}
                   className="flex flex-row justify-between w-full pt-1 pb-2 border-b-2"
                 >
-                  {teacher}
+                  {teacher.name + " - " + teacher.id}
                   <button
                     className="font-semibold right-2"
                     onClick={() =>

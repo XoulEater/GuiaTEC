@@ -2,6 +2,7 @@ import ActivityDTO from "../DTOs/activity";
 import Forum from "./Forum";
 import Message from "./Message";
 import Email from "../controllers/sendEmail";
+import Teacher from "./Teacher";
 
 export default class Activity {
   private id: number;
@@ -10,7 +11,7 @@ export default class Activity {
   private date: Date;
   private prevDays: number;
   private reminderInterval: number;
-  private responsibles: string[];
+  private responsibles: Teacher[];
   private type: string;
   private modality: string;
   private status: string;
@@ -27,7 +28,7 @@ export default class Activity {
     date?: Date,
     prevDays?: number,
     reminderInterval?: number,
-    responsibles?: string[],
+    responsibles?: Teacher[],
     type?: string,
     modality?: string,
     status?: string,
@@ -57,7 +58,6 @@ export default class Activity {
       this.date = NameOrDTO.date;
       this.prevDays = NameOrDTO.prevDays;
       this.reminderInterval = NameOrDTO.reminderInterval;
-      this.responsibles = NameOrDTO.responsibles;
       this.type = NameOrDTO.type;
       this.modality = NameOrDTO.modality;
       this.status = NameOrDTO.status;
@@ -65,6 +65,9 @@ export default class Activity {
       this.attachmentFile = NameOrDTO.attachmentFile;
       this.evidence = NameOrDTO.evidence;
       this.observation = NameOrDTO.observation;
+      this.responsibles = NameOrDTO.responsibles.map(
+        (teacherDTO) => new Teacher(teacherDTO)
+      );
       if (NameOrDTO.forum) {
         const messages = NameOrDTO.forum.messages.map(
           (messageDTO) => new Message(messageDTO)
@@ -197,10 +200,13 @@ export default class Activity {
 
   notify(): void {
     const email = Email.getInstance();
-    email.sendMail(
-      "ncqueescribir@gmail.com", // TODO: temporal email
-      "Actividad: " + this.name,
-      "Recuerde que tiene una actividad programada para " + this.date
-    );
+    // send the email to the responsibles
+    this.responsibles.forEach((teacher) => {
+      email.sendMail(
+        teacher.getEmail(),
+        "Notificación de actividad",
+        "Recuerde que tiene una actividad programada para " + this.date
+      );
+    });
   }
 }

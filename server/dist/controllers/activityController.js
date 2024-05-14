@@ -150,7 +150,6 @@ class ActivityController {
                     res.status(500).json({ error: "Error retrieving workplan" });
                     return;
                 }
-                console.log(activity);
                 // Update the workplan
                 workplan.updateActivity(activityID, activity);
                 try {
@@ -159,6 +158,11 @@ class ActivityController {
                 catch (error) {
                     res.status(500).json({ error: "Error updating workplan" });
                     return;
+                }
+                console.log(activity.getStatus());
+                if (activity.getStatus() === "Notificada") {
+                    activity.notify();
+                    console.log("Notified");
                 }
                 res.status(200).json({ message: "Activity updated successfully" });
             }

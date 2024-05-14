@@ -24,7 +24,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
 
   const showCreateActivityButton = isLeader;
   const showEditActivityButtons = isLeader;
-  const showComments = isTeacher || true;
+  const showComments = isTeacher;
 
   const [workplan, setWorkplan] = useState<WorkPlan | null>(null);
   const [activities, setActivities] = useState<Activity[] | null>(null);
@@ -102,7 +102,6 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
 
   function handleAddEvidence() {
     // open file picker
-
     if (selectedActivity) {
       console.log("adding evidence");
       const input = document.createElement("input");
@@ -124,6 +123,15 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
         }
       };
       input.click();
+    }
+    setSelectedActivity(selectedActivity);
+  }
+
+  function handleNotify() {
+    if (selectedActivity) {
+      selectedActivity.status = ActivityStatus.NOTIFICADA;
+      activityService.updateActivity(id, selectedActivity);
+      setSelectedActivity(selectedActivity);
     }
   }
 
@@ -323,8 +331,8 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                   <p className="text-xl font-bold ">Responsables:</p>
                   <ul>
                     {selectedActivity.responsibles.map((responsible) => (
-                      <li key={responsible} className="text-lg">
-                        {responsible}
+                      <li key={responsible.id} className="text-lg">
+                        {responsible.name + " - " + responsible.email}
                       </li>
                     ))}
                   </ul>
@@ -404,11 +412,10 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                       Publicar
                     </button>
                   )}
-                  {selectedActivity.status === "Publicada" && (
+                  {(selectedActivity.status === "Notificada" ||
+                    selectedActivity.status === "Publicada") && (
                     <button
-                      onClick={() =>
-                        handleActivityStatusChange(ActivityStatus.NOTIFICADA)
-                      }
+                      onClick={handleNotify}
                       className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
                     >
                       <svg
@@ -436,7 +443,8 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                       Notificar
                     </button>
                   )}
-                  {selectedActivity.status === "Notificada" && (
+                  {(selectedActivity.status === "Notificada" ||
+                    selectedActivity.status === "Publicada") && (
                     <button
                       onClick={() =>
                         handleActivityStatusChange(ActivityStatus.REALIZADA)

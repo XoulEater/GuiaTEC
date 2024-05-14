@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Forum_1 = __importDefault(require("./Forum"));
 const Message_1 = __importDefault(require("./Message"));
 const sendEmail_1 = __importDefault(require("../controllers/sendEmail"));
+const Teacher_1 = __importDefault(require("./Teacher"));
 class Activity {
     // Constructor
     constructor(NameOrDTO, week, date, prevDays, reminderInterval, responsibles, type, modality, status, link, attachmentFile, forum, observation) {
@@ -32,7 +33,6 @@ class Activity {
             this.date = NameOrDTO.date;
             this.prevDays = NameOrDTO.prevDays;
             this.reminderInterval = NameOrDTO.reminderInterval;
-            this.responsibles = NameOrDTO.responsibles;
             this.type = NameOrDTO.type;
             this.modality = NameOrDTO.modality;
             this.status = NameOrDTO.status;
@@ -40,6 +40,7 @@ class Activity {
             this.attachmentFile = NameOrDTO.attachmentFile;
             this.evidence = NameOrDTO.evidence;
             this.observation = NameOrDTO.observation;
+            this.responsibles = NameOrDTO.responsibles.map((teacherDTO) => new Teacher_1.default(teacherDTO));
             if (NameOrDTO.forum) {
                 const messages = NameOrDTO.forum.messages.map((messageDTO) => new Message_1.default(messageDTO));
                 this.forum = new Forum_1.default(messages);
@@ -151,8 +152,10 @@ class Activity {
     }
     notify() {
         const email = sendEmail_1.default.getInstance();
-        email.sendMail("ncqueescribir@gmail.com", // TODO: temporal email
-        "Actividad: " + this.name, "Recuerde que tiene una actividad programada para " + this.date);
+        // send the email to the responsibles
+        this.responsibles.forEach((teacher) => {
+            email.sendMail(teacher.getEmail(), "Notificación de actividad", "Recuerde que tiene una actividad programada para " + this.date);
+        });
     }
 }
 exports.default = Activity;

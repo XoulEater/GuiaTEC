@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import forumSchema from "./forum.schema";
 import e from "express";
+import { teacherSchema } from "./teacher.schema";
 
 const activitySchema: Schema = new Schema({
   id: {
@@ -46,7 +47,7 @@ const activitySchema: Schema = new Schema({
 
   responsibles: {
     // Responsibles of the activity
-    type: [String],
+    type: [teacherSchema],
     required: true,
   },
 
