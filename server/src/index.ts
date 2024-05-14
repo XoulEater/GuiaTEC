@@ -12,6 +12,7 @@ import activityRoutes from "./routes/activityRoutes";
 import forumRoutes from "./routes/forumRoutes";
 import notificationRoutes from "./routes/notificationRoutes";
 import filesRoutes from "./routes/filesRoutes";
+import assistantRoutes from "./routes/assistantRoutes";
 import { initializeApp } from "firebase/app";
 import config from "../src/config/firebase.config";
 
@@ -37,6 +38,7 @@ app.use("/api/workplans/:wid/activities", activityRoutes);
 app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/files", filesRoutes);
+app.use("/api/assistants", assistantRoutes);
 
 //Initialize a firebase application
 
