@@ -33,7 +33,6 @@ class TeamController {
                 const logTeamInfo = req.body;
                 yield teacher_1.default.addMember(code);
                 res.status(200).json({ message: "Member added" });
-                res.status(200).json({ message: "Team log created" });
             }
             catch (error) {
                 res.status(500).json({ error: "Error adding member" });
@@ -47,7 +46,6 @@ class TeamController {
                 const logTeamInfo = req.body;
                 yield teacher_1.default.removeMember(code);
                 res.status(200).json({ message: "Member removed" });
-                res.status(200).json({ message: "Team log created" });
             }
             catch (error) {
                 res.status(500).json({ error: "Error removing member" });

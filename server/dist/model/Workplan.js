@@ -6,13 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Activity_1 = __importDefault(require("./Activity"));
 class Workplan {
     // Constructor
-    constructor(NameOrDTO, description, activities, year, semester) {
+    constructor(NameOrDTO, description, activities) {
         if (typeof NameOrDTO === "string") {
             this.name = NameOrDTO;
             this.description = description;
             this.activities = activities;
-            this.year = year;
-            this.semester = semester;
         }
         else {
             this.id = NameOrDTO._id.toString();

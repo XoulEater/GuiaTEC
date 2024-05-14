@@ -20,6 +20,7 @@ export class WorkplanController {
   ): Promise<void> {
     try {
       const workplans = await WorkplanDAO.getAllWorkplans();
+
       res.status(200).json(workplans);
     } catch (error) {
       res.status(500).json({ error: "Failed to get workplans" });
@@ -55,27 +56,28 @@ export class WorkplanController {
     res: Response
   ): Promise<void> {
     try {
-
-      const {descripcion} = req.body;
-      let date: Date = new Date();  
+      let date: Date = new Date();
       let year = date.getFullYear();
       let month = date.getMonth();
       let semester = 0;
-      if (month >= 1 && month <= 6){ 
-        let semester = 1;
-      }
-      else{
-        let semester = 2;
+      if (month >= 1 && month <= 6) {
+        semester = 1;
+      } else {
+        semester = 2;
       }
 
       const workplan = new Workplan(
-        "Plan de Trabajo "+ semester + " "+ year,
-        descripcion,
-        [],
-        year,
-        semester
+        "Plan de Trabajo " + semester + " " + year,
+        "Creado el " +
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          year,
+        []
       );
 
+      console.log(workplan);
       const newWorkplan = await WorkplanDAO.createWorkplan(workplan);
       res.status(200).json({ id: newWorkplan.getID() });
     } catch (error) {

@@ -106,8 +106,7 @@ export class ExcelController {
   ): Promise<void> {
     try {
       // Get the file
-      const campus = req.body.campus as CampusENUM;
-      console.log(campus);
+      const campus = req.headers.campus as CampusENUM;
       const file = req.file;
       if (!file) {
         res.status(404).send("No file uploaded");
@@ -130,6 +129,7 @@ export class ExcelController {
             campus
           )
       );
+      console.log(students);
       // Create the students
       await StudentDAO.createStudents(students);
       res.status(200).send("Students created");
