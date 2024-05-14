@@ -68,7 +68,7 @@ class AuthController {
                     return res.status(500).json({ message: "User Not Found" });
                 }
                 // Send email with token
-                const emailSent = new sendEmail_1.default();
+                const emailSent = sendEmail_1.default.getInstance();
                 const userToken = userFound.getDbId();
                 yield emailSent.sendMail(userFound.getEmail(), "Reset Password", "Use this Token to reset your password: " + userToken);
                 res.status(200).json({ message: "Email sent" });

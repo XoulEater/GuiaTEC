@@ -146,7 +146,7 @@ class Activity {
         }
     }
     notify() {
-        const email = new sendEmail_1.default();
+        const email = sendEmail_1.default.getInstance();
         email.sendMail("ncqueescribir@gmail.com", // TODO: temporal email
         "Actividad: " + this.name, "Recuerde que tiene una actividad programada para " + this.date);
     }

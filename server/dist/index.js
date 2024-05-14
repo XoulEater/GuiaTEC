@@ -17,6 +17,7 @@ const activityRoutes_1 = __importDefault(require("./routes/activityRoutes"));
 const forumRoutes_1 = __importDefault(require("./routes/forumRoutes"));
 const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
 const filesRoutes_1 = __importDefault(require("./routes/filesRoutes"));
+const assistantRoutes_1 = __importDefault(require("./routes/assistantRoutes"));
 const app_1 = require("firebase/app");
 const firebase_config_1 = __importDefault(require("../src/config/firebase.config"));
 dotenv_1.default.config();
@@ -36,6 +37,7 @@ app.use("/api/workplans/:wid/activities", activityRoutes_1.default);
 app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes_1.default);
 app.use("/api/notifications", notificationRoutes_1.default);
 app.use("/api/files", filesRoutes_1.default);
+app.use("/api/assistants", assistantRoutes_1.default);
 //Initialize a firebase application
 (0, app_1.initializeApp)(firebase_config_1.default.firebaseConfig);
 // Connect to MongoDB

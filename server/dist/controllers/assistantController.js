@@ -12,35 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const nodemailer_1 = __importDefault(require("nodemailer"));
-require("dotenv").config();
-const transporter = nodemailer_1.default.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PWD,
-    },
-});
-class Email {
-    constructor() { }
-    static getInstance() {
-        if (!Email.instance) {
-            Email.instance = new Email();
-        }
-        return Email.instance;
-    }
-    sendMail(to, subject, text) {
+exports.AssistantController = void 0;
+const assistant_1 = __importDefault(require("../DAOs/assistant"));
+class AssistantController {
+    static createAssistant(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const info = yield transporter.sendMail({
-                from: "<mariana.viquez.monge@gmail.com>",
-                to: to,
-                subject: subject,
-                text: text,
-            });
+            const assistant = req.body;
+            console.log(assistant);
+            yield assistant_1.default.createAsistant(assistant.email, assistant.password, assistant.name, assistant.campus);
+            res.status(201).json({ message: "Assistant created" });
         });
     }
 }
-exports.default = Email;
-//# sourceMappingURL=sendEmail.js.map
+exports.AssistantController = AssistantController;
+//# sourceMappingURL=assistantController.js.map
