@@ -217,22 +217,22 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   }
   async function createActivity(activity: Activity) {
     // Call the function to create the activity
-    //await activityService.createActivity(workplanId, activity);
+    await activityService.createActivity(workplanId, activity);
     // Redirect to the previous page
   }
-  function updateActivity(activity: Activity) {
+  async function updateActivity(activity: Activity) {
     // Call the function to update the activity
-    //activityService.updateActivity(workplanId, activity);
+    await activityService.updateActivity(workplanId, activity);
   }
 
   return (
     <form
-      className="flex flex-col w-4/5 gap-5 p-10 h-[90%] bg-slate-100 rounded-xl overflow-y-scroll no-scrollbar"
+      className="flex flex-col w-[90%] sm:w-4/5 gap-5 p-10 h-[90%] bg-slate-100 rounded-xl overflow-y-scroll no-scrollbar"
       onSubmit={handleSubmit}
     >
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Activity Name */}
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full ">
           <label htmlFor="activityName" className="hidden lgn:block">
             Nombre de la actividad
           </label>
@@ -302,7 +302,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Activity Modality */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityModality" className="hidden lgn:block">
@@ -373,7 +373,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Fecha y hora de la actividad */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityDate" className="hidden lgn:block">
@@ -433,7 +433,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Cantidad de dias previos para publicar */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityPrevDays" className="hidden lgn:block">
@@ -508,7 +508,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Selector de responsables */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityResponsibles" className="hidden lgn:block">
@@ -561,7 +561,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
               {colaborators.map((teacher) => (
                 <li
                   key={teacher}
-                  className="flex justify-between w-full pt-1 pb-2 border-b-2"
+                  className="flex flex-row justify-between w-full pt-1 pb-2 border-b-2"
                 >
                   {teacher}
                   <button
@@ -583,7 +583,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
         </div>
       </section>
 
-      <section className="flex justify-end gap-10">
+      <section className="flex sm:flex-row flex-col justify-end gap-5 sm:gap-10">
         <button
           type="submit"
           className="w-40 h-12 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light"

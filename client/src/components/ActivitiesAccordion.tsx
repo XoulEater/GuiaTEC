@@ -1,6 +1,8 @@
 import type { Activity, ActivityStatus, Message } from "@/lib/types.ts";
+import { useEffect, useState } from "react";
 
 function ActivitesAccordion(
+  selectedActivity: Activity | null,
   activitiesByWeek: { [week: number]: Activity[] },
   handleAccordionToggle: (week: number) => void,
   openAccordions: number[],
@@ -19,9 +21,13 @@ function ActivitesAccordion(
   }
 
   return (
-    <section className=" my-6 w-5/12 h-[560px]  rounded-lg overflow-y-scroll no-scrollbar shadow-md  bg-primary-dark">
+    <section
+      className={`my-6 w-full sm:w-5/12 h-[560px] ${
+        selectedActivity !== null ? "hidden" : "block"
+      }  rounded-lg overflow-y-scroll no-scrollbar shadow-md sm:block bg-primary-dark`}
+    >
       {/* Accordion by week */}
-      <div className="px-6 py-2 h-max bg-primary-dark">
+      <div className="px-6 py-2 h-max ">
         {Object.keys(activitiesByWeek).map((week) => (
           <div key={week} className="">
             <div

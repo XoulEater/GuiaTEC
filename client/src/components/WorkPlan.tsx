@@ -156,7 +156,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
 
   return (
     <article>
-      <header className="flex justify-between mx-20 my-6">
+      <header className="flex justify-between mx-10 sm:mx-20 my-6 flex-col sm:flex-row gap-3 ">
         <div>
           <h1 className="text-3xl font-bold">{workplan?.name}</h1>
           <p className="text-lg">{workplan?.description}</p>
@@ -220,8 +220,9 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
         </aside>
       </header>
       {/* Activities */}
-      <div className="flex gap-10 mx-20">
+      <div className="flex gap-10 mx-10 sm:mx-20">
         {ActivitesAccordion(
+          selectedActivity,
           activitiesByWeek,
           handleAccordionToggle,
           openAccordions,
@@ -230,14 +231,40 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
           setMessages
         )}
         {/* Activity Details */}
-        <aside className="my-6 w-8/12 h-[560px] rounded-lg overflow-y-scroll no-scrollbar shadow-md bg-white/75 ">
+        <aside
+          className={`my-6 w-full sm:w-8/12 h-[560px] rounded-lg overflow-y-scroll no-scrollbar shadow-md bg-white/75 ${
+            selectedActivity === null ? "hidden" : "block"
+          } sm:block z-20`}
+        >
           {selectedActivity && (
             <div className="flex flex-col h-full gap-2 p-4 rounded-lg">
               <header>
                 <div className="flex justify-between">
-                  <h2 className="text-2xl font-bold">
-                    {selectedActivity.name}
-                  </h2>
+                  <div className="flex  place-items-center gap-2">
+                    <button onClick={() => setSelectedActivity(null)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className=" hover:scale-110 transition-all duration-300 ease-in-out icon icon-tabler icon-tabler-arrow-left hover:opacity-60"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#000000"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <path d="M4 12l10 0" />
+                        <path d="M4 12l4 4" />
+                        <path d="M4 12l4 -4" />
+                        <path d="M20 4l0 16" />
+                      </svg>
+                    </button>
+                    <h2 className="text-2xl font-bold align-middle truncate ">
+                      {selectedActivity.name}
+                    </h2>
+                  </div>
 
                   <span className="px-2 py-1 text-lg border-2 rounded-full border-primary-light text-primary-light">
                     {selectedActivity.type}
@@ -483,11 +510,11 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
 
                     <button
                       onClick={addMessage}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded-e-md absolute right-0 h-full grid place-content-center"
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded-e-md absolute right-0 h-full grid place-content-center transition-all duration-300 ease-in-out group"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="icon icon-tabler icon-tabler-send-2"
+                        className="icon icon-tabler icon-tabler-send-2 group-hover:scale-110 transition-all duration-300 ease-in-out"
                         width="32"
                         height="32"
                         viewBox="0 0 24 24"
