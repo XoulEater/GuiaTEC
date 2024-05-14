@@ -116,8 +116,7 @@ class ExcelController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Get the file
-                const campus = req.body.campus;
-                console.log(campus);
+                const campus = req.headers.campus;
                 const file = req.file;
                 if (!file) {
                     res.status(404).send("No file uploaded");
@@ -129,6 +128,7 @@ class ExcelController {
                 const studentsData = xlsx.utils.sheet_to_json(ws);
                 // Create the students
                 const students = studentsData.map((studentData) => new Student_1.default(studentData.carnet, studentData.name, studentData.email, studentData.personalPNumber, campus));
+                console.log(students);
                 // Create the students
                 yield student_1.default.createStudents(students);
                 res.status(200).send("Students created");

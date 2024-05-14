@@ -63,18 +63,23 @@ class WorkplanController {
     static createWorkplan(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { descripcion } = req.body;
                 let date = new Date();
                 let year = date.getFullYear();
                 let month = date.getMonth();
                 let semester = 0;
                 if (month >= 1 && month <= 6) {
-                    let semester = 1;
+                    semester = 1;
                 }
                 else {
-                    let semester = 2;
+                    semester = 2;
                 }
-                const workplan = new Workplan_1.default("Plan de Trabajo " + semester + " " + year, descripcion, [], year, semester);
+                const workplan = new Workplan_1.default("Plan de Trabajo " + semester + " " + year, "Creado el " +
+                    date.getDate() +
+                    "/" +
+                    (date.getMonth() + 1) +
+                    "/" +
+                    year, []);
+                console.log(workplan);
                 const newWorkplan = yield workplan_1.default.createWorkplan(workplan);
                 res.status(200).json({ id: newWorkplan.getID() });
             }

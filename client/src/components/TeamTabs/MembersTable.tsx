@@ -80,7 +80,7 @@ const MembersTable = () => {
   }
 
   return (
-    <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">
+    <section className="w-[90%] overflow-hidden sm:rounded-xl sm:drop-shadow-md sm:shadow-inner flex flex-col sm:gap-0 gap-3 sm:border border-black/10 shadow-white/10">
       <header className="items-center w-full h-16 grid-cols-6 px-2 bg-zinc-200 hidden sm:grid">
         <span className="text-lg font-semibold">Codigo</span>
         <span className="text-lg font-semibold">Imagen</span>
@@ -92,9 +92,9 @@ const MembersTable = () => {
         return (
           <div
             key={index}
-            className={`grid grid-cols-5 sm:grid-cols-6 h-max gap-2 py-2 w-full items-center ${rowColorClass} px-2 divide-y-2 divide-black/20 sm:divide-y-0 space-y-1`}
+            className={`grid grid-cols-5 sm:grid-cols-6 h-max py-2 w-full items-center rounded-lg sm:rounded-none drop-shadow-md sm:drop-shadow-none shadow-inner border sm:border-none border-black/10 shadow-white/10 ${rowColorClass} px-2 divide-y-2 divide-black/20 sm:divide-y-0 space-y-1`}
           >
-            <span className=" order-2 sm:order-none col-span-1 ">
+            <span className=" order-2 sm:order-none  col-span-2 sm:col-span-1 ">
               <span className="font-bold sm:hidden">ID: </span>
               {teacher.id}
             </span>
@@ -104,11 +104,11 @@ const MembersTable = () => {
               alt={teacher.name}
             />
 
-            <span className="col-span-5 sm:col-span-2 order-5 sm:order-none ">
+            <span className="col-span-5 sm:col-span-2 order-5 sm:order-none pt-2 sm:p-0">
               <span className="font-bold sm:hidden">Nombre: </span>
               {teacher.name}
             </span>
-            <div className="flex items-center col-span-3 sm:col-span-2 gap-4 order-3 sm:order-none border-none justify-center sm:justify-start">
+            <div className="flex items-center col-span-2 gap-4 order-3 sm:order-none border-none justify-end sm:justify-start">
               {/* Button to view teacher details */}
               <a href={`teacher/${teacher.id}`}>
                 <svg

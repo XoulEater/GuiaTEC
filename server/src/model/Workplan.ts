@@ -6,23 +6,17 @@ export default class Workplan {
   private name: string;
   private description: string;
   private activities: Activity[];
-  private year: number;
-  private semester: number;
 
   // Constructor
   constructor(
     NameOrDTO: string | WorkplanDTO,
     description?: string,
-    activities?: Activity[],
-    year?: number,
-    semester?: number
+    activities?: Activity[]
   ) {
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
       this.description = description;
       this.activities = activities;
-      this.year = year;
-      this.semester = semester;
     } else {
       this.id = NameOrDTO._id.toString();
       this.name = NameOrDTO.name;

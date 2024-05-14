@@ -20,8 +20,6 @@ export class TeamController {
       const logTeamInfo = req.body;
       await TeacherDAO.addMember(code);
       res.status(200).json({ message: "Member added" });
-
-      res.status(200).json({ message: "Team log created" });
     } catch (error) {
       res.status(500).json({ error: "Error adding member" });
     }
@@ -33,8 +31,6 @@ export class TeamController {
       const logTeamInfo = req.body;
       await TeacherDAO.removeMember(code);
       res.status(200).json({ message: "Member removed" });
-
-      res.status(200).json({ message: "Team log created" });
     } catch (error) {
       res.status(500).json({ error: "Error removing member" });
     }

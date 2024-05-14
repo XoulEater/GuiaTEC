@@ -43,16 +43,6 @@ const workplanSchema = new mongoose_1.Schema({
     activities: {
         type: [activity_schema_1.default],
     },
-    year: {
-        // year of the workplan
-        type: Number,
-        required: true,
-    },
-    semester: {
-        // semester of the workplan
-        type: Number,
-        required: true,
-    },
 });
 exports.default = mongoose_1.default.model("Workplan", workplanSchema);
 // json example

@@ -5,7 +5,9 @@ import RegisterTeacher from "@/components/RegisterTeacher.tsx";
 ---
 
 <Layout title="GuíaTEC" currentRoute="profesores">
-  <header class="flex justify-between mx-20 my-6">
+  <header
+    class="flex justify-between mx-10 sm:mx-20 my-6 flex-col sm:flex-row gap-3"
+  >
     <h1 class="text-3xl font-bold">Profesores</h1>
     <RegisterTeacher client:only="react" />
   </header>
