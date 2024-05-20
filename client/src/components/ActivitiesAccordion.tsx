@@ -10,7 +10,8 @@ function ActivitesAccordion(
   setActivityStatus: React.Dispatch<
     React.SetStateAction<ActivityStatus | null>
   >,
-  setMessages: React.Dispatch<React.SetStateAction<Message[] | []>>
+  setMessages: React.Dispatch<React.SetStateAction<Message[] | []>>,
+  setOpenAccordions: React.Dispatch<React.SetStateAction<number[]>>
 ) {
   function handleChangeSelected(activity: Activity) {
     setSelectedActivity(activity);
@@ -19,7 +20,14 @@ function ActivitesAccordion(
       setMessages(activity.forum.messages);
     }
   }
-
+  useEffect(() => {
+    const openAccordions = JSON.parse(
+      sessionStorage.getItem("openAccordions") as string
+    );
+    if (openAccordions) {
+      setOpenAccordions(openAccordions);
+    }
+  }, []);
   return (
     <section
       className={`my-6 w-full sm:w-5/12 h-[560px] ${

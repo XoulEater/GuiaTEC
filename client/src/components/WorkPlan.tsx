@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import {
   type WorkPlan,
   type Activity,
@@ -43,7 +43,10 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
   const loadWorkplan = async () => {
     const res = await workplanService.getWorkplanById(id);
     setWorkplan(res);
-    setActivities(res.activities);
+    const sortedActivities = res.activities?.sort(
+      (a, b) => new Date(a.date).getDate() - new Date(b.date).getDate()
+    );
+    setActivities(sortedActivities);
   };
 
   useEffect(() => {
@@ -63,11 +66,14 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
   });
 
   function handleAccordionToggle(week: number) {
-    if (openAccordions.includes(week)) {
-      setOpenAccordions(openAccordions.filter((w) => w !== week));
+    let updatedAccordions = [...openAccordions];
+    if (updatedAccordions.includes(week)) {
+      updatedAccordions = updatedAccordions.filter((w) => w !== week);
     } else {
-      setOpenAccordions([...openAccordions, week]);
+      updatedAccordions.push(week);
     }
+    setOpenAccordions(updatedAccordions);
+    sessionStorage.setItem("openAccordions", JSON.stringify(updatedAccordions));
   }
 
   function handleActivityStatusChange(status: ActivityStatus) {
@@ -112,6 +118,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     const nextActivity = sortedActivities?.find(
       (activity) =>
         activity.status !== ActivityStatus.REALIZADA &&
+        activity.status !== ActivityStatus.CANCELADA &&
         new Date(activity.date).getDate() > new Date().getDate()
     );
     if (nextActivity) {
@@ -304,7 +311,8 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
           openAccordions,
           setSelectedActivity,
           setActivityStatus,
-          setMessages
+          setMessages,
+          setOpenAccordions
         )}
         {/* Activity Details */}
         <aside
@@ -365,7 +373,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
                 <button
                   onClick={handleDownloadAttachment}
                   className={`flex gap-4 px-3 my-2 text-lg ${
-                    selectedActivity.attachmentFile != null
+                    selectedActivity.attachmentFile
                       ? " text-primary-light"
                       : " text-gray-500"
                   } border-2 rounded-md shadow-sm place-items-center border-black/10`}
