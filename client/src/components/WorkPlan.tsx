@@ -100,6 +100,25 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
     }
   }
 
+  function handleSetNextActivity() {
+    // set the next activity to the selected activity
+    // sort by date
+
+    const sortedActivities = activities?.sort(
+      (a, b) => new Date(a.date).getDate() - new Date(b.date).getDate()
+    );
+    console.log(sortedActivities);
+    // get the first activity that is not done yet and the date is after today
+    const nextActivity = sortedActivities?.find(
+      (activity) =>
+        activity.status !== ActivityStatus.REALIZADA &&
+        new Date(activity.date).getDate() > new Date().getDate()
+    );
+    if (nextActivity) {
+      setSelectedActivity(nextActivity);
+    }
+  }
+
   function handleAddEvidence() {
     // open file picker
     if (selectedActivity) {
@@ -268,6 +287,12 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
               Eliminar Plan
             </button>
           )}
+          <button
+            onClick={handleSetNextActivity}
+            className="flex items-center justify-center h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark w-52 hover:bg-primary-light group"
+          >
+            Proxima Actividad
+          </button>
         </aside>
       </header>
       {/* Activities */}
