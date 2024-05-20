@@ -8,7 +8,7 @@ const StudentTable = () => {
   const user = JSON.parse(userData as string) as User;
   const userCampus = user.campus;
 
-  const showUploadButton = user.userType === "assistant" || true; // FIXME: Change to user.userType === "assistant"
+  const showUploadButton = user.userType === "assistant";
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
