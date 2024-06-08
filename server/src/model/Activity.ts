@@ -3,6 +3,7 @@ import Forum from "./Forum";
 import Message from "./Message";
 import Email from "../controllers/sendEmail";
 import Teacher from "./Teacher";
+import Visitor from "./Visitor";
 
 export default class Activity {
   private id: number;
@@ -198,15 +199,10 @@ export default class Activity {
     }
   }
 
-  notify(): void {
-    const email = Email.getInstance();
-    // send the email to the responsibles
-    this.responsibles.forEach((teacher) => {
-      email.sendMail(
-        teacher.getEmail(),
-        "Notificación de actividad",
-        "Recuerde que tiene una actividad programada para " + this.date
-      );
-    });
+  notify(): void {}
+
+  // Método accept para aceptar visitantes
+  accept(visitor: Visitor): void {
+    visitor.visitActivity(this);
   }
 }
