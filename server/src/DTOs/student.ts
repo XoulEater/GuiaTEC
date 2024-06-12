@@ -1,4 +1,5 @@
 import Campus from "../model/campusENUM";
+import InboxDTO from "./inbox";
 
 export default interface StudentDTO {
   _id?: string;
@@ -9,4 +10,5 @@ export default interface StudentDTO {
   personalPNumber: number;
   campus?: Campus;
   userType: "student";
+  inbox: InboxDTO;
 }

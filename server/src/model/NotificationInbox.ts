@@ -1,8 +1,13 @@
+import InboxDTO from "../DTOs/inbox";
+
 export default class NotificationInbox {
   private notifications: Set<number> = new Set(); // Notification IDs
   private readNotifications: Set<number> = new Set(); // Notification IDs
 
-  public constructor() {}
+  public constructor(inbox: InboxDTO) {
+    this.notifications = new Set(inbox.notifications);
+    this.readNotifications = new Set(inbox.readNotifications);
+  }
 
   public addNotification(notificationID: number): void {
     this.notifications.add(notificationID);

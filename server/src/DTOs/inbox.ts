@@ -1,6 +1,6 @@
 interface InboxDTO {
-  id?: Array<Number>
-
+  notifications: number[];
+  readNotifications: number[];
 }
 
 export default InboxDTO;

@@ -1,12 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
 const inboxSchema: Schema = new Schema({
-  listId: {
-    // Unique identifier of the list
-    type: Set,
-    required: true,
-  },
-
+  notifications: { type: [Number], required: true },
+  readNotifications: { type: [Number], required: true },
 });
 
 export default inboxSchema;

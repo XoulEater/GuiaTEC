@@ -1,4 +1,5 @@
 import mongoose, { Schema, SchemaTypes } from "mongoose";
+import inboxSchema from "./inbox.schema";
 
 // Define the student schema
 const studentSchema: Schema = new Schema({
@@ -8,6 +9,7 @@ const studentSchema: Schema = new Schema({
   personalPNumber: { type: String, required: true },
   campus: { type: String, required: true },
   password: { type: String, required: false },
+  inbox: { type: inboxSchema, required: false },
 });
 
 // Create and export the student model

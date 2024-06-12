@@ -21,10 +21,7 @@ export default class StudentAdapter extends User {
       student._id
     );
     this.student = new Student(student);
-
-    // TODO: Implement the inbox in the database
-    // For now, we will create an empty inbox
-    this.inbox = new NotificationInbox();
+    this.inbox = new NotificationInbox(student.inbox);
   }
 
   public getCarnet(): number {
