@@ -1,6 +1,8 @@
 // Teacher DAO that communicates with the database
 import TeacherSchema from "../schemas/teacher.schema";
 import Teacher from "../model/Teacher";
+import LogTeamDAO from "../DAOs/logTeam";
+import TeacherDTO from "../DTOs/teacher";
 
 /**
  * Class that communicates with the database to perform CRUD operations
@@ -22,30 +24,6 @@ export default class TeacherDAO {
   public static async getAllMembers() {
     const membersData = await TeacherSchema.find({ isMember: true }).exec();
     return membersData.map((member) => new Teacher(member.toObject()));
-  }
-
-  /**
-   * Add a teacher as a member
-   * @param pCode code of the teacher
-   */
-  public static async addMember(pCode: string) {
-    await TeacherSchema.findOneAndUpdate(
-      { id: pCode },
-      { isMember: true },
-      { new: true }
-    ).exec();
-  }
-
-  /**
-   * Remove a teacher as a member
-   * @param pCode code of the teacher
-   */
-  public static async removeMember(pCode: string) {
-    await TeacherSchema.findOneAndUpdate(
-      { id: pCode },
-      { isMember: false, isLeader: false },
-      { new: true }
-    ).exec();
   }
 
   /**
@@ -84,10 +62,34 @@ export default class TeacherDAO {
    * @param pCode code of the teacher
    * @param teacher the teacher with the new information
    */
-  public static async updateTeacher(pCode: string, teacher: Teacher) {
-    await TeacherSchema.findOneAndUpdate({ id: pCode }, teacher, {
-      new: true,
-    }).exec();
+  public static async updateTeacher(
+    pCode: string,
+    teacher: Teacher,
+    agenteCambio: string,
+    operation: string
+  ) {
+    const beforeTeacher = await TeacherSchema.findOne({ id: pCode }).exec();
+    const beforeDTO: TeacherDTO = beforeTeacher.toObject();
+
+    // Log the action no se como pasarle el objeto del profesor
+
+    const afterTeacher = await TeacherSchema.findOneAndUpdate(
+      { id: pCode },
+      teacher,
+      {
+        new: true,
+      }
+    ).exec();
+
+    const afterDTO: TeacherDTO = afterTeacher.toObject();
+
+    await LogTeamDAO.createLogTeam(
+      agenteCambio,
+      beforeDTO,
+      afterDTO,
+      operation,
+      new Date()
+    );
   }
 
   /**
@@ -113,22 +115,21 @@ export default class TeacherDAO {
   }
 
   public static async changePassword(pCode: string, newPassword: string) {
-      try{
-    // Buscar al profesor por su código
-        const teacher = await TeacherSchema.findOne({ id: pCode });
+    try {
+      // Buscar al profesor por su código
+      const teacher = await TeacherSchema.findOne({ id: pCode });
 
-        if (!teacher) {
-            throw new Error('Profesor no encontrado');
-        }
+      if (!teacher) {
+        throw new Error("Profesor no encontrado");
+      }
+      // Actualizar la contraseña
+      teacher.password = newPassword;
+      await teacher.save();
 
-        // Actualizar la contraseña
-        teacher.password = newPassword;
-        await teacher.save();
-
-        return true; // Indicar que la contraseña se cambió correctamente
+      return true; // Indicar que la contraseña se cambió correctamente
     } catch (error) {
-        console.error('Error al cambiar la contraseña del profesor:', error);
-        return false; // Indicar que ocurrió un error al cambiar la contraseña
-  }
+      console.error("Error al cambiar la contraseña del profesor:", error);
+      return false; // Indicar que ocurrió un error al cambiar la contraseña
+    }
   }
 }

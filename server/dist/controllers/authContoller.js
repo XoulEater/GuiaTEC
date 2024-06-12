@@ -16,25 +16,34 @@ exports.AuthController = void 0;
 const assistant_1 = __importDefault(require("../DAOs/assistant")); // Asegúrate de usar la ruta correcta
 const teacher_1 = __importDefault(require("../DAOs/teacher"));
 const sendEmail_1 = __importDefault(require("./sendEmail"));
+const Assistant_1 = __importDefault(require("../model/Assistant"));
 class AuthController {
+    // Get all users
+    static getUsers() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const teachers = yield teacher_1.default.getAllTeachers();
+            const assistants = yield assistant_1.default.getAllAssistants();
+            const users = [...teachers, ...assistants];
+            return users;
+        });
+    }
+    //Login
     static login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { email, password } = req.body;
-                // Find user
-                // get teachers
-                const teachers = yield teacher_1.default.getAllTeachers(); // Aquí obtienes la lista de asistentes
-                // get assistants
-                const assistants = yield assistant_1.default.getAllAssistants(); // Aquí obtienes la lista de asistentes
-                //merge users (teachers & assistants)
-                const users = [...teachers, ...assistants];
-                //Encontrar el usuario
-                const userFound = users.find((user) => user.getEmail === email);
+                const email = req.body.email;
+                const password = req.body.password;
+                console.log(email);
+                // Get users
+                const users = yield AuthController.getUsers();
+                //Find user
+                const userFound = users.find((user) => user.getEmail() === email);
+                console.log(userFound);
                 if (!userFound) {
                     return res.status(500).json({ message: "User Not Found" });
                 }
                 // Compare password
-                const isCorrect = userFound.getPassword === password;
+                const isCorrect = userFound.getPassword() === password;
                 if (!isCorrect) {
                     return res.status(500).json({ message: "Password incorrecta" });
                 }
@@ -46,11 +55,83 @@ class AuthController {
             }
         });
     }
-    static test() {
+    //Reset Password
+    static resetPassword(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const email = new sendEmail_1.default();
-            yield email.sendMail("mariana.viquez.monge@gmail.com", "hola", "prueba");
-            console.log("correo enviado");
+            try {
+                const { email } = req.body;
+                // Get users
+                const users = yield AuthController.getUsers();
+                //Find user
+                const userFound = users.find((user) => user.getEmail() === email);
+                if (!userFound) {
+                    return res.status(500).json({ message: "User Not Found" });
+                }
+                // Send email with token
+                const emailSent = sendEmail_1.default.getInstance();
+                const userToken = userFound.getDbId();
+                yield emailSent.sendMail(userFound.getEmail(), "Reset Password", "Use this Token to reset your password: " + userToken);
+                res.status(200).json({ message: "Email sent" });
+            }
+            catch (error) {
+                res.status(500).json({ message: "Error reset password" });
+            }
+        });
+    }
+    //Validate Token
+    static validateToken(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { email, token } = req.body;
+                // Get users
+                const users = yield AuthController.getUsers();
+                //Find user
+                const userFound = users.find((user) => user.getEmail() === email);
+                if (!userFound) {
+                    return res.status(500).json({ message: "User Not Found" });
+                }
+                // Check if user ID matches and token is valid
+                console.log(userFound.getDbId(), token, userFound.getEmail(), email);
+                if (userFound.getDbId() === token && userFound.getEmail() === email) {
+                    return res.status(200).json({ message: "Token valid" });
+                }
+                else {
+                    return res.status(500).json({ message: "Token invalid" });
+                }
+            }
+            catch (error) {
+                res.status(500).json({ message: "Error validating token" });
+            }
+        });
+    }
+    //Change Password
+    static changePassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { email, password } = req.body;
+                console.log(email, password);
+                // Get users
+                const users = yield AuthController.getUsers();
+                //Find user
+                const userFound = users.find((user) => user.getEmail() === email);
+                if (!userFound) {
+                    return res.status(500).json({ message: "User Not Found" });
+                }
+                // Check userType
+                const userType = userFound.getUserType();
+                // Change password
+                if (userType === "teacher") {
+                    yield teacher_1.default.changePassword(userFound.getId(), password);
+                }
+                else {
+                    const newAssistant = new Assistant_1.default(userFound.getName(), userFound.getEmail(), password, userFound.getCampus());
+                    yield assistant_1.default.updateAssistant(userFound.getId(), newAssistant);
+                }
+                res.status(200).json({ message: "Password changed" });
+            }
+            catch (error) {
+                res.status(500).json({ message: "Error changing password" });
+            }
         });
     }
 }

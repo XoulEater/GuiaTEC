@@ -6,23 +6,17 @@ export default class Workplan {
   private name: string;
   private description: string;
   private activities: Activity[];
-  private year: number;
-  private semester: number;
 
   // Constructor
   constructor(
     NameOrDTO: string | WorkplanDTO,
     description?: string,
-    activities?: Activity[],
-    year?: number,
-    semester?: number
+    activities?: Activity[]
   ) {
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
       this.description = description;
       this.activities = activities;
-      this.year = year;
-      this.semester = semester;
     } else {
       this.id = NameOrDTO._id.toString();
       this.name = NameOrDTO.name;
@@ -68,10 +62,10 @@ export default class Workplan {
     return this.id;
   }
 
-  updateActivity(activityID : string, activity: Activity): void {
-    const index = this.activities.findIndex((activity) => activity.getID().toString() === activityID);    console.log(activityID);
-    console.log(index);
-    console.log (this.activities);
+  updateActivity(activityID: string, activity: Activity): void {
+    const index = this.activities.findIndex(
+      (activity) => activity.getID().toString() === activityID
+    );
     this.activities[index] = activity;
   }
 }

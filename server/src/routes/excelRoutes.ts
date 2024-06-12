@@ -2,10 +2,8 @@ import express from "express";
 import { ExcelController } from "../controllers/excelController";
 import multer from "multer";
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Excel routes
 router.get("/download/:campus", ExcelController.downloadStudents);

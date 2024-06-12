@@ -5,13 +5,13 @@ const router = express.Router();
 
 // Auth routes
 //Login
-router.get("/login", AuthController.login); // req: email, password
+router.post("/login", AuthController.login); // req: email, password
 
 // reset password
- router.post("/resetPassword", AuthController.resetPassword); // req: email
+router.post("/resetPassword", AuthController.resetPassword); // req: email
 
- // validate token
-router.get("/validateToken", AuthController.validateToken); // req: email, token
+// validate token
+router.post("/validateToken", AuthController.validateToken); // req: email, token
 
 // change password
 router.post("/changePassword", AuthController.changePassword); // req: email, new password

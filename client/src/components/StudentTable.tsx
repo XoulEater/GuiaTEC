@@ -114,39 +114,44 @@ const StudentTable = () => {
 
   return (
     <div>
-      <header className="flex justify-between mx-20 mb-4 ">
-        <button
-          className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
-          onClick={handleSort}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="#ffffff"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 9l4 -4l4 4m-4 -4v14" />
-            <path d="M21 15l-4 4l-4 -4m4 4v-14" />
-          </svg>
-          {sort.charAt(0).toUpperCase() + sort.slice(1)}
-        </button>
-
-        <aside className="flex gap-3">
-          {showUploadButton && (
+      <header className="flex justify-between mx-10 sm:mx-20 my-6 flex-col sm:flex-row gap-3">
+        <aside className="flex gap-3 flex-col sm:flex-row ">
+          <div className="flex-row flex gap-3">
+            {showUploadButton && (
+              <button
+                id="upload-excel"
+                onClick={handleUpload}
+                className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-file-upload"
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="#ffffff"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                  <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                  <path d="M12 11v6"></path>
+                  <path d="M9.5 13.5l2.5 -2.5l2.5 2.5"></path>
+                </svg>
+                Subir
+              </button>
+            )}
             <button
-              id="upload-excel"
-              onClick={handleUpload}
+              id="download-excel"
+              onClick={() => setConfirmDownload(true)}
               className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-file-upload"
+                className="icon icon-tabler icon-tabler-file-download"
                 width="32"
                 height="32"
                 viewBox="0 0 24 24"
@@ -159,20 +164,18 @@ const StudentTable = () => {
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                 <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
                 <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-                <path d="M12 11v6"></path>
-                <path d="M9.5 13.5l2.5 -2.5l2.5 2.5"></path>
+                <path d="M12 17v-6"></path>
+                <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
               </svg>
-              Subir
+              Descargar
             </button>
-          )}
+          </div>
           <button
-            id="download-excel"
-            onClick={() => setConfirmDownload(true)}
             className="flex items-center justify-center w-40 h-12 gap-2 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light group"
+            onClick={handleSort}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="icon icon-tabler icon-tabler-file-download"
               width="32"
               height="32"
               viewBox="0 0 24 24"
@@ -182,20 +185,18 @@ const StudentTable = () => {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
-              <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
-              <path d="M12 17v-6"></path>
-              <path d="M9.5 14.5l2.5 2.5l2.5 -2.5"></path>
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M3 9l4 -4l4 4m-4 -4v14" />
+              <path d="M21 15l-4 4l-4 -4m4 4v-14" />
             </svg>
-            Descargar
+            {sort.charAt(0).toUpperCase() + sort.slice(1)}
           </button>
         </aside>
       </header>
 
       <div className="grid place-items-center ">
-        <section className="w-[90%] h-[500px] overflow-y-scroll no-scrollbar rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10 ">
-          <header className="grid items-center w-full h-16 grid-cols-6 px-2 bg-zinc-200">
+        <section className="w-[90%] overflow-hidden sm:rounded-xl sm:drop-shadow-md sm:shadow-inner flex flex-col sm:gap-0 gap-3 sm:border border-black/10 shadow-white/10">
+          <header className="sm:grid items-center w-full h-16 grid-cols-6 px-2 bg-zinc-200 hidden">
             <span className="text-lg font-semibold ">Sede</span>
             <span className="text-lg font-semibold ">Carne</span>
             <span className="text-lg font-semibold ">Nombre</span>
@@ -209,61 +210,76 @@ const StudentTable = () => {
             return (
               <div
                 key={index}
-                className={`grid grid-cols-6 h-16 w-full items-center ${rowColorClass} px-2`}
+                className={`grid grid-cols-2 sm:grid-cols-6 h-max gap-2 align-middle py-2 w-full items-center rounded-lg sm:rounded-none drop-shadow-md sm:drop-shadow-none shadow-inner border sm:border-none border-black/10 shadow-white/10 ${rowColorClass} px-2 divide-y-2 divide-black/20 sm:divide-y-0 space-y-1`}
               >
-                <span>{student.campus}</span>
-                <span>{student.carnet}</span>
-                {/* Editable */}
-                {editStudent?.carnet === student.carnet ? (
-                  <input
-                    type="text"
-                    className="pl-0 mr-1 "
-                    value={editStudent.name}
-                    onChange={(e) =>
-                      setEditStudent({
-                        ...editStudent,
-                        name: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span>{student.name}</span>
-                )}
-                {/* Editable */}
-                {editStudent?.carnet === student.carnet ? (
-                  <input
-                    type="text"
-                    className="pl-0 mr-1"
-                    value={editStudent.email}
-                    onChange={(e) =>
-                      setEditStudent({
-                        ...editStudent,
-                        email: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span>{student.email}</span>
-                )}
-                {/* Editable */}
-                {editStudent?.carnet === student.carnet ? (
-                  <input
-                    type="text"
-                    className="pl-0 mr-1 "
-                    value={editStudent.personalPNumber}
-                    onChange={(e) =>
-                      setEditStudent({
-                        ...editStudent,
-                        personalPNumber: e.target.value,
-                      })
-                    }
-                  />
-                ) : (
-                  <span>{student.personalPNumber}</span>
-                )}
+                <span className=" order-3 sm:order-none col-span-2 sm:col-span-1 border-t-2 border-t-black/20 sm:border-none ">
+                  <span className="font-bold  sm:hidden">Campus: </span>
+                  {student.campus}
+                </span>
+                <span className=" order-1 sm:order-none col-span-1 border-none ">
+                  <span className="font-bold  sm:hidden">Carnet: </span>
+                  {student.carnet}
+                </span>
+                <div className="order-4 sm:order-none col-span-2 sm:col-span-1 ">
+                  <span className="font-bold  sm:hidden">Nombre: </span>
+                  {/* Editable */}
+                  {editStudent?.carnet === student.carnet ? (
+                    <input
+                      type="text"
+                      className="pl-0 mr-1"
+                      value={editStudent.name}
+                      onChange={(e) =>
+                        setEditStudent({
+                          ...editStudent,
+                          name: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <span>{student.name}</span>
+                  )}
+                </div>
+                <div className="order-5 sm:order-none col-span-2 sm:col-span-1 ">
+                  {/* Editable */}
+                  <span className="font-bold  sm:hidden">Correo: </span>
+                  {editStudent?.carnet === student.carnet ? (
+                    <input
+                      type="text"
+                      className="pl-0 mr-1"
+                      value={editStudent.email}
+                      onChange={(e) =>
+                        setEditStudent({
+                          ...editStudent,
+                          email: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <span>{student.email}</span>
+                  )}
+                </div>
+                <div className="order-6 sm:order-none col-span-2 sm:col-span-1">
+                  <span className="font-bold  sm:hidden">Teléfono: </span>
+                  {/* Editable */}
+                  {editStudent?.carnet === student.carnet ? (
+                    <input
+                      type="text"
+                      className="pl-0 mr-1 "
+                      value={editStudent.personalPNumber}
+                      onChange={(e) =>
+                        setEditStudent({
+                          ...editStudent,
+                          personalPNumber: e.target.value,
+                        })
+                      }
+                    />
+                  ) : (
+                    <span>{student.personalPNumber}</span>
+                  )}
+                </div>
 
                 {/* Editable */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 order-2 col-span-1 border-none justify-end sm:justify-start">
                   {editStudent?.carnet === student.carnet ? (
                     // Save button
                     <button onClick={handleSave}>

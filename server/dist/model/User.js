@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class User {
     // Constructor
-    constructor(name, email, password, campus, userType, isLeader, photo, id) {
+    constructor(name, email, password, campus, userType, isLeader, photo, id, dbId) {
         this.isLeader = false;
         this.id = id;
         this.name = name;
@@ -13,6 +13,7 @@ class User {
         this.campus = campus;
         this.userType = userType;
         this.isLeader = isLeader;
+        this.dbId = dbId;
     }
     // Getters
     getId() {
@@ -33,6 +34,9 @@ class User {
     getCampus() {
         return this.campus;
     }
+    getUserType() {
+        return this.userType;
+    }
     // Setters
     setId(id) {
         this.id = id;
@@ -51,6 +55,18 @@ class User {
     }
     setCampus(campus) {
         this.campus = campus;
+    }
+    getDbId() {
+        return this.dbId;
+    }
+    setDbId(dbId) {
+        this.dbId = dbId;
+    }
+    setIsLeader(isLeader) {
+        this.isLeader = isLeader;
+    }
+    getIsLeader() {
+        return this.isLeader;
     }
 }
 exports.default = User;

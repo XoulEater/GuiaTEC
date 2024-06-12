@@ -1,61 +1,69 @@
-interface MessageDTO {
-  id?: string; // unique identifier of the message
-  user: string; // user that sent the message
-  date: Date; // date of the message
-  content: string; // content of the message
-  replies: Array<MessageDTO>; // replies list of the message
-}
+import type { Activity, Message, Forum, User } from "@/lib/types";
+import { useEffect, useState } from "react";
 
 interface Props {
-  // Define the props for your component here
+  selectedActivity: Activity;
+  onUpdateActivity: (activity: Activity) => void;
 }
 
-const Forum: React.FC<Props> = () => {
-  const msg: MessageDTO[] = [
-    {
-      id: "1",
-      user: "user",
+const ForumDisplay: React.FC<Props> = ({
+  selectedActivity,
+  onUpdateActivity,
+}) => {
+  const userData = localStorage.getItem("user");
+  const user = JSON.parse(userData as string) as User;
+
+  const [messages, setMessages] = useState<Array<Message>>([]);
+  const [activity, setActivity] = useState(selectedActivity);
+
+  const loadMessages = async () => {
+    setMessages(activity?.forum?.messages || []);
+  };
+
+  useEffect(() => {
+    setActivity(selectedActivity);
+    loadMessages();
+  }, [selectedActivity]);
+
+  const addMessage = async () => {
+    // get the message from the input
+    const body = document.querySelector<HTMLInputElement>(
+      'input[name="message"]'
+    )?.value;
+
+    // create the message
+    if (!body) {
+      // show error
+      window.alert("El mensaje no puede estar vacío");
+      return;
+    }
+    const message: Message = {
+      user: user.name,
       date: new Date(),
-      content:
-        "orem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nostrud exercitation ullamco laboris",
-      replies: [
-        {
-          user: "user",
-          date: new Date(),
-          content:
-            "orem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nostrud exercitation ullamco laboris",
-          replies: [],
-        },
-      ],
-    },
-    {
-      id: "2",
-      user: "user",
-      date: new Date(),
-      content:
-        "orem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nostrud exercitation ullamco laboris",
-      replies: [
-        {
-          user: "user",
-          date: new Date(),
-          content:
-            "orem ipsum dolor sit amet, consectetur adipiscing elit, sed doeiusmod tempor incididunt ut labore et dolore magna aliqua. Utenim ad minim veniam, quis nostrud exercitation ullamco laboris",
-          replies: [],
-        },
-      ],
-    },
-  ];
+      content: body,
+      replies: [],
+    };
+    // add the message to the forum
+    activity.forum?.messages.push(message);
+
+    // update the activity
+    onUpdateActivity(activity);
+  };
 
   return (
     <div className=" w-full ">
       <div className="flex relative">
         <input
+          name="message"
           className=" w-full border-gray-400  rounded-lg pr-24"
           type="text"
           placeholder="Añade un comentario"
         />
 
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded-e-md absolute right-0 h-full grid place-content-center">
+        <button
+          onClick={addMessage}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4  rounded-e-md absolute right-0 h-full grid place-content-center"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="icon icon-tabler icon-tabler-send-2"
@@ -78,9 +86,9 @@ const Forum: React.FC<Props> = () => {
       <div className=" mr-4 flex gap-2 flex-col">
         {
           // map comments
-          msg.map((m) => (
+          messages.map((message) => (
             <article
-              key={m.id}
+              key={message.id}
               className="comment mx-2 flex w-full  p-2 flex-col gap-2"
             >
               <div className=" flex gap-4 ">
@@ -92,8 +100,8 @@ const Forum: React.FC<Props> = () => {
                 <aside className=" flex flex-col w-full">
                   <header className="flex justify-between border-b-2 border-gray-300">
                     <section className="flex gap-6">
-                      <h2 className=" font-bold">{m.user}</h2>
-                      <h3>{m.date.toDateString()}</h3>
+                      <h2 className=" font-bold">{message.user}</h2>
+                      <h3>{message.date.toString()}</h3>
                     </section>
 
                     <svg
@@ -113,13 +121,13 @@ const Forum: React.FC<Props> = () => {
                       <path d="M5 10h11a4 4 0 1 1 0 8h-1" />
                     </svg>
                   </header>
-                  <p>{m.content}</p>
+                  <p>{message.content}</p>
                 </aside>
               </div>
               <footer className=" gap-2">
-                {m.replies.map((r) => (
+                {message.replies.map((r) => (
                   <article
-                    key={r.date.toISOString()}
+                    key={r.date.toString()}
                     className="comment mx-2 flex w-full gap-4 p-2"
                   >
                     <img
@@ -130,7 +138,7 @@ const Forum: React.FC<Props> = () => {
                       <header className="flex justify-between border-b-2 border-gray-300">
                         <section className="flex gap-6">
                           <h2 className=" font-bold">{r.user}</h2>
-                          <h3>{r.date.toDateString()}</h3>
+                          <h3>{r.date.toString()}</h3>
                         </section>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -162,4 +170,4 @@ const Forum: React.FC<Props> = () => {
   );
 };
 
-export default Forum;
+export default ForumDisplay;

@@ -58,16 +58,17 @@ export interface Activity {
   name: string; // name of the activity
   week: number; // week of the activity in the work plan
   date: Date; // date of the activity
-  publicationDate?: Date; // date of publication of the activity
-  prevDays?: number; // days before the activity to send the reminder
+  prevDays: number; // days before the activity to send the reminder
   reminderInterval: number; // interval of the reminder of the activity
-  responsibles: string[]; // list of teachers responsible for the activity
+  responsibles: Teacher[]; // list of teachers responsible for the activity
   type: ActivityType; // type of the activity
   modality: Modalities; // modality of the activity
   status: ActivityStatus; // status of the activity
   link?: string; // link of the activity if it is virtual
   attachmentFile?: string; // attachment file of the activity
-  forum: Forum; // forum of the activity
+  forum?: Forum; // forum of the activity
+  observation?: string; // observation of the activity
+  evidence?: string[]; // list of evidence of the activity (photos, videos, etc.)
 }
 
 export interface WorkPlan {
@@ -87,5 +88,5 @@ export interface Message {
   user: string; // user that sent the message
   date: Date; // date of the message
   content: string; // content of the message
-  replies: Array<Message> // replies list of the message
+  replies: Array<Message>; // replies list of the message
 }

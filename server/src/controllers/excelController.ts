@@ -26,16 +26,23 @@ export class ExcelController {
     const campus = req.params.campus;
     let students = await StudentDAO.getStudentsByCampus(campus);
 
-    // Create the excel file
-    // cols: carnet, fullName, email, phone
-    const wb = xlsx.utils.book_new();
-    const ws = xlsx.utils.json_to_sheet(students);
+    // Generate the Excel file
+    const workbook = xlsx.utils.book_new();
+    const worksheet = xlsx.utils.json_to_sheet(students);
+    xlsx.utils.book_append_sheet(workbook, worksheet, "Students");
 
-    xlsx.utils.book_append_sheet(wb, ws, "Students");
-    const excelFileName = `students-${campus}.xlsx`;
-    xlsx.writeFile(wb, excelFileName);
+    // Write the Excel file to a buffer
+    const buffer = xlsx.write(workbook, { type: "buffer" });
 
-    res.download(excelFileName);
+    // Set the headers
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=students.xlsx");
+
+    // Send the buffer in the response
+    res.send(buffer);
   }
 
   /**
@@ -62,15 +69,27 @@ export class ExcelController {
         res.status(500).send("Error retrieving students");
       }
       // Create the excel file
-      const wb = xlsx.utils.book_new();
+      const workbook = xlsx.utils.book_new();
       students.forEach((campusStudents, index) => {
-        const ws = xlsx.utils.json_to_sheet(campusStudents);
-        xlsx.utils.book_append_sheet(wb, ws, campuses[index]);
+        const worksheet = xlsx.utils.json_to_sheet(campusStudents);
+        xlsx.utils.book_append_sheet(workbook, worksheet, campuses[index]);
       });
 
-      const excelFileName = `students-all.xlsx`;
-      xlsx.writeFile(wb, excelFileName);
-      res.download(excelFileName);
+      // Write the Excel file to a buffer
+      const buffer = xlsx.write(workbook, { type: "buffer" });
+
+      // Set the headers
+      res.setHeader(
+        "Content-Type",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      );
+      res.setHeader(
+        "Content-Disposition",
+        "attachment; filename=students.xlsx"
+      );
+
+      // Send the buffer in the response
+      res.send(buffer);
     } catch (error) {
       res.status(500).send("Error downloading excel file");
     }
@@ -90,39 +109,34 @@ export class ExcelController {
       const campus = req.headers.campus as CampusENUM;
       const file = req.file;
       if (!file) {
-        res.status(400).send("No file uploaded");
+        res.status(404).send("No file uploaded");
         return;
       }
 
-      let students: Student[];
-      try {
-        // Read the excel file
-        const wb = xlsx.readFile(file.path);
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const studentsData = xlsx.utils.sheet_to_json(ws) as StudentDTO[];
-        // Create the students
-        const students = studentsData.map(
-          (studentData) =>
-            new Student(
-              studentData.carnet,
-              studentData.name,
-              studentData.email,
-              studentData.personalPNumber,
-              campus
-            )
-        );
-      } catch (error) {
-        res.status(500).send("Error reading file");
-      }
-      try {
-        // Create the students
-        await StudentDAO.createStudents(students);
-        res.status(200).send("Students created");
-      } catch (error) {
-        res.status(500).send("Error creating students");
-      }
+      // Read the excel file
+      const wb = xlsx.read(file.buffer, { type: "buffer" });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const studentsData: StudentDTO[] = xlsx.utils.sheet_to_json(ws);
+
+      // Create the students
+      const students = studentsData.map(
+        (studentData) =>
+          new Student(
+            studentData.carnet,
+            studentData.name,
+            studentData.email,
+            studentData.personalPNumber,
+            campus
+          )
+      );
+      console.log(students);
+      // Create the students
+      await StudentDAO.createStudents(students);
+      res.status(200).send("Students created");
+      return;
     } catch (error) {
       res.status(500).send("Error uploading file");
+      return;
     }
   }
 

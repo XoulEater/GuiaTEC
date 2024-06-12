@@ -3,6 +3,7 @@
 import Campus from "./campusENUM";
 
 class User {
+  private dbId: string;
   private id: string;
   private name: string;
   private email: string;
@@ -21,7 +22,8 @@ class User {
     userType: "teacher" | "assistant",
     isLeader?: boolean,
     photo?: string,
-    id?: string
+    id?: string,
+    dbId?: string
   ) {
     this.id = id;
     this.name = name;
@@ -31,6 +33,7 @@ class User {
     this.campus = campus;
     this.userType = userType;
     this.isLeader = isLeader;
+    this.dbId = dbId;
   }
 
   // Getters
@@ -85,6 +88,22 @@ class User {
 
   public setCampus(campus: Campus): void {
     this.campus = campus;
+  }
+
+  public getDbId(): string {
+    return this.dbId;
+  }
+
+  public setDbId(dbId: string): void {
+    this.dbId = dbId;
+  }
+
+  public setIsLeader(isLeader: boolean): void {
+    this.isLeader = isLeader;
+  }
+
+  public getIsLeader(): boolean {
+    return this.isLeader;
   }
 }
 

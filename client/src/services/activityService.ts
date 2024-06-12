@@ -38,7 +38,6 @@ export async function getActivityById(
  * @returns a promise with the new activity
  */
 export async function createActivity(wid: string, activity: Activity) {
-  console.log(JSON.stringify(activity));
   await fetch(`${API_URL}/workplans/${wid}/activities`, {
     method: "POST",
     headers: {
@@ -46,7 +45,6 @@ export async function createActivity(wid: string, activity: Activity) {
     },
     body: JSON.stringify(activity),
   });
-  console.log("createActivity done");
 }
 
 /**

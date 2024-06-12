@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import Activity from "../model/Activity";
 import ActivityDTO from "../DTOs/activity";
 import WorkplanDAO from "../DAOs/workplan";
+import Email from "./sendEmail";
 
 /**
  * Class that handles the requests related to activities
@@ -60,7 +61,7 @@ export class ActivityController {
       // Get the activity
       const activity = workplan
         .getActivities()
-        .find((activity) => activity.getID() === activityId);
+        .find((activity) => activity.getID() === Number(activityId));
       if (!activity) {
         res.status(404).json({ error: "Activity not found" });
         return;
@@ -84,6 +85,7 @@ export class ActivityController {
     try {
       const activityDTO: ActivityDTO = req.body;
       const workplanId = req.params.wid;
+      console.log(activityDTO);
 
       // Create the activity
       let activity;
@@ -93,6 +95,8 @@ export class ActivityController {
         res.status(500).json({ error: "Error instantiating activity" });
         return;
       }
+
+      activity.setID(Math.floor(Math.random() * 1000000));
 
       // Get the workplan
       let workplan;
@@ -124,10 +128,10 @@ export class ActivityController {
     res: Response
   ): Promise<void> {
     try {
+      // TODO: Add the logic notifing the responsibles of the activity
       const activityDTO: ActivityDTO = req.body;
       const workplanId = req.params.wid;
       const activityID = req.params.aid;
-
       // Create the activity
       let activity;
       try {
@@ -148,11 +152,18 @@ export class ActivityController {
 
       // Update the workplan
       workplan.updateActivity(activityID, activity);
+
       try {
         await WorkplanDAO.updateWorkplan(workplanId, workplan);
       } catch (error) {
         res.status(500).json({ error: "Error updating workplan" });
         return;
+      }
+
+      console.log(activity.getStatus());
+      if (activity.getStatus() === "Notificada") {
+        activity.notify();
+        console.log("Notified");
       }
 
       res.status(200).json({ message: "Activity updated successfully" });

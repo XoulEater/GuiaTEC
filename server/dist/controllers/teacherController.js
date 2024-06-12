@@ -80,16 +80,13 @@ class TeacherController {
     }
     static updateTeacher(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const code = req.params.code;
-                const teacherData = req.body;
-                const teacher = new Teacher_1.default(teacherData);
-                yield teacher_1.default.updateTeacher(code, teacher);
-                res.status(200).json({ message: "Teacher updated" });
-            }
-            catch (error) {
-                res.status(400).json({ message: "Error updating teacher" });
-            }
+            const code = req.params.code;
+            const teacherData = req.body.teacher;
+            const user = req.body.user;
+            const teacher = new Teacher_1.default(teacherData);
+            console.log(teacher);
+            yield teacher_1.default.updateTeacher(code, teacher, user, "update");
+            res.status(200).json({ message: "Teacher updated" });
         });
     }
     static deleteTeacher(req, res) {

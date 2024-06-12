@@ -25,9 +25,12 @@ const { title, currentRoute } = Astro.props;
   </body>
 </html>
 <script>
+  import * as workplanService from "@/services/workplanService.ts";
+
   if (!localStorage.getItem("user")) {
     window.location.href = "/";
   }
+  await workplanService.notifyActitities();
 </script>
 <style is:global>
   html {

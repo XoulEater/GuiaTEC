@@ -73,15 +73,15 @@ export class TeacherController {
     req: Request,
     res: Response
   ): Promise<void> {
-    try {
-      const code = req.params.code;
-      const teacherData: TeacherDTO = req.body;
-      const teacher = new Teacher(teacherData);
-      await TeacherDAO.updateTeacher(code, teacher);
-      res.status(200).json({ message: "Teacher updated" });
-    } catch (error) {
-      res.status(400).json({ message: "Error updating teacher" });
-    }
+    const code = req.params.code;
+    const teacherData: TeacherDTO = req.body.teacher;
+    const user = req.body.user;
+    const teacher = new Teacher(teacherData);
+    console.log(teacher);
+
+    await TeacherDAO.updateTeacher(code, teacher, user, "update");
+
+    res.status(200).json({ message: "Teacher updated" });
   }
 
   public static async deleteTeacher(

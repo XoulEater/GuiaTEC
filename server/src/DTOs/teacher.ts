@@ -3,6 +3,7 @@
 import Campus from "../model/campusENUM";
 
 interface TeacherDTO {
+  _id?: string; // unique identifier from the database
   id?: string; // unique identifier of the teacher
   name: string; // name of the teacher
   email: string; // email of the teacher
@@ -13,6 +14,7 @@ interface TeacherDTO {
   officePNumber: string; // office phone number of the teacher
   personalPNumber: string; // personal phone number of the teacher
   isLeader: boolean; // if the teacher is the leader of the team
+  isMember: boolean; // if the teacher is a member of the team
 }
 
 export default TeacherDTO;

@@ -58,17 +58,17 @@ const TeachersTable = () => {
       teachers.splice(teachers.indexOf(selectedTeacher), 1);
     }
     setConfirmDelete(false);
-    // TODO: Implement delete teacher from database?
+    // TODO: Implement delete teacher from database
   }
 
   function handleIncludeTeacher(teacher: Teacher) {
     setTeamTeachers((prevTeachers) => [...prevTeachers, teacher]);
-    teamService.addMember(teacher.id);
+    teamService.addMember(teacher.id, user.name);
   }
 
   return (
-    <section className="w-[90%] overflow-hidden rounded-xl drop-shadow-md shadow-inner border border-black/10 shadow-white/10">
-      <header className="grid items-center w-full h-16 grid-cols-8 grid-rows-1 px-2 bg-zinc-200">
+    <section className="w-[90%] overflow-hidden sm:rounded-xl sm:drop-shadow-md sm:shadow-inner flex flex-col sm:gap-0 gap-3 sm:border border-black/10 shadow-white/10">
+      <header className="sm:grid items-center w-full h-16 grid-cols-8 grid-rows-1 px-2 bg-zinc-200 hidden">
         <span className="text-lg col-span-1 font-semibold">Codigo</span>
         <span className="text-lg col-span-1 font-semibold">Imagen</span>
         <span className="col-span-2 text-lg font-semibold">Nombre</span>
@@ -81,17 +81,26 @@ const TeachersTable = () => {
         return (
           <div
             key={index}
-            className={`grid grid-cols-8 h-16 w-full items-center ${rowColorClass} px-2`}
+            className={`grid grid-cols-5 sm:grid-cols-8 h-max py-2 w-full items-center rounded-lg sm:rounded-none drop-shadow-md sm:drop-shadow-none shadow-inner border sm:border-none border-black/10 shadow-white/10 ${rowColorClass} px-2 divide-y-2 divide-black/20 sm:divide-y-0 space-y-1`}
           >
-            <span>{teacher.id}</span>
+            <span className=" order-2 sm:order-none  col-span-2 sm:col-span-1 ">
+              <span className="font-bold sm:hidden">ID: </span>
+              {teacher.id}
+            </span>
             <img
-              className="object-cover object-center h-12 rounded-full aspect-square border-2 border-white/50 shadow-sm"
+              className="object-cover object-center h-12 rounded-full aspect-square border-2 border-white/50 shadow-sm order-1 sm:order-none"
               src={teacher.photo}
               alt={teacher.name}
             />
-            <span className="col-span-2 ">{teacher.name}</span>
-            <span className="col-span-2 ">{teacher.personalPNumber}</span>
-            <div className="flex items-center col-span-2 gap-4">
+            <span className="col-span-5 sm:col-span-2 order-5 sm:order-none pt-2 sm:p-0">
+              <span className="font-bold sm:hidden">Nombre: </span>
+              {teacher.name}
+            </span>
+            <span className="col-span-5 sm:col-span-2 order-5 sm:order-none pt-2 sm:p-0">
+              <span className="font-bold sm:hidden">Teléfono: </span>
+              {teacher.personalPNumber}
+            </span>
+            <div className="flex items-center col-span-2 gap-4 order-3 sm:order-none border-none justify-end sm:justify-start">
               <a href={`teacher/${teacher.id}`}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +142,6 @@ const TeachersTable = () => {
                   </svg>
                 </button>
               )}
-
               {!teamTeachers.find(
                 (teamTeacher) => teamTeacher.id === teacher.id
               ) &&

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Teacher DAO that communicates with the database
 const teacher_schema_1 = __importDefault(require("../schemas/teacher.schema"));
 const Teacher_1 = __importDefault(require("../model/Teacher"));
+const logTeam_1 = __importDefault(require("../DAOs/logTeam"));
 /**
  * Class that communicates with the database to perform CRUD operations
  */
@@ -37,24 +38,6 @@ class TeacherDAO {
         return __awaiter(this, void 0, void 0, function* () {
             const membersData = yield teacher_schema_1.default.find({ isMember: true }).exec();
             return membersData.map((member) => new Teacher_1.default(member.toObject()));
-        });
-    }
-    /**
-     * Add a teacher as a member
-     * @param pCode code of the teacher
-     */
-    static addMember(pCode) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, { isMember: true }, { new: true }).exec();
-        });
-    }
-    /**
-     * Remove a teacher as a member
-     * @param pCode code of the teacher
-     */
-    static removeMember(pCode) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, { isMember: false, isLeader: false }, { new: true }).exec();
         });
     }
     /**
@@ -92,11 +75,16 @@ class TeacherDAO {
      * @param pCode code of the teacher
      * @param teacher the teacher with the new information
      */
-    static updateTeacher(pCode, teacher) {
+    static updateTeacher(pCode, teacher, agenteCambio, operation) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, teacher, {
+            const beforeTeacher = yield teacher_schema_1.default.findOne({ id: pCode }).exec();
+            const beforeDTO = beforeTeacher.toObject();
+            // Log the action no se como pasarle el objeto del profesor
+            const afterTeacher = yield teacher_schema_1.default.findOneAndUpdate({ id: pCode }, teacher, {
                 new: true,
             }).exec();
+            const afterDTO = afterTeacher.toObject();
+            yield logTeam_1.default.createLogTeam(agenteCambio, beforeDTO, afterDTO, operation, new Date());
         });
     }
     /**
@@ -121,6 +109,25 @@ class TeacherDAO {
                 id: { $regex: `^${campus}-` },
             }).exec();
             return teachers.map((teacher) => new Teacher_1.default(teacher.toObject()));
+        });
+    }
+    static changePassword(pCode, newPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                // Buscar al profesor por su código
+                const teacher = yield teacher_schema_1.default.findOne({ id: pCode });
+                if (!teacher) {
+                    throw new Error("Profesor no encontrado");
+                }
+                // Actualizar la contraseña
+                teacher.password = newPassword;
+                yield teacher.save();
+                return true; // Indicar que la contraseña se cambió correctamente
+            }
+            catch (error) {
+                console.error("Error al cambiar la contraseña del profesor:", error);
+                return false; // Indicar que ocurrió un error al cambiar la contraseña
+            }
         });
     }
 }

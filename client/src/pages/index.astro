@@ -61,23 +61,22 @@ import Input from "../components/Input.tsx";
 </Layout>
 <script>
   // FIXME: This is a temporary solution to avoid using a backend
+  import * as AuthServices from "../services/authService.ts";
 
   const button = document.getElementById("submit-button");
   if (button) {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       const email = document.getElementById("email") as HTMLInputElement;
       const password = document.getElementById("password") as HTMLInputElement;
 
-      const user = {
-        email: email.value,
-        password: password.value,
-        userType: "assistant",
-        campus: "CA",
-        isLeader: true,
-      };
+      const user = await AuthServices.login(email.value, password.value);
 
-      localStorage.setItem("user", JSON.stringify(user));
-      window.location.href = "/team";
+      if (user) {
+        localStorage.setItem("user", JSON.stringify(user));
+        window.location.href = "/team";
+      } else {
+        alert("Usuario o contraseña incorrectos");
+      }
     });
   }
 </script>

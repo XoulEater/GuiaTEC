@@ -3,10 +3,10 @@ import messageSchema from "./message.schema";
 
 // Define the schema for the Forum in activities
 const forumSchema: Schema = new Schema({
-    messages: {
-        // List of messages
-        type:[messageSchema],
-    },
+  messages: {
+    // List of messages
+    type: [messageSchema],
+  },
 });
 
-export default mongoose.model("Forum", forumSchema);
+export default forumSchema;

@@ -8,6 +8,7 @@ import {
 } from "@/lib/types";
 import * as teacherService from "@/services/teacherService";
 import * as activityService from "@/services/activityService";
+import * as uploadFilesService from "@/services/uploadFilesService";
 
 interface ActivityFormProps {
   activityId?: string; // optional activity prop
@@ -18,10 +19,9 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
   activityId,
   workplanId,
 }) => {
-  
   // Implement your component logic here
   const [isVirtual, setIsVirtual] = React.useState(false);
-  const [colaborators, setColaborators] = React.useState<string[]>([]);
+  const [colaborators, setColaborators] = React.useState<Teacher[]>([]);
   const [teachers, setTeachers] = React.useState<Teacher[]>([]);
   const [activity, setActivity] = React.useState<Activity | null>(null);
 
@@ -59,11 +59,11 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       weekInput.value = activity.week.toString();
 
       // Set the prevDays of the activity, if published disable the input
+      const prevDaysInput = document.getElementById(
+        "activityPrevDays"
+      ) as HTMLInputElement;
+      prevDaysInput.value = activity.prevDays.toString();
       if (activity.status === ActivityStatus.PUBLICADA) {
-        const prevDaysInput = document.getElementById(
-          "activityPrevDays"
-        ) as HTMLInputElement;
-        prevDaysInput.value = (activity.prevDays ?? "").toString();
         prevDaysInput.disabled = true;
       }
       // Set the reminderInterval of the activity
@@ -124,30 +124,65 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
     const responsibles = document.getElementById(
       "activityResponsibles"
     ) as HTMLSelectElement;
-    const colaborator = responsibles.value;
+    console.log(responsibles.value);
+    const colaborator = teachers.find(
+      (teacher) => teacher.id === responsibles.value
+    );
+
+    if (!colaborator) return;
     // Add the colaborator to the list if it is not already there
-    if (!colaborators.includes(colaborator))
+    if (!colaborators.includes(colaborator)) {
       setColaborators([...colaborators, colaborator]);
+    }
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
     const name = data.get("activityName") as string;
-    const week = parseInt(data.get("activityWeek") as string);
+    let week = parseInt(data.get("activityWeek") as string);
+    if (week < 0 || week > 16) {
+      window.alert("La semana debe ser un número entre 1 y 16");
+      return;
+    }
+
     const date = new Date(data.get("activityDate") as string);
-    const prevDays = parseInt(data.get("activityPrevDays") as string);
-    const reminderInterval = parseInt(
+    let prevDays = parseInt(data.get("activityPrevDays") as string);
+    if (prevDays < 0) {
+      window.alert("Los días previos para publicar no pueden ser negativos");
+      return;
+    }
+
+    let reminderInterval = parseInt(
       data.get("activityReminderInterval") as string
     );
-    console.log(colaborators);
+
+    if (reminderInterval <= 0) {
+      window.alert("El intervalo de recordatorio no puede ser negativo o cero");
+      return;
+    }
+
+    if (reminderInterval > prevDays) {
+      window.alert(
+        "El intervalo de recordatorio no puede ser mayor a los días previos para publicar"
+      );
+      return;
+    }
     const responsibles = colaborators;
     const type = data.get("activityType") as ActivityType;
     const modality = data.get("activityModality") as Modalities;
-    const status = ActivityStatus.PLANEADA;
+
+    const status = activity ? activity.status : ActivityStatus.PLANEADA;
     const link = data.get("activityLink") as string;
-    const attachmentFile = data.get("activityAttachment") as string;
+    const File = data.get("activityAttachment") as File;
+
+    let attachmentFile = "";
+    // Implement the file upload
+    if (File.name) {
+      attachmentFile = await uploadFilesService.uploadFile(File);
+      console.log("Se guardo el URL: ", attachmentFile);
+    }
 
     // Create the activity object
     if (activity) {
@@ -183,28 +218,28 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
       });
     }
     if (window.confirm("Actividad creada exitosamente")) {
+      // Redirect to the previous page
+      window.history.back();
     }
   }
   async function createActivity(activity: Activity) {
     // Call the function to create the activity
-    console.log(workplanId, activity);
     await activityService.createActivity(workplanId, activity);
-    console.log("Activity created");
     // Redirect to the previous page
   }
-  function updateActivity(activity: Activity) {
+  async function updateActivity(activity: Activity) {
     // Call the function to update the activity
-    // TODO: activityService.updateActivity(workplanId, activity);
+    await activityService.updateActivity(workplanId, activity);
   }
 
   return (
     <form
-      className="flex flex-col w-4/5 gap-5 p-10 h-[90%] bg-slate-100 rounded-xl overflow-y-scroll no-scrollbar"
+      className="flex flex-col w-[90%] sm:w-4/5 gap-5 p-10 h-[90%] bg-slate-100 rounded-xl overflow-y-scroll no-scrollbar"
       onSubmit={handleSubmit}
     >
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Activity Name */}
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full ">
           <label htmlFor="activityName" className="hidden lgn:block">
             Nombre de la actividad
           </label>
@@ -274,7 +309,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Activity Modality */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityModality" className="hidden lgn:block">
@@ -345,7 +380,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Fecha y hora de la actividad */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityDate" className="hidden lgn:block">
@@ -405,7 +440,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Cantidad de dias previos para publicar */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityPrevDays" className="hidden lgn:block">
@@ -480,7 +515,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
           </div>
         </div>
       </section>
-      <section className="flex justify-between gap-10">
+      <section className="flex sm:flex-row flex-col justify-between gap-5 sm:gap-10">
         {/* Selector de responsables */}
         <div className="flex flex-col w-full">
           <label htmlFor="activityResponsibles" className="hidden lgn:block">
@@ -513,8 +548,8 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
               required
             >
               {teachers.map((teacher) => (
-                <option key={teacher.id} value={teacher.name}>
-                  {teacher.name}
+                <option key={teacher.id} value={teacher.id}>
+                  {teacher.name + " - " + teacher.id}
                 </option>
               ))}
             </select>
@@ -532,10 +567,10 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
             <ul className="w-full h-32 px-6 py-3 overflow-y-scroll bg-white border rounded-lg text-zinc-500 pl-11 border-zinc-300 no-scrollbar">
               {colaborators.map((teacher) => (
                 <li
-                  key={teacher}
-                  className="flex justify-between w-full pt-1 pb-2 border-b-2"
+                  key={teacher.id}
+                  className="flex flex-row justify-between w-full pt-1 pb-2 border-b-2"
                 >
-                  {teacher}
+                  {teacher.name + " - " + teacher.id}
                   <button
                     className="font-semibold right-2"
                     onClick={() =>
@@ -555,7 +590,7 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
         </div>
       </section>
 
-      <section className="flex justify-end gap-10">
+      <section className="flex sm:flex-row flex-col justify-end gap-5 sm:gap-10">
         <button
           type="submit"
           className="w-40 h-12 text-white transition duration-300 ease-in-out rounded-md bg-primary-dark hover:bg-primary-light"

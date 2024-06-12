@@ -44,18 +44,14 @@ class WorkplanController {
      */
     static getWorkplanById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const id = req.params.id;
-                const workplan = yield workplan_1.default.getWorkplanById(id);
-                if (workplan) {
-                    res.status(200).json(workplan);
-                }
-                else {
-                    res.status(404).json({ error: "Workplan not found" });
-                }
+            const id = req.params.id;
+            const workplan = yield workplan_1.default.getWorkplanById(id);
+            workplan;
+            if (workplan) {
+                res.status(200).json(workplan);
             }
-            catch (error) {
-                res.status(500).json({ error: "Failed to get workplan" });
+            else {
+                res.status(404).json({ error: "Workplan not found" });
             }
         });
     }
@@ -67,8 +63,23 @@ class WorkplanController {
     static createWorkplan(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                // FIXME: Generate a workplan
-                const workplan = new Workplan_1.default("Plan de Trabajo", "Descripcion", [], 2024, 1);
+                let date = new Date();
+                let year = date.getFullYear();
+                let month = date.getMonth();
+                let semester = 0;
+                if (month >= 1 && month <= 6) {
+                    semester = 1;
+                }
+                else {
+                    semester = 2;
+                }
+                const workplan = new Workplan_1.default("Plan de Trabajo " + semester + " " + year, "Creado el " +
+                    date.getDate() +
+                    "/" +
+                    (date.getMonth() + 1) +
+                    "/" +
+                    year, []);
+                console.log(workplan);
                 const newWorkplan = yield workplan_1.default.createWorkplan(workplan);
                 res.status(200).json({ id: newWorkplan.getID() });
             }

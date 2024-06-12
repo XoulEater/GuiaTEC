@@ -20,6 +20,7 @@ export class WorkplanController {
   ): Promise<void> {
     try {
       const workplans = await WorkplanDAO.getAllWorkplans();
+
       res.status(200).json(workplans);
     } catch (error) {
       res.status(500).json({ error: "Failed to get workplans" });
@@ -35,16 +36,13 @@ export class WorkplanController {
     req: Request,
     res: Response
   ): Promise<void> {
-    try {
-      const id = req.params.id;
-      const workplan = await WorkplanDAO.getWorkplanById(id);
-      if (workplan) {
-        res.status(200).json(workplan);
-      } else {
-        res.status(404).json({ error: "Workplan not found" });
-      }
-    } catch (error) {
-      res.status(500).json({ error: "Failed to get workplan" });
+    const id = req.params.id;
+    const workplan = await WorkplanDAO.getWorkplanById(id);
+    workplan;
+    if (workplan) {
+      res.status(200).json(workplan);
+    } else {
+      res.status(404).json({ error: "Workplan not found" });
     }
   }
 
@@ -58,15 +56,28 @@ export class WorkplanController {
     res: Response
   ): Promise<void> {
     try {
-      // FIXME: Generate a workplan
+      let date: Date = new Date();
+      let year = date.getFullYear();
+      let month = date.getMonth();
+      let semester = 0;
+      if (month >= 1 && month <= 6) {
+        semester = 1;
+      } else {
+        semester = 2;
+      }
+
       const workplan = new Workplan(
-        "Plan de Trabajo",
-        "Descripcion",
-        [],
-        2024,
-        1
+        "Plan de Trabajo " + semester + " " + year,
+        "Creado el " +
+          date.getDate() +
+          "/" +
+          (date.getMonth() + 1) +
+          "/" +
+          year,
+        []
       );
 
+      console.log(workplan);
       const newWorkplan = await WorkplanDAO.createWorkplan(workplan);
       res.status(200).json({ id: newWorkplan.getID() });
     } catch (error) {

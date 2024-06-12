@@ -1,21 +1,41 @@
-import type { Activity, ActivityStatus } from "@/lib/types.ts";
+import type { Activity, ActivityStatus, Message } from "@/lib/types.ts";
+import { useEffect, useState } from "react";
 
 function ActivitesAccordion(
+  selectedActivity: Activity | null,
   activitiesByWeek: { [week: number]: Activity[] },
   handleAccordionToggle: (week: number) => void,
   openAccordions: number[],
   setSelectedActivity: React.Dispatch<React.SetStateAction<Activity | null>>,
-  setActivityStatus: React.Dispatch<React.SetStateAction<ActivityStatus | null>>
+  setActivityStatus: React.Dispatch<
+    React.SetStateAction<ActivityStatus | null>
+  >,
+  setMessages: React.Dispatch<React.SetStateAction<Message[] | []>>,
+  setOpenAccordions: React.Dispatch<React.SetStateAction<number[]>>
 ) {
   function handleChangeSelected(activity: Activity) {
     setSelectedActivity(activity);
     setActivityStatus(activity.status);
+    if (activity.forum) {
+      setMessages(activity.forum.messages);
+    }
   }
-
+  useEffect(() => {
+    const openAccordions = JSON.parse(
+      sessionStorage.getItem("openAccordions") as string
+    );
+    if (openAccordions) {
+      setOpenAccordions(openAccordions);
+    }
+  }, []);
   return (
-    <section className=" my-6 w-5/12 h-[560px]  rounded-lg overflow-y-scroll no-scrollbar shadow-md ">
+    <section
+      className={`my-6 w-full sm:w-5/12 h-[560px] ${
+        selectedActivity !== null ? "hidden" : "block"
+      }  rounded-lg overflow-y-scroll no-scrollbar shadow-md sm:block bg-primary-dark`}
+    >
       {/* Accordion by week */}
-      <div className="px-6 py-2  bg-primary-dark">
+      <div className="px-6 py-2 h-max ">
         {Object.keys(activitiesByWeek).map((week) => (
           <div key={week} className="">
             <div

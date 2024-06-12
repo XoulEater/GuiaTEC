@@ -53,13 +53,13 @@ export async function createTeacher(teacher: Teacher) {
  * @param teacher the teacher to update
  * @returns a promise with the updated teacher
  */
-export async function updateTeacher(teacher: Teacher) {
+export async function updateTeacher(teacher: Teacher, user: string) {
   const response = await fetch(`${API_URL}/teachers/${teacher.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(teacher),
+    body: JSON.stringify({ teacher, user }),
   });
   return response;
 }

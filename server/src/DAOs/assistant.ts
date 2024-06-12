@@ -2,6 +2,7 @@
 import AssistantSchema from "../schemas/assistant.schema";
 import Assistant from "../model/Assistant";
 
+
 /**
  * Class that communicates with the database to perform CRUD operations
  */
@@ -37,5 +38,8 @@ export default class AssistantDAO {
     }).exec();
   }
 
-  
+  public static async createAsistant(name: string, email: string, password: string, campus: string) {
+    const asistant = new AssistantSchema({ name, email, password, campus });
+    await asistant.save();
+  }
 }

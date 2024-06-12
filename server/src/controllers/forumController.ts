@@ -6,106 +6,95 @@ import WorkplanDAO from "../DAOs/workplan";
 /**
  * Class that handles the requests related to Forum and Messages
  */
-export class ForumController{
-    /**
+export class ForumController {
+  /**
    * Make a Comment in a Forum
    * @param req the request
    * @param res the response
    */
-    public static async addMessage(
-        req: Request,
-        res: Response
-    ): Promise<void> {
-        try {
-            // Get request params
-            const workplanId = req.params.wid;
-            const activityId = req.params.aid;
-            const messageData: MessageDTO = req.body;
+  public static async addMessage(req: Request, res: Response): Promise<void> {
+    // Get request params
+    const workplanId = req.params.wid;
+    const activityId = req.params.aid;
+    const messageData: MessageDTO = req.body;
 
-            // Get the workplan
-            let workplan;
-            try {
-                workplan = await WorkplanDAO.getWorkplanById(workplanId);
-            } catch (error) {
-                res.status(500).json({ error: "Error retrieving workplan" });
-                return;
-            }
-
-            // Get the activity
-            const activity = workplan
-                .getActivities()
-                .find((activity) => activity.getID() === activityId);
-            if (!activity) {
-                res.status(404).json({ error: "Activity not found" });
-                return;
-            }
-
-            // Get the comment
-            const forum = activity.getForum();
-
-            // Create message instance
-
-            const message = new Message(messageData.user,messageData.date,messageData.content);
-
-            forum.addMessage(message);
-
-            // Update Workplan
-            await WorkplanDAO.updateWorkplan(workplanId,workplan);
-
-            res.status(200).json({ message: "Comment succesfully made" });
-            return;
-        } catch (error) {
-            res.status(500).json({ message: "Error adding Message" });
-        }
+    // Get the workplan
+    let workplan;
+    try {
+      workplan = await WorkplanDAO.getWorkplanById(workplanId);
+    } catch (error) {
+      res.status(500).json({ error: "Error retrieving workplan" });
+      return;
     }
-    /**
+
+    // Get the activity
+    const activity = workplan
+      .getActivities()
+      .find((activity) => activity.getID() === Number(activityId));
+
+    if (!activity) {
+      res.status(404).json({ error: "Activity not found" });
+      return;
+    }
+
+    // Get the comment
+    const forum = activity.getForum();
+
+    // Create message instance
+
+    const message = new Message(messageData);
+
+    // generate id for the message
+    const id = Math.floor(Math.random() * 1000000).toString();
+    message.setId(id);
+
+    forum.addMessage(message);
+
+    // Update Workplan
+    await WorkplanDAO.updateWorkplan(workplanId, workplan);
+
+    res.status(200).json(message);
+
+    return;
+  }
+  /**
    * Make a Reply in a Comment
    * @param req the request
    * @param res the response
    */
-    public static async addReply(
-        req: Request,
-        res: Response
-    ): Promise<void> {
-        try {
-            // Get request params
-            const workplanId = req.params.wid;
-            const activityId = req.params.aid;
-            const messageId = req.params.mid;
-            const replydata: MessageDTO = req.body;
+  public static async addReply(req: Request, res: Response): Promise<void> {
+    // Get request params
+    const workplanId = req.params.wid;
+    const activityId = req.params.aid;
+    const messageId = req.params.mid;
+    const replydata: MessageDTO = req.body;
 
-            // Get the workplan
-            let workplan;
-            try {
-                workplan = await WorkplanDAO.getWorkplanById(workplanId);
-            } catch (error) {
-                res.status(500).json({ error: "Error retrieving workplan" });
-                return;
-            }
+    // Get the workplan
+    let workplan;
 
-            // Get the activity
-            const activity = workplan
-                .getActivities()
-                .find((activity) => activity.getID() === activityId);
-            if (!activity) {
-                res.status(404).json({ error: "Activity not found" });
-                return;
-            }
+    workplan = await WorkplanDAO.getWorkplanById(workplanId);
 
-            // Get the forum
-            const forum = activity.getForum();
+    // Get the activity
+    const activity = workplan
+      .getActivities()
+      .find((activity) => activity.getID() === Number(activityId));
 
-            // Get the Comment
-            const message = forum.getMessages().find((message)=> message.getId() === messageId);
+    // Get the forum
+    const forum = activity.getForum();
 
-            // Create reply instance
-            const reply = new Message(replydata.user,replydata.date,replydata.content);
-            message.addReply(reply)
+    // Get the Comment
 
-            // Update Workplan
-            await WorkplanDAO.updateWorkplan(workplanId,workplan);
-        } catch (error) {
-            res.status(500).json({ message: "Error making reply" });
-        }
-    }
+    const message = forum
+      .getMessages()
+      .find((message) => message.getId() == messageId.toString());
+
+    // Create reply instance
+    const reply = new Message(replydata);
+    message.addReply(reply);
+
+    // Update Workplan
+    await WorkplanDAO.updateWorkplan(workplanId, workplan);
+
+    res.status(200).json({ message: "Reply added" });
+  }
 }

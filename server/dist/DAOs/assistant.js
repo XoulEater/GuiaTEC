@@ -52,6 +52,12 @@ class AssistantDAO {
             }).exec();
         });
     }
+    static createAsistant(name, email, password, campus) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const asistant = new assistant_schema_1.default({ name, email, password, campus });
+            yield asistant.save();
+        });
+    }
 }
 exports.default = AssistantDAO;
 //# sourceMappingURL=assistant.js.map

@@ -6,9 +6,15 @@ import teacherRoutes from "./routes/teacherRoutes";
 import excelRoutes from "./routes/excelRoutes";
 import teamRoutes from "./routes/teamRoutes";
 import workplanRoutes from "./routes/workplanRoutes";
-import activitiesRoutes from "./routes/activityRoute";
 import studentRoutes from "./routes/studentRoutes";
 import authRoutes from "./routes/authRoutes";
+import activityRoutes from "./routes/activityRoutes";
+import forumRoutes from "./routes/forumRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
+import filesRoutes from "./routes/filesRoutes";
+import assistantRoutes from "./routes/assistantRoutes";
+import { initializeApp } from "firebase/app";
+import config from "../src/config/firebase.config";
 
 dotenv.config();
 
@@ -25,15 +31,22 @@ app.use(express.static("public"));
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/excel", excelRoutes);
 app.use("/api/teams", teamRoutes);
-app.use("/api/workplans", workplanRoutes);
-app.use("/api/activities", activitiesRoutes);
 app.use("/api/students", studentRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/workplans", workplanRoutes);
+app.use("/api/workplans/:wid/activities", activityRoutes);
+app.use("/api/workplans/:wid/activities/:aid/forum", forumRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/files", filesRoutes);
+app.use("/api/assistants", assistantRoutes);
+
+//Initialize a firebase application
+
+initializeApp(config.firebaseConfig);
 
 // Connect to MongoDB
 
 mongoose.Promise = Promise;
-// TODO: Add the connection string to the .env file
 mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 mongoose.connection.on("error", (err: Error) => {
   console.error(err);

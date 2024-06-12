@@ -1,20 +1,26 @@
 import ActivityDTO from "../DTOs/activity";
 import Forum from "./Forum";
+import Message from "./Message";
+import Email from "../controllers/sendEmail";
+import Teacher from "./Teacher";
+import Visitor from "./Visitor";
 
 export default class Activity {
-  private id: string;
+  private id: number;
   private name: string;
   private week: number;
   private date: Date;
   private prevDays: number;
   private reminderInterval: number;
-  private responsibles: string[];
+  private responsibles: Teacher[];
   private type: string;
   private modality: string;
   private status: string;
   private link?: string;
+  private evidence?: string[] = [];
   private attachmentFile?: string;
   private forum?: Forum;
+  private observation?: string;
 
   // Constructor
   constructor(
@@ -23,13 +29,14 @@ export default class Activity {
     date?: Date,
     prevDays?: number,
     reminderInterval?: number,
-    responsibles?: string[],
+    responsibles?: Teacher[],
     type?: string,
     modality?: string,
     status?: string,
     link?: string,
     attachmentFile?: string,
-    forum?: Forum
+    forum?: Forum,
+    observation?: string
   ) {
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
@@ -44,21 +51,32 @@ export default class Activity {
       this.link = link;
       this.attachmentFile = attachmentFile;
       this.forum = forum;
+      this.observation = observation;
     } else {
-      //this.id = NameOrDTO._id.toString();
-      this.id = NameOrDTO._id;
+      this.id = NameOrDTO.id;
       this.name = NameOrDTO.name;
       this.week = NameOrDTO.week;
       this.date = NameOrDTO.date;
       this.prevDays = NameOrDTO.prevDays;
       this.reminderInterval = NameOrDTO.reminderInterval;
-      this.responsibles = NameOrDTO.responsibles;
       this.type = NameOrDTO.type;
       this.modality = NameOrDTO.modality;
       this.status = NameOrDTO.status;
       this.link = NameOrDTO.link;
       this.attachmentFile = NameOrDTO.attachmentFile;
-      //this.forum = NameOrDTO.forum;
+      this.evidence = NameOrDTO.evidence;
+      this.observation = NameOrDTO.observation;
+      this.responsibles = NameOrDTO.responsibles.map(
+        (teacherDTO) => new Teacher(teacherDTO)
+      );
+      if (NameOrDTO.forum) {
+        const messages = NameOrDTO.forum.messages.map(
+          (messageDTO) => new Message(messageDTO)
+        );
+        this.forum = new Forum(messages);
+      } else {
+        this.forum = new Forum();
+      }
     }
   }
 
@@ -80,17 +98,111 @@ export default class Activity {
     this.week = week;
   }
 
-  getID(): string {
-    return this.id;
-  }
-
-  getForum(): Forum{
+  getForum(): Forum {
     return this.forum;
   }
 
-  setForum(forum: Forum): void{
+  setForum(forum: Forum): void {
     this.forum = forum;
   }
 
-  // Getter and Setter
+  getID(): number {
+    return this.id;
+  }
+
+  setID(id: number): void {
+    this.id = id;
+  }
+
+  getStatus(): string {
+    return this.status;
+  }
+
+  setStatus(status: string): void {
+    this.status = status;
+  }
+
+  getPrevDays(): number {
+    return this.prevDays;
+  }
+
+  getDate(): Date {
+    return this.date;
+  }
+
+  getReminderInterval(): number {
+    return this.reminderInterval;
+  }
+
+  getPublishDate(): Date {
+    const publishDate = new Date();
+    publishDate.setDate(this.date.getDate() - this.prevDays);
+    return publishDate;
+  }
+
+  verify(today: Date): void {
+    try {
+      if (this.status == "Notificada" || this.status == "Publicada") {
+        this.verifyNotify(today);
+      }
+      if (this.status == "Planeada") {
+        this.verifyPublish(today);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  verifyPublish(today: Date): void {
+    try {
+      // get the date to publish
+      const publishDate = this.getPublishDate();
+
+      // if today is the day to publish
+      if (today.getDate() == publishDate.getDate()) {
+        this.setStatus("Publicada");
+        "Published: " + this.name;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  verifyNotify(today: Date): void {
+    try {
+      // get the date to publish
+      const publishDate = this.getPublishDate();
+
+      // interval to notify
+      let cont = this.reminderInterval;
+      while (publishDate <= this.date && publishDate <= today) {
+        // add the interval to the publish date
+        publishDate.setDate(publishDate.getDate() + this.reminderInterval);
+
+        if (this.reminderInterval === 0) {
+          continue;
+        }
+
+        // if today is the day to notify
+        if (publishDate.getDate() == today.getDate()) {
+          this.setStatus("Notificada");
+          "Notified: " + this.name;
+          this.notify();
+
+          break;
+        }
+        // add the interval to the counter
+        cont += this.reminderInterval;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  notify(): void {}
+
+  // Método accept para aceptar visitantes
+  accept(visitor: Visitor): void {
+    visitor.visitActivity(this);
+  }
 }

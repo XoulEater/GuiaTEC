@@ -30,6 +30,7 @@ export default class WorkplanDAO {
    */
   public static async getWorkplanById(_id: string): Promise<Workplan> {
     const workplanData = await WorkplanSchema.findOne({ _id: _id }).exec();
+    workplanData;
     return workplanData ? new Workplan(workplanData.toObject()) : null;
   }
 
@@ -42,7 +43,7 @@ export default class WorkplanDAO {
   public static async updateWorkplan(_id: string, pWorkplan: Workplan) {
     await WorkplanSchema.findOneAndUpdate({ _id: _id }, pWorkplan, {
       new: true,
-    })
+    });
   }
 
   /**
@@ -55,5 +56,4 @@ export default class WorkplanDAO {
       _id: _id,
     });
   }
-
 }

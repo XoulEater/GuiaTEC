@@ -35,7 +35,6 @@ export async function createWorkplan() {
     },
   });
   const data = await response.json();
-  console.log(data);
   return data.id;
 }
 
@@ -63,5 +62,11 @@ export async function updateWorkplan(workplan: WorkPlan) {
 export async function deleteWorkplan(id: string) {
   await fetch(`${API_URL}/workplans/${id}`, {
     method: "DELETE",
+  });
+}
+
+export async function notifyActitities() {
+  await fetch(`${API_URL}/notifications`, {
+    method: "POST",
   });
 }

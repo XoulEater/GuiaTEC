@@ -1,7 +1,14 @@
 import mongoose, { Schema } from "mongoose";
 import forumSchema from "./forum.schema";
+import e from "express";
+import { teacherSchema } from "./teacher.schema";
 
 const activitySchema: Schema = new Schema({
+  id: {
+    // Unique identifier of the activity
+    type: Number,
+    required: true,
+  },
   name: {
     // Name of the activity
     type: String,
@@ -40,11 +47,11 @@ const activitySchema: Schema = new Schema({
 
   responsibles: {
     // Responsibles of the activity
-    type: [String],
+    type: [teacherSchema],
     required: true,
   },
 
-  attachementFile: {
+  attachmentFile: {
     // Attachements of the activity
     type: String,
     required: true,
@@ -62,6 +69,12 @@ const activitySchema: Schema = new Schema({
     required: true,
   },
 
+  evidence: {
+    // Evidence of the activity
+    type: [String],
+    required: true,
+  },
+
   status: {
     // Status of the activity
     type: String,
@@ -71,6 +84,11 @@ const activitySchema: Schema = new Schema({
   forum: {
     // Forum of the activity
     type: forumSchema,
+    required: true,
+  },
+  observation: {
+    // Observation of the activity
+    type: String,
     required: true,
   },
 });
@@ -91,4 +109,3 @@ export default activitySchema;
 //   "attachmentFile": "test.pdf",
 //   "forum": "https://example.com/forum"
 // }
-

@@ -67,7 +67,7 @@ class ActivityController {
                 // Get the activity
                 const activity = workplan
                     .getActivities()
-                    .find((activity) => activity.getID() === activityId);
+                    .find((activity) => activity.getID() === Number(activityId));
                 if (!activity) {
                     res.status(404).json({ error: "Activity not found" });
                     return;
@@ -89,6 +89,7 @@ class ActivityController {
             try {
                 const activityDTO = req.body;
                 const workplanId = req.params.wid;
+                console.log(activityDTO);
                 // Create the activity
                 let activity;
                 try {
@@ -98,6 +99,7 @@ class ActivityController {
                     res.status(500).json({ error: "Error instantiating activity" });
                     return;
                 }
+                activity.setID(Math.floor(Math.random() * 1000000));
                 // Get the workplan
                 let workplan;
                 try {
@@ -126,6 +128,7 @@ class ActivityController {
     static updateActivity(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                // TODO: Add the logic notifing the responsibles of the activity
                 const activityDTO = req.body;
                 const workplanId = req.params.wid;
                 const activityID = req.params.aid;
@@ -155,6 +158,11 @@ class ActivityController {
                 catch (error) {
                     res.status(500).json({ error: "Error updating workplan" });
                     return;
+                }
+                console.log(activity.getStatus());
+                if (activity.getStatus() === "Notificada") {
+                    activity.notify();
+                    console.log("Notified");
                 }
                 res.status(200).json({ message: "Activity updated successfully" });
             }

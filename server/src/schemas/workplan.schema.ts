@@ -16,21 +16,9 @@ const workplanSchema: Schema = new Schema({
   activities: {
     type: [activitySchema],
   },
-  year: {
-    // year of the workplan
-    type: Number,
-    required: true,
-  },
-  semester: {
-    // semester of the workplan
-    type: Number,
-    required: true,
-  },
 });
 
 export default mongoose.model("Workplan", workplanSchema);
-
-
 
 // json example
 
