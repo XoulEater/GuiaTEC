@@ -20,6 +20,7 @@ class ReminderVisitor extends Subject implements Visitor {
 
       while (nextReminderDate <= this.systemDate) {
         if (nextReminderDate.getDate() === this.systemDate.getDate()) {
+          // Observer pattern
           const notification = new Notification(
             "Recordatorio",
             `La actividad ${activity.getName()} se llevará a cabo el ${activity.getDate()}`

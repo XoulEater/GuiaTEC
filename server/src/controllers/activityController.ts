@@ -161,10 +161,12 @@ export class ActivityController {
       }
 
       console.log(activity.getStatus());
-      if (activity.getStatus() === "Notificada") {
-        activity.notify();
-        console.log("Notified");
-      }
+
+      // TODO: Add the logic notifing the responsibles of the activity using observer pattern
+      // if (activity.getStatus() === "Notificada") {
+      //   activity.notify();
+      //   console.log("Notified");
+      // }
 
       res.status(200).json({ message: "Activity updated successfully" });
     } catch (error) {

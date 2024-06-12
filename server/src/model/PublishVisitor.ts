@@ -16,6 +16,8 @@ class PublishVisitor extends Subject implements Visitor {
     if (activity.getStatus() === "Planeada" && publishDate <= this.systemDate) {
       activity.setStatus("Publicada");
       console.log(`Published: ${activity.getName()}`);
+
+      // Observer pattern
       const notification = new Notification(
         "Publicación",
         `La actividad ${activity.getName()} ha sido publicada`

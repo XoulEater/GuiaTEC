@@ -12,7 +12,8 @@ export class NotificationController {
     res: Response
   ): Promise<void> {
     try {
-      const notificationDate: Date = await NotificationDAO.getLastNotification();
+      const notificationDate: Date =
+        await NotificationDAO.getLastNotification();
 
       // get the current date, using the date set in the .env file for testing
       const today = new Date(process.env.TODAY);
@@ -25,7 +26,8 @@ export class NotificationController {
         // for each workplan, verify the activities
         for (let workPlan of workPlans) {
           workPlan.getActivities().forEach((activity) => {
-            activity.verify(today);
+            // activity.verify(today);
+            // TODO: implement the verify method in the activity class using Visitor pattern
           });
           // update the workplan in the database
           await WorkplanDAO.updateWorkplan(workPlan.getID(), workPlan);
@@ -37,7 +39,9 @@ export class NotificationController {
       res.status(200).json({ message: "Notification already verified" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "An error occurred while verifying the notification." });
+      res.status(500).json({
+        message: "An error occurred while verifying the notification.",
+      });
     }
   }
 }

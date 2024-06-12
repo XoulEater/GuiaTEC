@@ -11,7 +11,7 @@ class User {
   private photo: string;
   private campus: Campus;
   private isLeader: boolean = false;
-  private userType: "teacher" | "assistant";
+  private userType: "teacher" | "assistant" | "student";
 
   // Constructor
   constructor(
@@ -19,7 +19,7 @@ class User {
     email: string,
     password: string,
     campus: Campus,
-    userType: "teacher" | "assistant",
+    userType: "teacher" | "assistant" | "student",
     isLeader?: boolean,
     photo?: string,
     id?: string,
@@ -61,7 +61,7 @@ class User {
     return this.campus;
   }
 
-  public getUserType(): "teacher" | "assistant" {
+  public getUserType(): "teacher" | "assistant" | "student" {
     return this.userType;
   }
 

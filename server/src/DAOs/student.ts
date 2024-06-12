@@ -2,6 +2,7 @@
 
 import StudentSchema from "../schemas/student.schema";
 import Student from "../model/Student";
+import StudentAdapter from "../model/StudentAdapter";
 
 export default class StudentDAO {
   /**
@@ -32,6 +33,13 @@ export default class StudentDAO {
     );
   }
 
+  public static async getAllStudentsAdapted(): Promise<StudentAdapter[]> {
+    const studentData = await StudentSchema.find().exec();
+    return studentData.map(
+      (studentData) => new StudentAdapter(studentData.toObject())
+    );
+  }
+
   /**
    * Get all the students for a given campus
    * @param campus campus of the students
@@ -55,6 +63,15 @@ export default class StudentDAO {
     });
   }
 
+  public static async updateStudentAdapted(
+    carnet: string,
+    student: StudentAdapter
+  ) {
+    await StudentSchema.findOneAndUpdate({ carnet: carnet }, student, {
+      new: true,
+    });
+  }
+
   /**
    * Delete a student from the database
    * @param carnet carnet of the student
@@ -64,5 +81,15 @@ export default class StudentDAO {
     await StudentSchema.findOneAndDelete({
       carnet: carnet,
     });
+  }
+
+  public static async changePassword(carnet: string, newPassword: string) {
+    await StudentSchema.findOneAndUpdate(
+      { carnet: carnet },
+      { password: newPassword },
+      {
+        new: true,
+      }
+    ).exec();
   }
 }

@@ -1,23 +1,24 @@
 import AssistantDAO from "../DAOs/assistant"; // Asegúrate de usar la ruta correcta
 import TeacherDAO from "../DAOs/teacher";
+import StudentDAO from "../DAOs/student";
 import { Request, Response } from "express";
 import User from "../model/User";
 import Email from "./sendEmail";
-import Assistant from "../model/Assistant";
 
 export class AuthController {
   // Get all users
   static async getUsers(): Promise<User[]> {
     const teachers = await TeacherDAO.getAllTeachers();
     const assistants = await AssistantDAO.getAllAssistants();
-    const users: User[] = [...teachers, ...assistants];
+    const students = await StudentDAO.getAllStudentsAdapted();
+
+    const users: User[] = [...teachers, ...assistants, ...students];
     return users;
   }
 
   //Login
   public static async login(req: Request, res: Response) {
     try {
-
       const email = req.body.email;
       const password = req.body.password;
       console.log(email);
@@ -47,29 +48,26 @@ export class AuthController {
 
   //Reset Password
   public static async resetPassword(req: Request, res: Response) {
-    try {
-      const { email } = req.body;
-      // Get users
-      const users = await AuthController.getUsers();
+    const { email } = req.body;
+    // Get users
+    const users = await AuthController.getUsers();
 
-      //Find user
-      const userFound = users.find((user) => user.getEmail() === email);
+    //Find user
+    const userFound = users.find((user) => user.getEmail() === email);
+    console.log(userFound);
 
-      if (!userFound) {
-        return res.status(500).json({ message: "User Not Found" });
-      }
-      // Send email with token
-      const emailSent = Email.getInstance();
-      const userToken = userFound.getDbId();
-      await emailSent.sendMail(
-        userFound.getEmail(),
-        "Reset Password",
-        "Use this Token to reset your password: " + userToken
-      );
-      res.status(200).json({ message: "Email sent" });
-    } catch (error) {
-      res.status(500).json({ message: "Error reset password" });
+    if (!userFound) {
+      return res.status(500).json({ message: "User Not Found" });
     }
+    // Send email with token
+    const emailSent = Email.getInstance();
+    const userToken = userFound.getDbId();
+    await emailSent.sendMail(
+      userFound.getEmail(),
+      "Reset Password",
+      "Use this Token to reset your password: " + userToken
+    );
+    res.status(200).json({ message: "Email sent" });
   }
 
   //Validate Token
@@ -106,6 +104,7 @@ export class AuthController {
       const users = await AuthController.getUsers();
 
       //Find user
+
       const userFound = users.find((user) => user.getEmail() === email);
 
       if (!userFound) {
@@ -119,15 +118,12 @@ export class AuthController {
 
       if (userType === "teacher") {
         await TeacherDAO.changePassword(userFound.getId(), password);
+      } else if (userType === "assistant") {
+        await AssistantDAO.changePassword(userFound.getId(), password);
       } else {
-        const newAssistant = new Assistant(
-          userFound.getName(),
-          userFound.getEmail(),
-          password,
-          userFound.getCampus()
-        );
-        await AssistantDAO.updateAssistant(userFound.getId(), newAssistant);
+        await StudentDAO.changePassword(userFound.getId(), password);
       }
+
       res.status(200).json({ message: "Password changed" });
     } catch (error) {
       res.status(500).json({ message: "Error changing password" });
