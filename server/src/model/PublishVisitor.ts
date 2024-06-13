@@ -3,7 +3,7 @@ import Activity from "./Activity";
 import Subject from "./Subject";
 import Notification from "./Notification";
 
-class PublishVisitor extends Subject implements Visitor {
+export default class PublishVisitor extends Subject implements Visitor {
   private systemDate: Date;
 
   constructor(systemDate: Date) {
@@ -13,10 +13,13 @@ class PublishVisitor extends Subject implements Visitor {
 
   visitActivity(activity: Activity): void {
     const publishDate = activity.getPublishDate();
+    console.log(
+      activity.getStatus() + " " + publishDate + " " + this.systemDate
+    );
+
     if (activity.getStatus() === "Planeada" && publishDate <= this.systemDate) {
       activity.setStatus("Publicada");
       console.log(`Published: ${activity.getName()}`);
-
       // Observer pattern
       const notification = new Notification(
         "Publicación",

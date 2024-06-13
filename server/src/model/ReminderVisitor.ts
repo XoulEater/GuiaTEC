@@ -3,7 +3,7 @@ import Activity from "./Activity";
 import Subject from "./Subject";
 import Notification from "./Notification";
 
-class ReminderVisitor extends Subject implements Visitor {
+export default class ReminderVisitor extends Subject implements Visitor {
   private systemDate: Date;
 
   constructor(systemDate: Date) {

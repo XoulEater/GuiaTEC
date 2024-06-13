@@ -21,6 +21,9 @@ export default class StudentAdapter extends User {
       student._id
     );
     this.student = new Student(student);
+    if (!student.inbox) {
+      student.inbox = { notifications: [], readNotifications: [] };
+    }
     this.inbox = new NotificationInbox(student.inbox);
   }
 
@@ -37,6 +40,7 @@ export default class StudentAdapter extends User {
   }
 
   public receiveNotification(notificationID: number): void {
+    console.log(`Notification received: ${notificationID}`);
     this.inbox.addNotification(notificationID);
   }
 }
