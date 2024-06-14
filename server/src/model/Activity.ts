@@ -4,8 +4,10 @@ import Message from "./Message";
 import Email from "../controllers/sendEmail";
 import Teacher from "./Teacher";
 import Visitor from "./Visitor";
+import Subject from "./Subject";
+import Notification from "./Notification";
 
-export default class Activity {
+export default class Activity extends Subject {
   private id: number;
   private name: string;
   private week: number;
@@ -38,6 +40,7 @@ export default class Activity {
     forum?: Forum,
     observation?: string
   ) {
+    super();
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
       this.week = week;
@@ -138,6 +141,26 @@ export default class Activity {
     const publishDate = new Date();
     publishDate.setDate(this.date.getDate() - this.prevDays);
     return publishDate;
+  }
+
+  // Method to send reminder manually
+  sendReminder(): void {
+    const notification = new Notification(
+      "Recordatorio",
+      `La actividad ${this.name} se llevará a cabo el ${this.date}`
+    );
+    this.notifyObservers(notification);
+    this.status = "Notificada";
+  }
+
+  // Method to send cancellation
+  sendCancellation(): void {
+    const notification = new Notification(
+      "Cancelación",
+      `La actividad ${this.name} ha sido cancelada, motivo: ${this.observation}`
+    );
+    this.notifyObservers(notification);
+    this.status = "Cancelada";
   }
 
   // Método accept para aceptar visitantes

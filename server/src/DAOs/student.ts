@@ -3,6 +3,8 @@
 import StudentSchema from "../schemas/student.schema";
 import Student from "../model/Student";
 import StudentAdapter from "../model/StudentAdapter";
+import NotificationInbox from "../model/NotificationInbox";
+import InboxDTO from "../DTOs/inbox";
 
 export default class StudentDAO {
   /**
@@ -63,13 +65,24 @@ export default class StudentDAO {
     });
   }
 
-  public static async updateStudentAdapted(
+  public static async updateStudentInbox(
     carnet: string,
-    student: StudentAdapter
+    notificationInbox: NotificationInbox
   ) {
-    await StudentSchema.findOneAndUpdate({ carnet: carnet }, student, {
-      new: true,
-    });
+    await StudentSchema.findOneAndUpdate(
+      { carnet: carnet },
+      { inbox: notificationInbox },
+      {
+        new: true,
+      }
+    );
+  }
+
+  public static async getStudentInbox(
+    carnet: string
+  ): Promise<NotificationInbox> {
+    const studentData = await StudentSchema.findOne({ carnet: carnet });
+    return new NotificationInbox(studentData.toObject().inbox as InboxDTO);
   }
 
   /**

@@ -21,6 +21,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
   const user = JSON.parse(userData as string) as User;
   const isLeader = user.isLeader;
   const isTeacher = user.userType === "teacher";
+  const isStudent = user.userType === "student";
 
   const showCreateActivityButton = isLeader;
   const showEditActivityButtons = isLeader;
@@ -43,9 +44,18 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
   const loadWorkplan = async () => {
     const res = await workplanService.getWorkplanById(id);
     setWorkplan(res);
-    const sortedActivities = res.activities?.sort(
+    let sortedActivities = res.activities?.sort(
       (a, b) => new Date(a.date).getDate() - new Date(b.date).getDate()
     );
+
+    // In case the user is a student, filter the activities that are not canceled or planned
+    if (isStudent) {
+      sortedActivities = sortedActivities?.filter(
+        (activity) =>
+          activity.status !== ActivityStatus.CANCELADA &&
+          activity.status !== ActivityStatus.PLANEADA
+      );
+    }
     setActivities(sortedActivities);
   };
 

@@ -1,34 +1,46 @@
 import InboxDTO from "../DTOs/inbox";
 
 export default class NotificationInbox {
-  private notifications: Set<number> = new Set(); // Notification IDs
-  private readNotifications: Set<number> = new Set(); // Notification IDs
+  private notifications: number[] = []; // Notification IDs
+  private readNotifications: number[] = []; // Notification IDs
 
   public constructor(inbox: InboxDTO) {
-    this.notifications = new Set(inbox.notifications);
-    this.readNotifications = new Set(inbox.readNotifications);
+    this.notifications = inbox.notifications;
+    this.readNotifications = inbox.readNotifications;
   }
 
   public addNotification(notificationID: number): void {
-    this.notifications.add(notificationID);
+    this.notifications.push(notificationID);
   }
 
   public markAsRead(notificationID: number): void {
-    this.readNotifications.add(notificationID);
+    this.readNotifications.push(notificationID);
   }
 
   public deleteNotification(notificationID: number): void {
-    this.notifications.delete(notificationID);
-    this.readNotifications.delete(notificationID);
+    this.notifications = this.notifications.filter(
+      (id) => id !== notificationID
+    );
+    this.readNotifications = this.readNotifications.filter(
+      (id) => id !== notificationID
+    );
+  }
+
+  public deleteReadNotifications(): void {
+    // Remove read notifications from both lists
+    this.notifications = this.notifications.filter(
+      (id) => !this.readNotifications.includes(id)
+    );
+    this.readNotifications = [];
   }
 
   public getNotifications(): number[] {
-    return Array.from(this.notifications);
+    return this.notifications;
   }
 
   public getUnreadNotifications(): number[] {
-    return Array.from(this.notifications).filter(
-      (id) => !this.readNotifications.has(id)
+    return this.notifications.filter(
+      (id) => !this.readNotifications.includes(id)
     );
   }
 }

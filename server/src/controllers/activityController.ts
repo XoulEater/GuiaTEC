@@ -162,11 +162,14 @@ export class ActivityController {
 
       console.log(activity.getStatus());
 
-      // TODO: Add the logic notifing the responsibles of the activity using observer pattern
-      // if (activity.getStatus() === "Notificada") {
-      //   activity.notify();
-      //   console.log("Notified");
-      // }
+      if (activity.getStatus() === "Notificada") {
+        activity.sendReminder();
+        console.log("Notified");
+      }
+      if (activity.getStatus() === "Cancelada") {
+        activity.sendCancellation();
+        console.log("Cancelled");
+      }
 
       res.status(200).json({ message: "Activity updated successfully" });
     } catch (error) {

@@ -1,6 +1,6 @@
 // API fetch routes for teachers
 
-import type { Student } from "@/lib/types.ts";
+import type { Inbox, Student } from "@/lib/types.ts";
 import { API_URL } from "@/lib/api.ts";
 
 /**
@@ -46,6 +46,95 @@ export async function updateStudent(student: Student): Promise<Student> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(student),
+  });
+  return response.json();
+}
+
+/**
+ * Get the inbox of a student
+ * @param carnet the id of the student
+ * @returns a promise with the notifications
+ */
+export async function getStudentInbox(carnet: string): Promise<Inbox> {
+  const response = await fetch(`${API_URL}/students/${carnet}/inbox`);
+  return response.json();
+}
+
+/**
+ * Get all the notifications
+ * @returns a promise with the notifications
+ */
+export async function getAllNotifications(): Promise<Notification[]> {
+  const response = await fetch(`${API_URL}/notifications`);
+  return response.json();
+}
+
+/**
+ * Update the inbox of a student
+ * @param carnet the id of the student
+ * @param inbox the new inbox
+ * @returns a promise with the updated inbox
+ */
+export async function updateStudentInbox(
+  carnet: string,
+  inbox: Inbox
+): Promise<Inbox> {
+  const response = await fetch(`${API_URL}/students/${carnet}/inbox`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(inbox),
+  });
+  return response.json();
+}
+
+/**
+ * Delete a notification from the inbox of a student
+ * @param carnet the id of the student
+ * @param notificationId the id of the notification to delete
+ * @returns a promise with the updated inbox
+ */
+export async function deleteNotification(
+  carnet: string,
+  notificationId: number
+): Promise<Inbox> {
+  const response = await fetch(
+    `${API_URL}/students/${carnet}/inbox/${notificationId}`,
+    {
+      method: "DELETE",
+    }
+  );
+  return response.json();
+}
+
+/**
+ * Mark a notification as read
+ * @param carnet the id of the student
+ * @param notificationId the id of the notification to mark as read
+ * @returns a promise with the updated inbox
+ */
+export async function markNotificationAsRead(
+  carnet: string,
+  notificationId: number
+): Promise<Inbox> {
+  const response = await fetch(
+    `${API_URL}/students/${carnet}/inbox/${notificationId}`,
+    {
+      method: "PATCH",
+    }
+  );
+  return response.json();
+}
+
+/**
+ * Delete all the read notifications from the inbox of a student
+ * @param carnet the id of the student
+ * @returns a promise with the updated inbox
+ */
+export async function deleteReadNotifications(carnet: string): Promise<Inbox> {
+  const response = await fetch(`${API_URL}/students/${carnet}/inbox`, {
+    method: "PATCH",
   });
   return response.json();
 }

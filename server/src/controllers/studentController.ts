@@ -80,4 +80,88 @@ export class StudentController {
       res.status(500).json({ error: "Error updating student" });
     }
   }
+  public static async getStudentInbox(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const carnet = req.params.code;
+      const inbox = await StudentDAO.getStudentInbox(carnet);
+      res.status(200).json(inbox);
+    } catch (error) {
+      res.status(500).json({ error: "Error getting student inbox" });
+    }
+  }
+
+  public static async updateStudentInbox(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const carnet = req.params.code;
+      const inbox = req.body;
+      await StudentDAO.updateStudentInbox(carnet, inbox);
+      res.status(200).json({ message: "Inbox updated" });
+    } catch (error) {
+      res.status(500).json({ error: "Error updating inbox" });
+    }
+  }
+
+  public static async markAsRead(req: Request, res: Response): Promise<void> {
+    try {
+      const carnet = req.params.code;
+      const id = req.params.id;
+      const inbox = await StudentDAO.getStudentInbox(carnet);
+
+      inbox.markAsRead(parseInt(id));
+
+      await StudentDAO.updateStudentInbox(carnet, inbox);
+
+      // Return the updated inbox
+      res.status(200).json(inbox);
+    } catch (error) {
+      res.status(500).json({ error: "Error marking notification as read" });
+    }
+  }
+
+  public static async deleteNotification(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    // try {
+    const carnet = req.params.code;
+    const id = req.params.id;
+
+    const inbox = await StudentDAO.getStudentInbox(carnet);
+
+    inbox.deleteNotification(parseInt(id));
+    console.log(inbox);
+
+    await StudentDAO.updateStudentInbox(carnet, inbox);
+
+    // Return the updated inbox
+    res.status(200).json(inbox);
+    // } catch (error) {
+    //   res.status(500).json({ error: "Error deleting notification" });
+    // }
+  }
+
+  public static async deleteReadNotifications(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const carnet = req.params.code;
+      const inbox = await StudentDAO.getStudentInbox(carnet);
+
+      inbox.deleteReadNotifications();
+
+      await StudentDAO.updateStudentInbox(carnet, inbox);
+
+      // Return the updated inbox
+      res.status(200).json(inbox);
+    } catch (error) {
+      res.status(500).json({ error: "Error deleting read notifications" });
+    }
+  }
 }

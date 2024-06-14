@@ -43,9 +43,13 @@ export default class NotificationCenter implements Observer {
     // Notify students
     this.students.forEach((student) => {
       student.receiveNotification(notificationID);
-      console.log(`Notification sent to ${student.getName()}`);
+      StudentDAO.updateStudentInbox(
+        student.getCarnet().toString(),
+        student.getInbox()
+      );
     });
 
-    // update the students in the database
+    console.log(this.notifications);
+    console.log(this.students);
   }
 }
