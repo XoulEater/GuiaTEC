@@ -28,7 +28,7 @@ export default class NotificationCenter implements Observer {
       this.students = students;
     });
     // TODO: Fetch notifications from database when available
-    // NotificationDAO.getAllNotifications().then((notifications) => {
+    // AlertDAO.getAllAlerts().then((notifications) => {
     //   this.notifications = notifications;
     // });
   }
@@ -38,7 +38,7 @@ export default class NotificationCenter implements Observer {
     const notificationID = this.notifications.length;
 
     // TODO: Add workflow to save notification to database [DAO, DTO, etc]
-    // NotificationDAO.saveNotification(notification);
+    // AlertDAO.saveAlert(notification);
 
     // Notify students
     this.students.forEach((student) => {
