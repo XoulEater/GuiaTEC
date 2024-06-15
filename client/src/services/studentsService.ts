@@ -1,6 +1,6 @@
 // API fetch routes for teachers
 
-import type { Inbox, Student } from "@/lib/types.ts";
+import type { Notification, Inbox, Student } from "@/lib/types.ts";
 import { API_URL } from "@/lib/api.ts";
 
 /**
@@ -57,15 +57,6 @@ export async function updateStudent(student: Student): Promise<Student> {
  */
 export async function getStudentInbox(carnet: string): Promise<Inbox> {
   const response = await fetch(`${API_URL}/students/${carnet}/inbox`);
-  return response.json();
-}
-
-/**
- * Get all the notifications
- * @returns a promise with the notifications
- */
-export async function getAllNotifications(): Promise<Notification[]> {
-  const response = await fetch(`${API_URL}/notifications`);
   return response.json();
 }
 
@@ -136,5 +127,14 @@ export async function deleteReadNotifications(carnet: string): Promise<Inbox> {
   const response = await fetch(`${API_URL}/students/${carnet}/inbox`, {
     method: "PATCH",
   });
+  return response.json();
+}
+
+/**
+ * Get all the notifications
+ * @returns a promise with the notifications
+ */
+export async function getAllNotifications(): Promise<Notification[]> {
+  const response = await fetch(`${API_URL}/students/notifications`);
   return response.json();
 }

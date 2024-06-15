@@ -99,7 +99,7 @@ export interface Inbox {
 
 export interface Notification {
   title: string; // title of the notification
-  content: string; // content of the notification
+  body: string; // content of the notification
   postDate: Date; // date of the notification
   read?: boolean; // if the notification was read
   id?: number; // unique identifier of the notification

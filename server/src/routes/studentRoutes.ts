@@ -13,5 +13,6 @@ router.delete("/:code", StudentController.deleteStudent);
 router.delete("/:code/inbox/:id", StudentController.deleteNotification);
 router.patch("/:code/inbox/:id", StudentController.markAsRead);
 router.patch("/:code/inbox", StudentController.deleteReadNotifications);
+router.get("/notifications", StudentController.getAllNotifications);
 
 export default router;

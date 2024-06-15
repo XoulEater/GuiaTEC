@@ -29,59 +29,61 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
   }
 
   const loadNotifications = async (inbox: Inbox) => {
-    // TODO: const notifications = await studentsService.getAllNotifications();
-    const notifications: Notification[] = [
-      {
-        title: "Notificación de prueba 1",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 2",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 3",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 4",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 5",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 6",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 7",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 8",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 9",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-      {
-        title: "Notificación de prueba 10",
-        content: "Se ha creado una nueva actividad",
-        postDate: new Date(),
-      },
-    ];
+    const notifications = await studentsService.getAllNotifications();
+    console.log("notifications", notifications);
+    console.log("inbox", inbox);
+    // const notifications: Notification[] = [
+    //   {
+    //     title: "Notificación de prueba 1",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 2",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 3",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 4",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 5",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 6",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 7",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 8",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 9",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    //   {
+    //     title: "Notificación de prueba 10",
+    //     content: "Se ha creado una nueva actividad",
+    //     postDate: new Date(),
+    //   },
+    // ];
     let formatedNotifications: Notification[] = [];
     notifications.forEach((notification, i) => {
       const read = inbox.readNotifications.includes(i);
@@ -285,9 +287,9 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
                     <div className="text-sm font-medium">
                       {notification.title}
                     </div>
-                    <div className="text-xs">{notification.content}</div>
+                    <div className="text-xs max-w-52">{notification.body}</div>
                     <div className="text-xs text-gray-500">
-                      {notification.postDate.toLocaleDateString()}
+                      {notification.postDate.toString()}
                     </div>
                   </main>
                   <aside>

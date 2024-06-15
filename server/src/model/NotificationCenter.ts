@@ -3,6 +3,7 @@ import Notification from "./Notification";
 import StudentDAO from "../DAOs/student";
 import { Observer } from "./Observer";
 import StudentAdapter from "./StudentAdapter";
+import AlertDAO from "../DAOs/alert";
 
 export default class NotificationCenter implements Observer {
   private static instance: NotificationCenter;
@@ -28,18 +29,19 @@ export default class NotificationCenter implements Observer {
       this.students = students;
     });
     // TODO: Fetch notifications from database when available
-    // AlertDAO.getAllAlerts().then((notifications) => {
-    //   this.notifications = notifications;
-    // });
+    AlertDAO.getAllAlerts().then((notifications) => {
+      this.notifications = notifications;
+    });
   }
 
   public update(notification: Notification): void {
     this.notifications.push(notification);
-    const notificationID = this.notifications.length;
+    const notificationID = this.notifications.length - 1;
 
     // TODO: Add workflow to save notification to database [DAO, DTO, etc]
-    // AlertDAO.saveAlert(notification);
+    AlertDAO.saveAlert(notification);
 
+    // FIXME: Something is wrong here
     // Notify students
     this.students.forEach((student) => {
       student.receiveNotification(notificationID);

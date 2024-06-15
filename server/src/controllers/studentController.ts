@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import StudentDAO from "../DAOs/student";
 import Student from "../model/Student";
+import AlertDAO from "../DAOs/alert";
 
 // Student Controller that handles the requests related to students
 // uses the studentDAO to perform the operations
@@ -162,6 +163,18 @@ export class StudentController {
       res.status(200).json(inbox);
     } catch (error) {
       res.status(500).json({ error: "Error deleting read notifications" });
+    }
+  }
+
+  public static async getAllNotifications(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const notifications = await AlertDAO.getAllAlerts();
+      res.status(200).json(notifications);
+    } catch (error) {
+      res.status(500).json({ error: "Error getting notifications" });
     }
   }
 }
