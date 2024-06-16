@@ -28,7 +28,6 @@ export default class NotificationCenter implements Observer {
     StudentDAO.getAllStudentsAdapted().then((students) => {
       this.students = students;
     });
-    // TODO: Fetch notifications from database when available
     AlertDAO.getAllAlerts().then((notifications) => {
       this.notifications = notifications;
     });
@@ -38,11 +37,12 @@ export default class NotificationCenter implements Observer {
     this.notifications.push(notification);
     const notificationID = this.notifications.length - 1;
 
-    // TODO: Add workflow to save notification to database [DAO, DTO, etc]
     AlertDAO.saveAlert(notification);
 
     // FIXME: Something is wrong here
     // Notify students
+    console.log("sendingAlert:" + notificationID);
+
     this.students.forEach((student) => {
       student.receiveNotification(notificationID);
       StudentDAO.updateStudentInbox(
@@ -50,8 +50,5 @@ export default class NotificationCenter implements Observer {
         student.getInbox()
       );
     });
-
-    console.log(this.notifications);
-    console.log(this.students);
   }
 }

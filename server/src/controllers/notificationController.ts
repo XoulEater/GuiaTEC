@@ -14,7 +14,8 @@ export class NotificationController {
     res: Response
   ): Promise<void> {
     try {
-      // const notificationDate: Date = await NotificationDAO.getLastNotification();
+      const notificationDate: Date =
+        await NotificationDAO.getLastNotification();
 
       // get the current date, using the date set in the .env file for testing
       const today = new Date(process.env.TODAY);
@@ -23,8 +24,7 @@ export class NotificationController {
       const reminderVisitor = new ReminderVisitor(today);
 
       // if the notification date is not today
-      // FIXME: if (notificationDate.getDate() != today.getDate()) {
-      if (true) {
+      if (notificationDate.getDate() != today.getDate()) {
         const workPlans = await WorkplanDAO.getAllWorkplans();
 
         // for each workplan, verify the activities
@@ -40,7 +40,7 @@ export class NotificationController {
         console.log("Notification verified");
 
         // record the notification in the database to avoid multiple notifications👌
-        // FIXME: await NotificationDAO.addNotification(today);
+        await NotificationDAO.addNotification(today);
       }
       res.status(200).json({ message: "Notification already verified" });
     } catch (error) {
