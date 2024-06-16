@@ -1,22 +1,19 @@
-import AlertDTO from "../DTOs/alert"
+import AlertDTO from "../DTOs/alert";
 
 export default class Notification {
   private title: string;
   private body: string;
   private postDate: Date;
 
-  public constructor(
-    title: string | AlertDTO,
-    body?: string
-    ) {
-    if (typeof title === "string"){
+  public constructor(title: string | AlertDTO, body?: string) {
+    if (typeof title === "string") {
       this.title = title;
       this.body = body;
       this.postDate = new Date();
-    }else{
+    } else {
       this.title = title.title;
       this.body = title.body;
-      this.postDate = new Date();
+      this.postDate = title.postDate;
     }
   }
 
