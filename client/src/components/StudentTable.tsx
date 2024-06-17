@@ -112,6 +112,14 @@ const StudentTable = () => {
     input.click();
   }
 
+  if (user.userType === "student") {
+    return (
+      <div className="flex items-center justify-center h-full text-3xl font-semibold text-red-500">
+        No tienes permisos para ver esta página
+      </div>
+    );
+  }
+
   return (
     <div>
       <header className="flex justify-between mx-10 sm:mx-20 my-6 flex-col sm:flex-row gap-3">

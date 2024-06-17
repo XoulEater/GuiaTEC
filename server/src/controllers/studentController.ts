@@ -81,6 +81,26 @@ export class StudentController {
       res.status(500).json({ error: "Error updating student" });
     }
   }
+
+  /**
+   * Update the photo of a student
+   * @param req the request
+   * @param res the response
+   */
+  public static async updateStudentPhoto(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const carnet = req.params.code;
+      const photo = req.body.photo;
+      await StudentDAO.updateStudentPhoto(carnet, photo);
+      res.status(200).json({ message: "Photo updated" });
+    } catch (error) {
+      res.status(500).json({ error: "Error updating photo" });
+    }
+  }
+
   public static async getStudentInbox(
     req: Request,
     res: Response
@@ -175,6 +195,19 @@ export class StudentController {
       res.status(200).json(notifications);
     } catch (error) {
       res.status(500).json({ error: "Error getting notifications" });
+    }
+  }
+
+  public static async getStudentByCode(
+    req: Request,
+    res: Response
+  ): Promise<void> {
+    try {
+      const code = req.params.code;
+      const student = await StudentDAO.getStudentByCarnet(code);
+      res.status(200).json(student);
+    } catch (error) {
+      res.status(500).json({ error: "Error getting student" });
     }
   }
 }

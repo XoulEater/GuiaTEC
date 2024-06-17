@@ -51,6 +51,36 @@ export async function updateStudent(student: Student): Promise<Student> {
 }
 
 /**
+ * Update the photo of a student
+ * @param carnet the id of the student
+ * @param photo the new photo
+ * @returns a promise with the updated student
+ */
+export async function updateStudentPhoto(
+  carnet: number,
+  photo: string
+): Promise<Student> {
+  const response = await fetch(`${API_URL}/students/${carnet}/photo`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ photo }),
+  });
+  return response.json();
+}
+
+/**
+ * Get a student by id
+ * @param carnet the id of the student
+ * @returns a promise with the student
+ */
+export async function getStudentById(carnet: number): Promise<any> {
+  const response = await fetch(`${API_URL}/students/${carnet}`);
+  return response.json();
+}
+
+/**
  * Get the inbox of a student
  * @param carnet the id of the student
  * @returns a promise with the notifications
@@ -135,6 +165,6 @@ export async function deleteReadNotifications(carnet: string): Promise<Inbox> {
  * @returns a promise with the notifications
  */
 export async function getAllNotifications(): Promise<Notification[]> {
-  const response = await fetch(`${API_URL}/students/notifications`);
+  const response = await fetch(`${API_URL}/students/1/notifications`);
   return response.json();
 }

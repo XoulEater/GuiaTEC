@@ -3,17 +3,24 @@ import AlertDTO from "../DTOs/alert";
 export default class Notification {
   private title: string;
   private body: string;
+  private sender: string = "Notificación automática";
   private postDate: Date;
 
-  public constructor(title: string | AlertDTO, body?: string) {
+  public constructor(title: string | AlertDTO, body?: string, sender?: string) {
     if (typeof title === "string") {
       this.title = title;
       this.body = body;
       this.postDate = new Date();
+      if (sender) {
+        this.sender = sender;
+      }
     } else {
       this.title = title.title;
       this.body = title.body;
       this.postDate = title.postDate;
+      if (title.sender) {
+        this.sender = title.sender;
+      }
     }
   }
 

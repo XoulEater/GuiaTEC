@@ -34,6 +34,7 @@ export default class NotificationCenter implements Observer {
   }
 
   public update(notification: Notification): void {
+    this.fetch();
     this.notifications.push(notification);
     const notificationID = this.notifications.length - 1;
 

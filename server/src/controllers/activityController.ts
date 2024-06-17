@@ -128,7 +128,8 @@ export class ActivityController {
     res: Response
   ): Promise<void> {
     try {
-      const activityDTO: ActivityDTO = req.body;
+      const activityDTO: ActivityDTO = req.body.activity;
+      const user = req.body.user;
       const workplanId = req.params.wid;
       const activityID = req.params.aid;
       // Create the activity
@@ -162,11 +163,11 @@ export class ActivityController {
       console.log(activity.getStatus());
 
       if (activity.getStatus() === "Notificada") {
-        activity.sendReminder();
+        activity.sendReminder(user);
         console.log("Notified");
       }
       if (activity.getStatus() === "Cancelada") {
-        activity.sendCancellation();
+        activity.sendCancellation(user);
         console.log("Cancelled");
       }
 

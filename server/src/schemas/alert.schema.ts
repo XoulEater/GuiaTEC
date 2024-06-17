@@ -12,6 +12,11 @@ const alertSchema: Schema = new Schema({
     type: String,
     required: true,
   },
+  sender: {
+    // Sender of the notification
+    type: String,
+    default: "Notificación automática",
+  },
   postDate: {
     // Date of the notification
     type: String,

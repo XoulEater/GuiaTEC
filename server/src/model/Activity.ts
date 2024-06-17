@@ -144,20 +144,22 @@ export default class Activity extends Subject {
   }
 
   // Method to send reminder manually
-  sendReminder(): void {
+  sendReminder(user: string): void {
     const notification = new Notification(
       "Recordatorio",
-      `La actividad ${this.name} se llevará a cabo el ${this.date}`
+      `La actividad ${this.name} se llevará a cabo el ${this.date}`,
+      user
     );
     this.notifyObservers(notification);
     this.status = "Notificada";
   }
 
   // Method to send cancellation
-  sendCancellation(): void {
+  sendCancellation(user: string): void {
     const notification = new Notification(
       "Cancelación",
-      `La actividad ${this.name} ha sido cancelada, motivo: ${this.observation}`
+      `La actividad ${this.name} ha sido cancelada, motivo: ${this.observation}`,
+      user
     );
     this.notifyObservers(notification);
     this.status = "Cancelada";

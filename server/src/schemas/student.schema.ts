@@ -10,6 +10,7 @@ const studentSchema: Schema = new Schema({
   campus: { type: String, required: true },
   password: { type: String, required: false },
   inbox: { type: inboxSchema, required: false },
+  photo: { type: String, required: false },
 });
 
 // Create and export the student model

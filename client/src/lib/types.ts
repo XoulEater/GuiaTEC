@@ -101,6 +101,7 @@ export interface Notification {
   title: string; // title of the notification
   body: string; // content of the notification
   postDate: Date; // date of the notification
+  sender: string; // sender of the notification
   read?: boolean; // if the notification was read
   id?: number; // unique identifier of the notification
 }

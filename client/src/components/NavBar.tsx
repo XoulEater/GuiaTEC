@@ -20,8 +20,10 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
   const userData = localStorage.getItem("user");
   const user = JSON.parse(userData as string) as User;
   const showRegister = user.userType == "assistant";
-  const showProfile = user.userType == "teacher";
+  const showProfile = user.userType == "teacher" || user.userType == "student";
   const showInbox = user.userType == "student";
+  const showStudentTab = user.userType != "student";
+  const showTeacherTab = user.userType != "student";
 
   function handleLogout() {
     localStorage.removeItem("user");
@@ -246,11 +248,11 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
                 </aside>
               </header>
             </Dropdown.Header>
-            <div className="p-4 max-h-80 overflow-y-scroll no-scrollbar">
-              {notifications.map((notification, i) => (
+            <div className="p-4 min-w-96  max-h-80 overflow-y-scroll no-scrollbar">
+              {notifications.toReversed().map((notification, i) => (
                 <article
                   key={notification.id || i}
-                  className="p-2 border-b border-gray-200 last:border-0 flex gap-2"
+                  className="p-2 border-b  border-gray-200 last:border-0 flex w-full justify-around items-start"
                 >
                   <aside>
                     <button
@@ -284,12 +286,15 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
                     </button>
                   </aside>
                   <main>
-                    <div className="text-sm font-medium">
-                      {notification.title}
+                    <div className="text-sm font-medium flex w-60 justify-between grow-1 ">
+                      <span>{notification.title}</span>
+                      <span className=" text-xs text-gray-500 pointer-events-none">
+                        {notification.sender}
+                      </span>
                     </div>
                     <div className="text-xs max-w-52">{notification.body}</div>
                     <div className="text-xs text-gray-500">
-                      {notification.postDate.toString()}
+                      {notification.postDate.toString().split("GMT")[0].trim()}
                     </div>
                   </main>
                   <aside>
@@ -342,7 +347,11 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
           </Dropdown.Item>
           <Dropdown.Item
             className={showProfile ? "grid" : "hidden"}
-            href={`/teacher/${user.id}`}
+            href={
+              user.userType == "teacher"
+                ? `/teacher/${user.id}`
+                : `/student/${user.id}`
+            }
           >
             Perfil
           </Dropdown.Item>
@@ -355,12 +364,16 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
         <Navbar.Link href="/team" active={currentRoute === "equipo"}>
           Equipo
         </Navbar.Link>
-        <Navbar.Link href="/students" active={currentRoute === "estudiantes"}>
-          Estudiantes
-        </Navbar.Link>
-        <Navbar.Link href="/teachers" active={currentRoute === "profesores"}>
-          Profesores
-        </Navbar.Link>
+        {showStudentTab && (
+          <Navbar.Link href="/students" active={currentRoute === "estudiantes"}>
+            Estudiantes
+          </Navbar.Link>
+        )}
+        {showTeacherTab && (
+          <Navbar.Link href="/teachers" active={currentRoute === "profesores"}>
+            Profesores
+          </Navbar.Link>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

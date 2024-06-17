@@ -166,7 +166,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
   function handleNotify() {
     if (selectedActivity) {
       selectedActivity.status = ActivityStatus.NOTIFICADA;
-      activityService.updateActivity(id, selectedActivity);
+      activityService.updateActivity(id, selectedActivity, user.name);
       setSelectedActivity(selectedActivity);
     }
   }
@@ -182,7 +182,7 @@ const WorkPlanDisplay: React.FC<WorkPlanProps> = ({ id }) => {
         reason + " [Cancelada el " + new Date().toDateString() + "]";
     }
     console.log(selectedActivity.observation);
-    activityService.updateActivity(id, selectedActivity);
+    activityService.updateActivity(id, selectedActivity, user.name);
     setSelectedActivity(null);
   }
 

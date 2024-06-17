@@ -25,6 +25,18 @@ export default class StudentDAO {
   }
 
   /**
+   * Get a student from the database
+   * @param carnet carnet of the student
+   * @returns the student with the given carnet
+   */
+  public static async getStudentByCarnet(
+    carnet: string
+  ): Promise<StudentAdapter> {
+    const studentData = await StudentSchema.findOne({ carnet: carnet });
+    return new StudentAdapter(studentData.toObject());
+  }
+
+  /**
    * Get all the students from the database
    * @returns the student with the given carnet
    */
@@ -63,6 +75,16 @@ export default class StudentDAO {
     await StudentSchema.findOneAndUpdate({ carnet: carnet }, student, {
       new: true,
     });
+  }
+
+  public static async updateStudentPhoto(carnet: string, photo: string) {
+    await StudentSchema.findOneAndUpdate(
+      { carnet: carnet },
+      { photo: photo },
+      {
+        new: true,
+      }
+    );
   }
 
   public static async updateStudentInbox(

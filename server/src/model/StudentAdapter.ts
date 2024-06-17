@@ -16,7 +16,8 @@ export default class StudentAdapter extends User {
       student.campus,
       "student",
       undefined,
-      undefined,
+      student.photo ||
+        "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png",
       student.carnet.toString(),
       student._id
     );

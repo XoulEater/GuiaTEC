@@ -11,4 +11,5 @@ export default interface StudentDTO {
   campus?: Campus;
   userType: "student";
   inbox: InboxDTO;
+  photo?: string;
 }
