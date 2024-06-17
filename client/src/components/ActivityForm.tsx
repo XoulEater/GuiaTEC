@@ -101,14 +101,6 @@ const ActivityForm: React.FC<ActivityFormProps> = ({
         "activityName"
       ) as HTMLInputElement;
       nameInput.value = activity.name;
-
-      // Set the attachment of the activity
-      /* FIXME: Fix the attachment input when the backend is ready
-      const attachmentInput = document.getElementById(
-        "activityAttachment"
-      ) as HTMLInputElement;
-      attachmentInput.value = activity.attachmentFile ?? "";
-      */
     }
   }, [activity]);
 

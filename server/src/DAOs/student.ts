@@ -2,6 +2,9 @@
 
 import StudentSchema from "../schemas/student.schema";
 import Student from "../model/Student";
+import StudentAdapter from "../model/StudentAdapter";
+import NotificationInbox from "../model/NotificationInbox";
+import InboxDTO from "../DTOs/inbox";
 
 export default class StudentDAO {
   /**
@@ -22,6 +25,18 @@ export default class StudentDAO {
   }
 
   /**
+   * Get a student from the database
+   * @param carnet carnet of the student
+   * @returns the student with the given carnet
+   */
+  public static async getStudentByCarnet(
+    carnet: string
+  ): Promise<StudentAdapter> {
+    const studentData = await StudentSchema.findOne({ carnet: carnet });
+    return new StudentAdapter(studentData.toObject());
+  }
+
+  /**
    * Get all the students from the database
    * @returns the student with the given carnet
    */
@@ -29,6 +44,13 @@ export default class StudentDAO {
     const studentData = await StudentSchema.find().exec();
     return studentData.map(
       (studentData) => new Student(studentData.toObject())
+    );
+  }
+
+  public static async getAllStudentsAdapted(): Promise<StudentAdapter[]> {
+    const studentData = await StudentSchema.find().exec();
+    return studentData.map(
+      (studentData) => new StudentAdapter(studentData.toObject())
     );
   }
 
@@ -55,6 +77,36 @@ export default class StudentDAO {
     });
   }
 
+  public static async updateStudentPhoto(carnet: string, photo: string) {
+    await StudentSchema.findOneAndUpdate(
+      { carnet: carnet },
+      { photo: photo },
+      {
+        new: true,
+      }
+    );
+  }
+
+  public static async updateStudentInbox(
+    carnet: string,
+    notificationInbox: NotificationInbox
+  ) {
+    await StudentSchema.findOneAndUpdate(
+      { carnet: carnet },
+      { inbox: notificationInbox },
+      {
+        new: true,
+      }
+    );
+  }
+
+  public static async getStudentInbox(
+    carnet: string
+  ): Promise<NotificationInbox> {
+    const studentData = await StudentSchema.findOne({ carnet: carnet });
+    return new NotificationInbox(studentData.toObject().inbox as InboxDTO);
+  }
+
   /**
    * Delete a student from the database
    * @param carnet carnet of the student
@@ -64,5 +116,15 @@ export default class StudentDAO {
     await StudentSchema.findOneAndDelete({
       carnet: carnet,
     });
+  }
+
+  public static async changePassword(carnet: string, newPassword: string) {
+    await StudentSchema.findOneAndUpdate(
+      { carnet: carnet },
+      { password: newPassword },
+      {
+        new: true,
+      }
+    ).exec();
   }
 }

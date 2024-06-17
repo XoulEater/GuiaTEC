@@ -3,8 +3,11 @@ import Forum from "./Forum";
 import Message from "./Message";
 import Email from "../controllers/sendEmail";
 import Teacher from "./Teacher";
+import Visitor from "./Visitor";
+import Subject from "./Subject";
+import Notification from "./Notification";
 
-export default class Activity {
+export default class Activity extends Subject {
   private id: number;
   private name: string;
   private week: number;
@@ -37,6 +40,7 @@ export default class Activity {
     forum?: Forum,
     observation?: string
   ) {
+    super();
     if (typeof NameOrDTO === "string") {
       this.name = NameOrDTO;
       this.week = week;
@@ -139,74 +143,30 @@ export default class Activity {
     return publishDate;
   }
 
-  verify(today: Date): void {
-    try {
-      if (this.status == "Notificada" || this.status == "Publicada") {
-        this.verifyNotify(today);
-      }
-      if (this.status == "Planeada") {
-        this.verifyPublish(today);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  // Method to send reminder manually
+  sendReminder(user: string): void {
+    const notification = new Notification(
+      "Recordatorio",
+      `La actividad ${this.name} se llevará a cabo el ${this.date}`,
+      user
+    );
+    this.notifyObservers(notification);
+    this.status = "Notificada";
   }
 
-  verifyPublish(today: Date): void {
-    try {
-      // get the date to publish
-      const publishDate = this.getPublishDate();
-
-      // if today is the day to publish
-      if (today.getDate() == publishDate.getDate()) {
-        this.setStatus("Publicada");
-        "Published: " + this.name;
-      }
-    } catch (error) {
-      console.error(error);
-    }
+  // Method to send cancellation
+  sendCancellation(user: string): void {
+    const notification = new Notification(
+      "Cancelación",
+      `La actividad ${this.name} ha sido cancelada, motivo: ${this.observation}`,
+      user
+    );
+    this.notifyObservers(notification);
+    this.status = "Cancelada";
   }
 
-  verifyNotify(today: Date): void {
-    try {
-      // get the date to publish
-      const publishDate = this.getPublishDate();
-
-      // interval to notify
-      let cont = this.reminderInterval;
-      while (publishDate <= this.date && publishDate <= today) {
-        // add the interval to the publish date
-        publishDate.setDate(publishDate.getDate() + this.reminderInterval);
-
-        if (this.reminderInterval === 0) {
-          continue;
-        }
-
-        // if today is the day to notify
-        if (publishDate.getDate() == today.getDate()) {
-          this.setStatus("Notificada");
-          "Notified: " + this.name;
-          this.notify();
-
-          break;
-        }
-        // add the interval to the counter
-        cont += this.reminderInterval;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  notify(): void {
-    const email = Email.getInstance();
-    // send the email to the responsibles
-    this.responsibles.forEach((teacher) => {
-      email.sendMail(
-        teacher.getEmail(),
-        "Notificación de actividad",
-        "Recuerde que tiene una actividad programada para " + this.date
-      );
-    });
+  // Método accept para aceptar visitantes
+  accept(visitor: Visitor): void {
+    visitor.visitActivity(this);
   }
 }

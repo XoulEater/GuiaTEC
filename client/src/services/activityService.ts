@@ -53,12 +53,17 @@ export async function createActivity(wid: string, activity: Activity) {
  * @param activity the activity to update
  * @returns a promise with the updated activity
  */
-export async function updateActivity(wid: string, activity: Activity) {
+export async function updateActivity(
+  wid: string,
+  activity: Activity,
+  user?: string
+) {
+  const body = user ? { activity, user } : { activity };
   await fetch(`${API_URL}/workplans/${wid}/activities/${activity.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(activity),
+    body: JSON.stringify(body),
   });
 }

@@ -2,7 +2,6 @@
 import AssistantSchema from "../schemas/assistant.schema";
 import Assistant from "../model/Assistant";
 
-
 /**
  * Class that communicates with the database to perform CRUD operations
  */
@@ -26,7 +25,6 @@ export default class AssistantDAO {
     return assistant ? new Assistant(assistant.toObject()) : null;
   }
 
-
   /**
    * Update a assistant in the database
    * @param pCode code of the assistant
@@ -38,8 +36,23 @@ export default class AssistantDAO {
     }).exec();
   }
 
-  public static async createAsistant(name: string, email: string, password: string, campus: string) {
+  public static async createAsistant(
+    name: string,
+    email: string,
+    password: string,
+    campus: string
+  ) {
     const asistant = new AssistantSchema({ name, email, password, campus });
     await asistant.save();
+  }
+
+  public static async changePassword(pCode: string, newPassword: string) {
+    await AssistantSchema.findOneAndUpdate(
+      { id: pCode },
+      { password: newPassword },
+      {
+        new: true,
+      }
+    ).exec();
   }
 }

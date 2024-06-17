@@ -3,6 +3,8 @@
 import { Request, Response } from "express";
 import NotificationDAO from "../DAOs/notification";
 import WorkplanDAO from "../DAOs/workplan";
+import PublishVisitor from "../model/PublishVisitor";
+import ReminderVisitor from "../model/ReminderVisitor";
 
 require("dotenv").config();
 
@@ -12,24 +14,36 @@ export class NotificationController {
     res: Response
   ): Promise<void> {
     try {
-      const notificationDate: Date = await NotificationDAO.getLastNotification();
+      const date = req.body.date;
+
+      const notificationDate: Date =
+        await NotificationDAO.getLastNotification();
 
       // get the current date, using the date set in the .env file for testing
-      const today = new Date(process.env.TODAY);
+      const today = new Date(date);
+      console.log(today);
+      console.log(notificationDate);
+
+      const publishVisitor = new PublishVisitor(today);
+      const reminderVisitor = new ReminderVisitor(today);
 
       // if the notification date is not today
-      console.log(notificationDate.getDate(), today.getDate());
       if (notificationDate.getDate() != today.getDate()) {
+        // if (false) {
+        // get all the workplans
         const workPlans = await WorkplanDAO.getAllWorkplans();
 
         // for each workplan, verify the activities
         for (let workPlan of workPlans) {
           workPlan.getActivities().forEach((activity) => {
-            activity.verify(today);
+            activity.accept(publishVisitor);
+            activity.accept(reminderVisitor);
           });
           // update the workplan in the database
           await WorkplanDAO.updateWorkplan(workPlan.getID(), workPlan);
         }
+
+        console.log("Notification verified");
 
         // record the notification in the database to avoid multiple notifications👌
         await NotificationDAO.addNotification(today);
@@ -37,7 +51,9 @@ export class NotificationController {
       res.status(200).json({ message: "Notification already verified" });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ message: "An error occurred while verifying the notification." });
+      res.status(500).json({
+        message: "An error occurred while verifying the notification.",
+      });
     }
   }
 }

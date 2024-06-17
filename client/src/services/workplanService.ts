@@ -65,8 +65,12 @@ export async function deleteWorkplan(id: string) {
   });
 }
 
-export async function notifyActitities() {
+export async function notifyActitities(date: string) {
   await fetch(`${API_URL}/notifications`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ date }),
   });
 }

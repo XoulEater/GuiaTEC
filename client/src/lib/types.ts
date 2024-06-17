@@ -27,7 +27,7 @@ export enum Modalities {
 }
 
 export interface User {
-  userType?: "teacher" | "assistant"; // type of the user
+  userType?: "teacher" | "assistant" | "student"; // type of the user
   name: string; // full name of the user
   email: string; // email of the user
   password: string; // password of the user
@@ -47,6 +47,7 @@ export interface Teacher extends User {
 }
 
 export interface Student extends User {
+  userType: "student";
   carnet: number; // unique identifier of the student
   name: string; // full name of the student
   email: string; // email of the student
@@ -89,4 +90,18 @@ export interface Message {
   date: Date; // date of the message
   content: string; // content of the message
   replies: Array<Message>; // replies list of the message
+}
+
+export interface Inbox {
+  notifications: string[]; // list of notifications
+  readNotifications: string[]; // list of read notifications
+}
+
+export interface Notification {
+  id: string; // unique identifier of the notification
+  title: string; // title of the notification
+  body: string; // content of the notification
+  postDate: Date; // date of the notification
+  sender: string; // sender of the notification
+  read?: boolean; // if the notification was read
 }

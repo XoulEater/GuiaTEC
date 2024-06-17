@@ -15,6 +15,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const student_schema_1 = __importDefault(require("../schemas/student.schema"));
 const Student_1 = __importDefault(require("../model/Student"));
+const StudentAdapter_1 = __importDefault(require("../model/StudentAdapter"));
+const NotificationInbox_1 = __importDefault(require("../model/NotificationInbox"));
 class StudentDAO {
     /**
      * Create a new student in the database
@@ -36,6 +38,17 @@ class StudentDAO {
         });
     }
     /**
+     * Get a student from the database
+     * @param carnet carnet of the student
+     * @returns the student with the given carnet
+     */
+    static getStudentByCarnet(carnet) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const studentData = yield student_schema_1.default.findOne({ carnet: carnet });
+            return new StudentAdapter_1.default(studentData.toObject());
+        });
+    }
+    /**
      * Get all the students from the database
      * @returns the student with the given carnet
      */
@@ -43,6 +56,12 @@ class StudentDAO {
         return __awaiter(this, void 0, void 0, function* () {
             const studentData = yield student_schema_1.default.find().exec();
             return studentData.map((studentData) => new Student_1.default(studentData.toObject()));
+        });
+    }
+    static getAllStudentsAdapted() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const studentData = yield student_schema_1.default.find().exec();
+            return studentData.map((studentData) => new StudentAdapter_1.default(studentData.toObject()));
         });
     }
     /**
@@ -68,6 +87,26 @@ class StudentDAO {
             });
         });
     }
+    static updateStudentPhoto(carnet, photo) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield student_schema_1.default.findOneAndUpdate({ carnet: carnet }, { photo: photo }, {
+                new: true,
+            });
+        });
+    }
+    static updateStudentInbox(carnet, notificationInbox) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield student_schema_1.default.findOneAndUpdate({ carnet: carnet }, { inbox: notificationInbox }, {
+                new: true,
+            });
+        });
+    }
+    static getStudentInbox(carnet) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const studentData = yield student_schema_1.default.findOne({ carnet: carnet });
+            return new NotificationInbox_1.default(studentData.toObject().inbox);
+        });
+    }
     /**
      * Delete a student from the database
      * @param carnet carnet of the student
@@ -78,6 +117,13 @@ class StudentDAO {
             yield student_schema_1.default.findOneAndDelete({
                 carnet: carnet,
             });
+        });
+    }
+    static changePassword(carnet, newPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield student_schema_1.default.findOneAndUpdate({ carnet: carnet }, { password: newPassword }, {
+                new: true,
+            }).exec();
         });
     }
 }

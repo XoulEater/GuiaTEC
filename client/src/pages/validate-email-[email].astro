@@ -47,7 +47,6 @@ const { email } = Astro.params;
   </h2>
 </Layout>
 <script>
-  // FIXME: This is a temporary solution to avoid using a backend
   import * as AuthServices from "../services/authService.ts";
   const email = (document.getElementById("email") as HTMLElement).innerText;
   console.log(email);

@@ -128,8 +128,8 @@ export class ActivityController {
     res: Response
   ): Promise<void> {
     try {
-      // TODO: Add the logic notifing the responsibles of the activity
-      const activityDTO: ActivityDTO = req.body;
+      const activityDTO: ActivityDTO = req.body.activity;
+      const user = req.body.user;
       const workplanId = req.params.wid;
       const activityID = req.params.aid;
       // Create the activity
@@ -161,9 +161,14 @@ export class ActivityController {
       }
 
       console.log(activity.getStatus());
+
       if (activity.getStatus() === "Notificada") {
-        activity.notify();
+        activity.sendReminder(user);
         console.log("Notified");
+      }
+      if (activity.getStatus() === "Cancelada") {
+        activity.sendCancellation(user);
+        console.log("Cancelled");
       }
 
       res.status(200).json({ message: "Activity updated successfully" });
