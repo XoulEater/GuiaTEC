@@ -93,15 +93,15 @@ export interface Message {
 }
 
 export interface Inbox {
-  notifications: number[]; // list of notifications
-  readNotifications: number[]; // list of read notifications
+  notifications: string[]; // list of notifications
+  readNotifications: string[]; // list of read notifications
 }
 
 export interface Notification {
+  id: string; // unique identifier of the notification
   title: string; // title of the notification
   body: string; // content of the notification
   postDate: Date; // date of the notification
   sender: string; // sender of the notification
   read?: boolean; // if the notification was read
-  id?: number; // unique identifier of the notification
 }

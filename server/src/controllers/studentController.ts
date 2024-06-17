@@ -134,7 +134,7 @@ export class StudentController {
       const id = req.params.id;
       const inbox = await StudentDAO.getStudentInbox(carnet);
 
-      inbox.markAsRead(parseInt(id));
+      inbox.markAsRead(id);
 
       await StudentDAO.updateStudentInbox(carnet, inbox);
 
@@ -155,7 +155,7 @@ export class StudentController {
 
     const inbox = await StudentDAO.getStudentInbox(carnet);
 
-    inbox.deleteNotification(parseInt(id));
+    inbox.deleteNotification(id);
     console.log(inbox);
 
     await StudentDAO.updateStudentInbox(carnet, inbox);

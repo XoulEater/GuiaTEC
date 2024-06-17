@@ -21,28 +21,31 @@ export default class NotificationCenter implements Observer {
     return NotificationCenter.instance;
   }
 
-  public fetch() {
+  public async fetch() {
     // Fetch data from database
 
     // Fetch students from database
-    StudentDAO.getAllStudentsAdapted().then((students) => {
+    await StudentDAO.getAllStudentsAdapted().then((students) => {
       this.students = students;
     });
-    AlertDAO.getAllAlerts().then((notifications) => {
+    await AlertDAO.getAllAlerts().then((notifications) => {
       this.notifications = notifications;
     });
   }
 
-  public update(notification: Notification): void {
-    this.fetch();
+  public async update(notification: Notification): Promise<void> {
+    await this.fetch();
     this.notifications.push(notification);
-    const notificationID = this.notifications.length - 1;
-
-    AlertDAO.saveAlert(notification);
+    const notificationID = await AlertDAO.saveAlert(notification);
 
     // FIXME: Something is wrong here
     // Notify students
-    console.log("sendingAlert:" + notificationID);
+    console.log(
+      "sendingAlert:" +
+        notificationID +
+        " to students. " +
+        notification.getBody()
+    );
 
     this.students.forEach((student) => {
       student.receiveNotification(notificationID);

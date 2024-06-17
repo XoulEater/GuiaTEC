@@ -44,8 +44,7 @@ export default class StudentAdapter extends User {
     return this.inbox;
   }
 
-  public receiveNotification(notificationID: number): void {
-    console.log(`Notification received: ${notificationID}`);
+  public receiveNotification(notificationID: string): void {
     this.inbox.addNotification(notificationID);
   }
 }

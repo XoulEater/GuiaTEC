@@ -12,19 +12,24 @@ export default class ReminderVisitor extends Subject implements Visitor {
   }
 
   visitActivity(activity: Activity): void {
-    if (activity.getStatus() === "Notificada") {
+    if (
+      activity.getStatus() === "Notificada" ||
+      activity.getStatus() === "Publicada"
+    ) {
       let nextReminderDate = new Date(activity.getDate());
       nextReminderDate.setDate(
         nextReminderDate.getDate() - activity.getPrevDays()
       );
 
-      while (nextReminderDate <= this.systemDate) {
+      while (nextReminderDate <= activity.getDate()) {
+        console.log(nextReminderDate.getDate(), this.systemDate.getDate());
         if (nextReminderDate.getDate() === this.systemDate.getDate()) {
           // Observer pattern
           const notification = new Notification(
             "Recordatorio",
             `La actividad ${activity.getName()} se llevará a cabo el ${activity.getDate()}`
           );
+          notification.setPostDate(this.systemDate);
           super.notifyObservers(notification);
           console.log(`Reminder: ${activity.getName()}`);
           break;

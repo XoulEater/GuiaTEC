@@ -12,8 +12,11 @@ export default class AlertDAO {
   /**
    * Save a new notification in the database
    * @param notification the notification to be created
+   * @returns the id of the created notification
    */
-  public static async saveAlert(alert: Notification): Promise<void> {
-    await alertSchema.create(alert);
+  public static async saveAlert(alert: Notification): Promise<string> {
+    const alertDocument = new alertSchema(alert);
+    // save the notification in the database and return the id
+    return (await alertDocument.save()).id;
   }
 }

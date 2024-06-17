@@ -118,7 +118,7 @@ export async function updateStudentInbox(
  */
 export async function deleteNotification(
   carnet: string,
-  notificationId: number
+  notificationId: string
 ): Promise<Inbox> {
   const response = await fetch(
     `${API_URL}/students/${carnet}/inbox/${notificationId}`,
@@ -137,7 +137,7 @@ export async function deleteNotification(
  */
 export async function markNotificationAsRead(
   carnet: string,
-  notificationId: number
+  notificationId: string
 ): Promise<Inbox> {
   const response = await fetch(
     `${API_URL}/students/${carnet}/inbox/${notificationId}`,

@@ -1,6 +1,7 @@
 import AlertDTO from "../DTOs/alert";
 
 export default class Notification {
+  private id: string;
   private title: string;
   private body: string;
   private sender: string = "Notificación automática";
@@ -15,6 +16,7 @@ export default class Notification {
         this.sender = sender;
       }
     } else {
+      this.id = title._id.toString();
       this.title = title.title;
       this.body = title.body;
       this.postDate = title.postDate;
@@ -34,6 +36,10 @@ export default class Notification {
 
   public getPostDate(): Date {
     return this.postDate;
+  }
+
+  public setPostDate(postDate: Date): void {
+    this.postDate = postDate;
   }
 
   public setTitle(title: string): void {

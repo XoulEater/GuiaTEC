@@ -87,10 +87,10 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
     //   },
     // ];
     let formatedNotifications: Notification[] = [];
-    notifications.forEach((notification, i) => {
-      const read = inbox.readNotifications.includes(i);
-      if (inbox.notifications.includes(i)) {
-        formatedNotifications.push({ ...notification, read: read, id: i });
+    notifications.forEach((notification) => {
+      const read = inbox.readNotifications.includes(notification.id);
+      if (inbox.notifications.includes(notification.id)) {
+        formatedNotifications.push({ ...notification, read: read });
       }
     });
 
@@ -112,7 +112,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
     // Función para cargar las notificaciones
   }, []);
 
-  const handleReadNotification = async (id: number) => {
+  const handleReadNotification = async (id: string) => {
     // check if the notification is already read
     if (inbox.readNotifications.includes(id) || !user.id) {
       return;
@@ -135,7 +135,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
     }
   };
 
-  const handleDeleteNotification = async (id: number) => {
+  const handleDeleteNotification = async (id: string) => {
     if (!user.id) {
       return;
     }
@@ -251,14 +251,12 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
             <div className="p-4 min-w-96  max-h-80 overflow-y-scroll no-scrollbar">
               {notifications.toReversed().map((notification, i) => (
                 <article
-                  key={notification.id || i}
+                  key={i}
                   className="p-2 border-b  border-gray-200 last:border-0 flex w-full justify-around items-start"
                 >
                   <aside>
                     <button
-                      onClick={() =>
-                        handleReadNotification(notification.id || i)
-                      }
+                      onClick={() => handleReadNotification(notification.id)}
                       className={`${
                         notification.read
                           ? "bg-gray-100 pointer-events-none"
@@ -299,9 +297,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
                   </main>
                   <aside>
                     <button
-                      onClick={() =>
-                        handleDeleteNotification(notification.id || i)
-                      }
+                      onClick={() => handleDeleteNotification(notification.id)}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -18,13 +18,17 @@ export class NotificationController {
         await NotificationDAO.getLastNotification();
 
       // get the current date, using the date set in the .env file for testing
-      const today = new Date(process.env.TODAY);
+      const today = new Date("2024-06-21 23:30:00Z");
+      console.log(today);
+      console.log(notificationDate);
 
       const publishVisitor = new PublishVisitor(today);
       const reminderVisitor = new ReminderVisitor(today);
 
       // if the notification date is not today
-      if (notificationDate.getDate() != today.getDate()) {
+      // if (notificationDate.getDate() != today.getDate()) {
+      if (false) {
+        // get all the workplans
         const workPlans = await WorkplanDAO.getAllWorkplans();
 
         // for each workplan, verify the activities

@@ -1,23 +1,23 @@
 import InboxDTO from "../DTOs/inbox";
 
 export default class NotificationInbox {
-  private notifications: number[] = []; // Notification IDs
-  private readNotifications: number[] = []; // Notification IDs
+  private notifications: string[] = []; // Notification IDs
+  private readNotifications: string[] = []; // Notification IDs
 
   public constructor(inbox: InboxDTO) {
     this.notifications = inbox.notifications;
     this.readNotifications = inbox.readNotifications;
   }
 
-  public addNotification(notificationID: number): void {
+  public addNotification(notificationID: string): void {
     this.notifications.push(notificationID);
   }
 
-  public markAsRead(notificationID: number): void {
+  public markAsRead(notificationID: string): void {
     this.readNotifications.push(notificationID);
   }
 
-  public deleteNotification(notificationID: number): void {
+  public deleteNotification(notificationID: string): void {
     this.notifications = this.notifications.filter(
       (id) => id !== notificationID
     );
@@ -34,11 +34,11 @@ export default class NotificationInbox {
     this.readNotifications = [];
   }
 
-  public getNotifications(): number[] {
+  public getNotifications(): string[] {
     return this.notifications;
   }
 
-  public getUnreadNotifications(): number[] {
+  public getUnreadNotifications(): string[] {
     return this.notifications.filter(
       (id) => !this.readNotifications.includes(id)
     );

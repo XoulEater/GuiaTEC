@@ -13,9 +13,9 @@ export default class PublishVisitor extends Subject implements Visitor {
 
   visitActivity(activity: Activity): void {
     const publishDate = activity.getPublishDate();
-    console.log(
-      activity.getStatus() + " " + publishDate + " " + this.systemDate
-    );
+    // console.log(
+    //   activity.getStatus() + " " + publishDate + " " + this.systemDate
+    // );
 
     if (activity.getStatus() === "Planeada" && publishDate <= this.systemDate) {
       activity.setStatus("Publicada");
@@ -25,6 +25,8 @@ export default class PublishVisitor extends Subject implements Visitor {
         "Publicación",
         `La actividad ${activity.getName()} ha sido publicada`
       );
+      notification.setPostDate(this.systemDate);
+
       super.notifyObservers(notification);
     }
   }
