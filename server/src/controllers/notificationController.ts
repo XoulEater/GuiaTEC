@@ -14,11 +14,13 @@ export class NotificationController {
     res: Response
   ): Promise<void> {
     try {
+      const date = req.body.date;
+
       const notificationDate: Date =
         await NotificationDAO.getLastNotification();
 
       // get the current date, using the date set in the .env file for testing
-      const today = new Date("2024-06-21 23:30:00Z");
+      const today = new Date(date);
       console.log(today);
       console.log(notificationDate);
 

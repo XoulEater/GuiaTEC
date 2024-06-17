@@ -30,7 +30,14 @@ const { title, currentRoute } = Astro.props;
   if (!localStorage.getItem("user")) {
     window.location.href = "/";
   }
-  await workplanService.notifyActitities();
+
+  if (!localStorage.getItem("time")) {
+    localStorage.setItem("time", "2024-06-21 23:30:00Z");
+  }
+
+  await workplanService.notifyActitities(
+    localStorage.getItem("time") || "2024-06-01 23:30:00Z"
+  );
 </script>
 <style is:global>
   html {
