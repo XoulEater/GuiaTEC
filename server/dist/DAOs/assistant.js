@@ -58,6 +58,13 @@ class AssistantDAO {
             yield asistant.save();
         });
     }
+    static changePassword(pCode, newPassword) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield assistant_schema_1.default.findOneAndUpdate({ id: pCode }, { password: newPassword }, {
+                new: true,
+            }).exec();
+        });
+    }
 }
 exports.default = AssistantDAO;
 //# sourceMappingURL=assistant.js.map

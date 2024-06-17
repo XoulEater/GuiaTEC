@@ -5,11 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Forum_1 = __importDefault(require("./Forum"));
 const Message_1 = __importDefault(require("./Message"));
-const sendEmail_1 = __importDefault(require("../controllers/sendEmail"));
 const Teacher_1 = __importDefault(require("./Teacher"));
-class Activity {
+const Subject_1 = __importDefault(require("./Subject"));
+const Notification_1 = __importDefault(require("./Notification"));
+class Activity extends Subject_1.default {
     // Constructor
     constructor(NameOrDTO, week, date, prevDays, reminderInterval, responsibles, type, modality, status, link, attachmentFile, forum, observation) {
+        super();
         this.evidence = [];
         if (typeof NameOrDTO === "string") {
             this.name = NameOrDTO;
@@ -96,66 +98,21 @@ class Activity {
         publishDate.setDate(this.date.getDate() - this.prevDays);
         return publishDate;
     }
-    verify(today) {
-        try {
-            if (this.status == "Notificada" || this.status == "Publicada") {
-                this.verifyNotify(today);
-            }
-            if (this.status == "Planeada") {
-                this.verifyPublish(today);
-            }
-        }
-        catch (error) {
-            console.error(error);
-        }
+    // Method to send reminder manually
+    sendReminder(user) {
+        const notification = new Notification_1.default("Recordatorio", `La actividad ${this.name} se llevará a cabo el ${this.date}`, user);
+        this.notifyObservers(notification);
+        this.status = "Notificada";
     }
-    verifyPublish(today) {
-        try {
-            // get the date to publish
-            const publishDate = this.getPublishDate();
-            // if today is the day to publish
-            if (today.getDate() == publishDate.getDate()) {
-                this.setStatus("Publicada");
-                "Published: " + this.name;
-            }
-        }
-        catch (error) {
-            console.error(error);
-        }
+    // Method to send cancellation
+    sendCancellation(user) {
+        const notification = new Notification_1.default("Cancelación", `La actividad ${this.name} ha sido cancelada, motivo: ${this.observation}`, user);
+        this.notifyObservers(notification);
+        this.status = "Cancelada";
     }
-    verifyNotify(today) {
-        try {
-            // get the date to publish
-            const publishDate = this.getPublishDate();
-            // interval to notify
-            let cont = this.reminderInterval;
-            while (publishDate <= this.date && publishDate <= today) {
-                // add the interval to the publish date
-                publishDate.setDate(publishDate.getDate() + this.reminderInterval);
-                if (this.reminderInterval === 0) {
-                    continue;
-                }
-                // if today is the day to notify
-                if (publishDate.getDate() == today.getDate()) {
-                    this.setStatus("Notificada");
-                    "Notified: " + this.name;
-                    this.notify();
-                    break;
-                }
-                // add the interval to the counter
-                cont += this.reminderInterval;
-            }
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
-    notify() {
-        const email = sendEmail_1.default.getInstance();
-        // send the email to the responsibles
-        this.responsibles.forEach((teacher) => {
-            email.sendMail(teacher.getEmail(), "Notificación de actividad", "Recuerde que tiene una actividad programada para " + this.date);
-        });
+    // Método accept para aceptar visitantes
+    accept(visitor) {
+        visitor.visitActivity(this);
     }
 }
 exports.default = Activity;

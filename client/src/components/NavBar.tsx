@@ -100,7 +100,7 @@ const Header: React.FC<Props> = ({ currentRoute }) => {
   };
 
   const loadInbox = async () => {
-    if (user.id) {
+    if (user.id && user.userType == "student") {
       const inbox = await studentsService.getStudentInbox(user.id);
       setInbox(inbox);
       loadNotifications(inbox);

@@ -15,15 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const assistant_1 = __importDefault(require("../DAOs/assistant")); // Asegúrate de usar la ruta correcta
 const teacher_1 = __importDefault(require("../DAOs/teacher"));
+const student_1 = __importDefault(require("../DAOs/student"));
 const sendEmail_1 = __importDefault(require("./sendEmail"));
-const Assistant_1 = __importDefault(require("../model/Assistant"));
 class AuthController {
     // Get all users
     static getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
             const teachers = yield teacher_1.default.getAllTeachers();
             const assistants = yield assistant_1.default.getAllAssistants();
-            const users = [...teachers, ...assistants];
+            const students = yield student_1.default.getAllStudentsAdapted();
+            const users = [...teachers, ...assistants, ...students];
             return users;
         });
     }
@@ -58,24 +59,20 @@ class AuthController {
     //Reset Password
     static resetPassword(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { email } = req.body;
-                // Get users
-                const users = yield AuthController.getUsers();
-                //Find user
-                const userFound = users.find((user) => user.getEmail() === email);
-                if (!userFound) {
-                    return res.status(500).json({ message: "User Not Found" });
-                }
-                // Send email with token
-                const emailSent = sendEmail_1.default.getInstance();
-                const userToken = userFound.getDbId();
-                yield emailSent.sendMail(userFound.getEmail(), "Reset Password", "Use this Token to reset your password: " + userToken);
-                res.status(200).json({ message: "Email sent" });
+            const { email } = req.body;
+            // Get users
+            const users = yield AuthController.getUsers();
+            //Find user
+            const userFound = users.find((user) => user.getEmail() === email);
+            console.log(userFound);
+            if (!userFound) {
+                return res.status(500).json({ message: "User Not Found" });
             }
-            catch (error) {
-                res.status(500).json({ message: "Error reset password" });
-            }
+            // Send email with token
+            const emailSent = sendEmail_1.default.getInstance();
+            const userToken = userFound.getDbId();
+            yield emailSent.sendMail(userFound.getEmail(), "Reset Password", "Use this Token to reset your password: " + userToken);
+            res.status(200).json({ message: "Email sent" });
         });
     }
     //Validate Token
@@ -123,9 +120,11 @@ class AuthController {
                 if (userType === "teacher") {
                     yield teacher_1.default.changePassword(userFound.getId(), password);
                 }
+                else if (userType === "assistant") {
+                    yield assistant_1.default.changePassword(userFound.getId(), password);
+                }
                 else {
-                    const newAssistant = new Assistant_1.default(userFound.getName(), userFound.getEmail(), password, userFound.getCampus());
-                    yield assistant_1.default.updateAssistant(userFound.getId(), newAssistant);
+                    yield student_1.default.changePassword(userFound.getId(), password);
                 }
                 res.status(200).json({ message: "Password changed" });
             }

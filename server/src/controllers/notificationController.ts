@@ -28,8 +28,8 @@ export class NotificationController {
       const reminderVisitor = new ReminderVisitor(today);
 
       // if the notification date is not today
-      // if (notificationDate.getDate() != today.getDate()) {
-      if (false) {
+      if (notificationDate.getDate() != today.getDate()) {
+        // if (false) {
         // get all the workplans
         const workPlans = await WorkplanDAO.getAllWorkplans();
 

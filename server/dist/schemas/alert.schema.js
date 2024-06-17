@@ -22,23 +22,31 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importStar(require("mongoose"));
-const inbox_schema_1 = __importDefault(require("./inbox.schema"));
-// Define the student schema
-const studentSchema = new mongoose_1.Schema({
-    carnet: { type: Number, required: true, unique: true },
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    personalPNumber: { type: String, required: true },
-    campus: { type: String, required: true },
-    password: { type: String, required: false },
-    inbox: { type: inbox_schema_1.default, required: false },
-    photo: { type: String, required: false },
+// Define the schema for the Alerts collection
+const alertSchema = new mongoose_1.Schema({
+    title: {
+        // Title of the notification
+        type: String,
+        required: true,
+    },
+    body: {
+        // Text of the notification
+        type: String,
+        required: true,
+    },
+    sender: {
+        // Sender of the notification
+        type: String,
+        default: "Notificación automática",
+    },
+    postDate: {
+        // Date of the notification
+        type: String,
+        required: true,
+    },
 });
-// Create and export the student model
-exports.default = mongoose_1.default.model("Student", studentSchema);
-//# sourceMappingURL=student.schema.js.map
+// Create and export the Notification Alert Model
+exports.default = mongoose_1.default.model("Alert", alertSchema);
+//# sourceMappingURL=alert.schema.js.map
